@@ -1,0 +1,39 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                        Int      @id @default(autoincrement())
+  username                  String
+  email                     String   @unique
+  contact                   String?
+  password                  String
+  date_of_reg               DateTime @default(now())
+  account_status            String   @default("0")
+  verifyToken               String?  @db.VarChar(255)
+  verifyTokenExpiry         DateTime?
+  forgotPasswordToken       String?  @db.VarChar(255)
+  forgotPasswordTokenExpiry DateTime?
+}
+
+
+model PujaService {
+  id            Int          @id @default(autoincrement())
+  title         String
+  img           String
+  desc          String
+  category      PujaCategory @relation(fields: [categoryId], references: [id])
+  categoryId    Int
+  date_of_create DateTime    @default(now())
+}
+
+model PujaCategory {
+  id        Int          @id @default(autoincrement())
+  name      String       @unique
+  services  PujaService[] // Add this line
+}

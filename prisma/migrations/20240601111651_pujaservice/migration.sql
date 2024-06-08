@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `pujaservice` ADD COLUMN `date_of_create` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3);
