@@ -12,7 +12,7 @@
   "dependencies": {
     "@n8tb1t/use-scroll-position": "^2.0.3",
     "@popperjs/core": "^2.11.8",
-    "@prisma/client": "^5.14.0",
+    "@prisma/client": "^5.15.0",
     "@types/axios": "^0.14.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/nodemailer": "^6.4.15",
@@ -30,7 +30,7 @@
     "next": "14.2.3",
     "nodemailer": "^6.9.13",
     "npm-check-updates": "^16.14.20",
-    "prisma": "^5.14.0",
+    "prisma": "^5.15.0",
     "query-string": "^9.0.0",
     "react": "^18",
     "react-dom": "^18",
