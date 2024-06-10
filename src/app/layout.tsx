@@ -4,7 +4,7 @@ import "./globals.css";
 import Navbar from "./(componentsUi)/navbar/page";
 import Footer from "./(componentsUi)/footer/page";
 import { ToastContainer } from 'react-toastify';
-// import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ["latin"] });  
 export const metadata: Metadata = {
@@ -24,6 +24,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <ToastContainer />
+        <SpeedInsights/>
       </body>
     </html>
   );
