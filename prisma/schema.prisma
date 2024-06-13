@@ -26,7 +26,7 @@ model PujaService {
   id            Int          @id @default(autoincrement())
   title         String
   img           String
-  desc          String
+  desc          String       @db.VarChar(2000)
   category      PujaCategory @relation(fields: [categoryId], references: [id])
   categoryId    Int
   date_of_create DateTime    @default(now())
