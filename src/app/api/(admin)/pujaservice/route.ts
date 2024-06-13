@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { promises as fs } from "fs";
 import path from "path";
+import os from "os";
 
 type Params = {
   id: string;
@@ -20,12 +21,21 @@ export async function POST(request: NextRequest, context: { params: Params }) {
     const byteData = await file.arrayBuffer();
     const buffer = Buffer.from(byteData);
 
-    // Use /tmp directory for Vercel compatibility
-    const filePath = path.join('/tmp', file.name);
+    // Get the temporary directory path
+    const tempDir = os.tmpdir();
+    console.log(`Temporary directory: ${tempDir}`);
+
+    // Create the file path in the temporary directory
+    const filePath = path.join(tempDir, file.name);
+    console.log(`File path: ${filePath}`);
+
+    // Write the file to the temporary directory
     await fs.writeFile(filePath, buffer);
+    console.log(`File written: ${filePath}`);
 
     // Prepare the relative path for storage (if needed for your DB entry)
-    const relativePath = `/tmp/${file.name}`;
+    const relativePath = path.join("/uploads", file.name).replace(/\\/g, '/');
+    console.log(`Relative path: ${relativePath}`);
 
     // Parse the data
     const data = formData.get("data");
@@ -70,6 +80,7 @@ export async function POST(request: NextRequest, context: { params: Params }) {
     );
   }
 }
+
 
 
 // Function to handle GET request for all services
