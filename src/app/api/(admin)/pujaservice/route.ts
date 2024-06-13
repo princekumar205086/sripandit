@@ -20,9 +20,9 @@ export async function POST(request: NextRequest, context: { params: Params }) {
     }
     const byteData = await file.arrayBuffer();
     const buffer = Buffer.from(byteData);
-    const relativePath = path.join("/uploads", file.name).replace(/\\/g, '/');
-    const filePath = path.resolve(process.cwd(), "public", "uploads", file.name);
-    await writeFile(filePath, buffer);
+
+    // Assuming you have a function uploadFileToCloudStorage that uploads the file and returns the URL
+    const fileUrl = await uploadFileToCloudStorage(file.name, buffer);
 
     // Parse the data
     const data = formData.get("data");
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest, context: { params: Params }) {
       data: {
         title,
         desc,
-        img: relativePath, // store the relative path
+        img: fileUrl, // store the URL returned by cloud storage
         category: {
           connect: {
             id: parseInt(category),
@@ -66,6 +66,15 @@ export async function POST(request: NextRequest, context: { params: Params }) {
       { status: 500 }
     );
   }
+}
+
+// Example implementation for uploadFileToCloudStorage
+// This is a placeholder. You'll need to replace it with actual cloud storage upload logic.
+async function uploadFileToCloudStorage(fileName: string, buffer: Buffer): Promise<string> {
+  // Logic to upload the file to cloud storage
+  // For example, using AWS S3, Google Cloud Storage, or Azure Blob Storage
+  // Return the URL to the uploaded file
+  return `https://www.sripandit.in/uploads/${fileName}`;
 }
 
 // Function to handle GET request for all services
