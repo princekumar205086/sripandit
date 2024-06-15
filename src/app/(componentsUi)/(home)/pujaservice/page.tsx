@@ -123,7 +123,7 @@ const PujaServices = () => {
           <div className="rounded overflow-hidden shadow-lg">
             <Image
               alt={service.img}
-              src={service.img || "/uploads/pandit.jpg"}
+              src={service.img || "/uploads/car vehicle puja.jpeg"}
               className="w-full"
               width="400"
               height="450"
@@ -145,7 +145,7 @@ const PujaServices = () => {
   return (
     <>
       <Section
-        bgImageUrl="https://www.smartpuja.com/img/home/smartpuja-astrology.jpeg"
+        bgImageUrl="image/otherservice.jpg"
         title="Puja Services"
         description="See all the Puja services that we offer"
       />
