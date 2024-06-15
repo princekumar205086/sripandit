@@ -21,15 +21,18 @@ export async function POST(request: NextRequest, context: { params: Params }) {
     const byteData = await file.arrayBuffer();
     const buffer = Buffer.from(byteData);
 
-    // Get the temporary directory path
-    const tempDir = os.tmpdir();
-    console.log(`Temporary directory: ${tempDir}`);
+    // Define the uploads directory path (assuming the public directory is at the root of your project)
+    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+    console.log(`Uploads directory: ${uploadsDir}`);
 
-    // Create the file path in the temporary directory
-    const filePath = path.join(tempDir, file.name);
+    // Ensure the uploads directory exists
+    await fs.mkdir(uploadsDir, { recursive: true });
+
+    // Create the file path in the uploads directory
+    const filePath = path.join(uploadsDir, file.name);
     console.log(`File path: ${filePath}`);
 
-    // Write the file to the temporary directory
+    // Write the file the uploads directory
     await fs.writeFile(filePath, buffer);
     console.log(`File written: ${filePath}`);
 
@@ -72,7 +75,7 @@ export async function POST(request: NextRequest, context: { params: Params }) {
     });
 
     return NextResponse.json(newPujaService);
-  } catch (error:any) {
+  } catch (error: any) {
     console.error('Error details:', error);
     return NextResponse.json(
       { error: "An error occurred while creating the PujaService", details: error.message },
