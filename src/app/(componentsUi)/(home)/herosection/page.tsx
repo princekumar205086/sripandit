@@ -86,7 +86,7 @@ const Hero = () => {
             <div className="bg-white p-8 rounded-lg shadow-lg">
               <p className="text-2xl lg:text-3xl text-black mb-6 lg:mb-8">
                 Secure the services of top-notch priests for your Pujas or Homas
-                with SmartPuja{" "}
+                with SriPandit{" "}
                 <span className="font-bold text-red-500">{location}</span>
               </p>
               <div className="mb-6 lg:mb-8">
