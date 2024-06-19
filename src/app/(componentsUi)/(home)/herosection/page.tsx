@@ -64,7 +64,7 @@ const Hero = () => {
   return (
     <section
       className="relative bg-cover bg-no-repeat bg-center"
-      style={{ backgroundImage: `url('/image/puja.jpg')` }}
+      style={{ backgroundImage: `url('/image/kalash.jpg')` }}
     >
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex flex-col lg:flex-row justify-between items-center h-full py-24">

@@ -145,7 +145,7 @@ const PujaServices = () => {
   return (
     <>
       <Section
-        bgImageUrl="image/otherservice.jpg"
+        bgImageUrl="image/pujaservice.jpeg"
         title="Puja Services"
         description="See all the Puja services that we offer"
       />
