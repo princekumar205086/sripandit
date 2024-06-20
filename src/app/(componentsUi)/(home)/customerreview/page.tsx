@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
+import { url } from "inspector";
 
 const reviews = [
   {
@@ -171,7 +172,7 @@ export default function CustomerReviews() {
           Customer Reviews
         </h2>
       </div>
-      <div className="bg-purple-600 p-4 md:p-8 lg:p-8 h-auto">
+      <div className="bg-purple-600 p-4 md:p-8 lg:p-8 h-auto" style={{backgroundImage: "url(/image/reviews.jpeg)", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Slider
             {...settings}

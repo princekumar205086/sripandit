@@ -8,7 +8,7 @@ const QualifiedPandit = () => {
   return (
     <div
       className="relative bg-cover bg-center p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 h-auto sm:h-128 md:h-160 lg:h-192 xl:h-224"
-      style={{ backgroundImage: "url(/image/astro.jpg)" }}
+      style={{ backgroundImage: "url(/image/astrologer.jpeg)", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}
     >
       <div className="relative h-full flex flex-col justify-center items-center text-center text-white px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-2 bg-opacity-50 bg-black p-2">
