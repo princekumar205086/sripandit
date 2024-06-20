@@ -12,7 +12,7 @@ export default function ServiceCard() {
             {
               image: "/image/havan kund.jpeg",
               number: "40000+",
-              text: "pujas and homas performed",
+              text: "Pujas and homas performed",
             },
             {
               image: "/image/pandits.jpeg",

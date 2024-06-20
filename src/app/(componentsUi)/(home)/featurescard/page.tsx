@@ -10,27 +10,27 @@ import Image from 'next/image';
 const pujas = [
   {
     pujaName: "Marriage Puja",
-    imageSource: "/image/marrige.png",
+    imageSource: "/uploads/marriage puja.jpeg",
   },
   {
-    pujaName: "Maha Shivaratri Puja",
-    imageSource: "/image/shivratri.png",
+    pujaName: "Teej Puja",
+    imageSource: "/uploads/teej puja.jpeg",
   },
   {
     pujaName: "Griha Pravesh Puja",
-    imageSource: "/image/griha.png",
+    imageSource: "/uploads/Griha Pravesh Puja.jpeg",
   },
   {
     pujaName: "Satyanarayan Puja",
-    imageSource: "/image/satnarayan.png",
+    imageSource: "/uploads/satya narayan Puja.jpeg",
   },
   {
     pujaName: "Maha Ganapati Homa",
-    imageSource: "/image/ganpati.png",
+    imageSource: "/uploads/Maha ganpati.jpg",
   },
   {
     pujaName: "Office Puja / Business Puja",
-    imageSource: "/image/office.png",
+    imageSource: "/uploads/Office Puja  Business Puja.jpeg",
   },
 ];
 
@@ -95,7 +95,7 @@ const FeaturedPujas = ({}:any) => {
         ))}
       </Slider>
       <div className="row bg-purple-700 p-1">
-          <Link href='' className="card-btn text-xl">Explore all our puja services</Link>
+          <Link href='/pujaservice' className="card-btn text-xl">Explore all our puja services</Link>
       </div>
     </>
   );

@@ -5,19 +5,19 @@ import Image from "next/image";
 const data=[
     {
         title: "Puja",
-        image: "/image/pujas.jpg",
+        image: "/image/puja.jpeg",
     },
     {
         title: "Astrology",
-        image: "/image/astrology.jpg",
+        image: "/image/astrology.jpeg",
     },
     {
         title: "E-Puja",
-        image: "/image/epuja.jpg",
+        image: "/image/E-puja.jpeg",
     },
     {
         title: "Other Services",
-        image: "/image/otherservice.jpg",
+        image: "/image/otherservice.jpeg",
     }
 ]
 
@@ -36,7 +36,7 @@ export default function Servicerange() {
             <div key={index} className="servicerange-card">
               <div className="relative h-64 w-full">
                 <Image
-                  className="absolute h-full w-full object-cover"
+                  className="absolute w-full h-full"
                   src={item.image}
                   alt={item.title}
                   width={100}
