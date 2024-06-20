@@ -1,7 +1,7 @@
 "sue client"
 import React from "react";
 import Image from "next/image";
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import Link from "next/link";
 
 const Footer = () => {
@@ -94,16 +94,16 @@ const Footer = () => {
           <div className="text-center md:text-left w-full p-6">
             <h3 className="font-bold mb-4 text-white text-3xl">Contact Us</h3>
             <p className="text-2xl text-white mt-2">
-              Address: 123 Main Street, City, State, ZIP Code <br />
-              Phone: +1 (123) 456-7890 <br />
-              Email: info@sripandit.com
+              Address: Ram Ratan Ji Nagar Rambagh, Purnia, Bihar, 854301 <br />
+              Phone: 9471661636 <br />
+              Email: hello@sripandit.com
             </p>
             <div className="flex items-center justify-center md:justify-start mt-4">
               <Link href="#" className="mr-4 text-4xl">
                 <FaFacebook />
               </Link>
-              <Link href="#" className="mr-4 text-4xl">
-                <FaTwitter />
+              <Link href="https://wa.me/919471661636" className="mr-4 text-4xl">
+                <FaWhatsapp />
               </Link>
               <Link href="#" className="mr-4 text-4xl">
                 <FaInstagram />
