@@ -10,19 +10,19 @@ export default function ServiceCard() {
         <div className="flex flex-wrap justify-center text-center">
           {[
             {
-              image: "https://www.smartpuja.com/img/home/countdown/smartpuja-puja-and-homas-performed.svg",
+              image: "/image/havan kund.jpeg",
               number: "40000+",
               text: "pujas and homas performed",
             },
             {
-              image: "https://www.smartpuja.com/img/home/countdown/samrt-total-pandits.svg",
+              image: "/image/pandits.jpeg",
               number: "1200+",
               text: "Pandits and Purohits",
             },
             {
-              image: "https://www.smartpuja.com/img/home/countdown/smartpuja-total-unique-services.svg",
+              image: "/image/deep.jpeg",
               number: "400+",
-              text: "total unique services",
+              text: "Total unique services",
             }
           ].map((item, index) => (
             <div key={index} className="service-card w-full md:w-1/3 px-4 mb-8 md:mb-0">
@@ -31,8 +31,8 @@ export default function ServiceCard() {
                   alt="image"
                   src={item.image}
                   className="mx-auto mb-4"
-                  width="80"
-                  height="80"
+                  width="120"
+                  height="100"
                 />
                 <p className="service-card-number text-6xl font-bold mb-2 text-purple-700">{item.number}</p>
                 <p className="service-card-text text-purple-600 text-3xl">{item.text}</p>
