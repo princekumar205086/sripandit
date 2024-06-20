@@ -18,11 +18,11 @@ const pujas = [
   },
   {
     pujaName: "Griha Pravesh Puja",
-    imageSource: "/uploads/Griha Pravesh Puja.jpeg",
+    imageSource: "/uploads/Griha Pravesh puja.jpeg",
   },
   {
     pujaName: "Satyanarayan Puja",
-    imageSource: "/uploads/satya narayan Puja.jpeg",
+    imageSource: "/uploads/satya narayan puja.jpeg",
   },
   {
     pujaName: "Maha Ganapati Homa",
