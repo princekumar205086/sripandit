@@ -1,7 +1,7 @@
 // code for hero section
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
-// import BookingModal from "../utils/BookingModal";
+import BookingModal from "../utils/BookingModal";
 
 const locations = [
   "Andhra Pradesh",
