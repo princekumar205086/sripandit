@@ -24,7 +24,7 @@ li {
   grid-template-columns: 10rem 1fr 2fr 1fr 10rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: #0b0b0c00;
-  z-index: 1000;
+  z-index: 999;
 }
 
 @media (max-width: 600px) {

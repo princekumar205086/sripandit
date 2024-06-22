@@ -35,5 +35,18 @@ model PujaService {
 model PujaCategory {
   id        Int          @id @default(autoincrement())
   name      String       @unique
-  services  PujaService[] // Add this line
+  services  PujaService[] 
+}
+
+model PujaBooking {
+  id             Int      @id @default(autoincrement())
+  city           String
+  pujaName       String
+  language       String
+  package        String
+  date           DateTime
+  time           String
+  location       String
+  contactNumber  String
+  email          String  
 }

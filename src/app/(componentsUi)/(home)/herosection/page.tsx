@@ -1,21 +1,86 @@
 // code for hero section
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
+// import BookingModal from "../utils/BookingModal";
 
-const Hero = () => {
+const locations = [
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Delhi",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
+];
+
+const Hero: React.FC = () => {
   const [location, setLocation] = useState("Select City");
   const [pujaName, setPujaName] = useState("");
   const [typedText, setTypedText] = useState("");
   const [index, setIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const text = useMemo(() => ['Pandit.', 'Astrologer'], []);
 
-
-  const handleLocationChange = (event: any) => {
+  const handleLocationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setLocation(event.target.value);
   };
 
-  const handlePujaNameChange = (event: any) => {
+  const handlePujaNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPujaName(event.target.value);
+  };
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleFormSubmit = async (values: any, { setSubmitting }: any) => {
+    try {
+      const response = await fetch('/api/pujabookingservice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log(data);
+      // Handle success (e.g., show a success message, close the modal, etc.)
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error (e.g., show an error message)
+    } finally {
+      setSubmitting(false);
+      handleModalClose();
+    }
   };
 
   useEffect(() => {
@@ -29,38 +94,6 @@ const Hero = () => {
     return () => clearTimeout(timeoutId);
   }, [typedText, index, text]);
 
-  // Location data for all states
-  const locations = [
-    "Andhra Pradesh",
-    "Arunachal Pradesh",
-    "Assam",
-    "Bihar",
-    "Chhattisgarh",
-    "Goa",
-    "Gujarat",
-    "Haryana",
-    "Himachal Pradesh",
-    "Jharkhand",
-    "Karnataka",
-    "Kerala",
-    "Madhya Pradesh",
-    "Maharashtra",
-    "Manipur",
-    "Meghalaya",
-    "Mizoram",
-    "Nagaland",
-    "Odisha",
-    "Punjab",
-    "Rajasthan",
-    "Sikkim",
-    "Tamil Nadu",
-    "Telangana",
-    "Tripura",
-    "Uttar Pradesh",
-    "Uttarakhand",
-    "West Bengal",
-  ];
-
   return (
     <section
       className="relative bg-cover bg-no-repeat bg-center"
@@ -71,13 +104,16 @@ const Hero = () => {
           {/* Left half */}
           <div className="lg:w-2/3 flex flex-col justify-center items-center text-center text-white lg:text-left">
             <h2 className="text-4xl lg:text-5xl font-bold leading-tight mb-6 lg:mb-8">
-            Optimal ritual encounter with certified and seasoned {typedText}
+              Optimal ritual encounter with certified and seasoned {typedText}
             </h2>
             <p className="text-xl lg:text-2xl mb-6 lg:mb-8">
               SmartPuja offers comprehensive solutions for your spiritual needs,
               including Puja, Homa, and Astrology services.
             </p>
-            <button className="rounded-full bg-red-500 px-8 py-4 font-semibold text-white text-lg lg:text-xl hover:bg-red-600 transition duration-300 ease-in-out">
+            <button
+              className="rounded-full bg-red-500 px-8 py-4 font-semibold text-white text-lg lg:text-xl hover:bg-red-600 transition duration-300 ease-in-out"
+              onClick={handleModalOpen}
+            >
               Book Now
             </button>
           </div>
@@ -125,13 +161,21 @@ const Hero = () => {
                   onChange={handlePujaNameChange}
                 />
               </div>
-              <button className="block w-full rounded-lg bg-red-500 px-8 py-4 font-semibold text-white text-xl lg:text-2xl hover:bg-red-600 transition duration-300 ease-in-out">
+              <button
+                className="block w-full rounded-lg bg-red-500 px-8 py-4 font-semibold text-white text-xl lg:text-2xl hover:bg-red-600 transition duration-300 ease-in-out"
+                onClick={handleModalOpen}
+              >
                 Book a Service
               </button>
             </div>
           </div>
         </div>
       </div>
+      <BookingModal
+        isOpen={isModalOpen}
+        onRequestClose={handleModalClose}
+        onSubmit={handleFormSubmit}
+      />
     </section>
   );
 };

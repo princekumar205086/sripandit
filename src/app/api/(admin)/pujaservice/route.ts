@@ -18,6 +18,15 @@ export async function POST(request: NextRequest, context: { params: Params }) {
     if (!file) {
       return NextResponse.json({ error: "No file found" }, { status: 400 });
     }
+
+    // Before processing the file, validate its type and size
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    if (!allowedTypes.includes(file.type) || file.size > maxSize) {
+      return NextResponse.json({ error: "Invalid file type or size" }, { status: 400 });
+    }
+
     const byteData = await file.arrayBuffer();
     const buffer = Buffer.from(byteData);
 
