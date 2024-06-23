@@ -10,7 +10,6 @@ export async function POST(request: NextRequest) {
       city,
       pujaName,
       language,
-      package: packageName,
       date,
       time,
       location,
@@ -23,7 +22,6 @@ export async function POST(request: NextRequest) {
       !city ||
       !pujaName ||
       !language ||
-      !packageName ||
       !date ||
       !time ||
       !location ||
@@ -44,7 +42,6 @@ export async function POST(request: NextRequest) {
         city,
         pujaName,
         language,
-        package: packageName,
         date: new Date(date),
         time,
         location,

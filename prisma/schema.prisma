@@ -43,7 +43,6 @@ model PujaBooking {
   city           String
   pujaName       String
   language       String
-  package        String
   date           DateTime
   time           String
   location       String
