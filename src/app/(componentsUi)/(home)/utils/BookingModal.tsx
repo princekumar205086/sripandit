@@ -4,12 +4,13 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { bookPujaService } from "./action";
 import { toast } from "react-toastify";
+import { useRouter } from 'next/navigation';
 
 const validationSchema = Yup.object({
   city: Yup.string().required("City is required"),
   pujaName: Yup.string().required("Puja name is required"),
   language: Yup.string().required("Language is required"),
-  date: Yup.date().required("Date is required").nullable(),
+  date: Yup.date().required("Date is required"),
   time: Yup.string().required("Time is required"),
   location: Yup.string().required("Location is required"),
   contactNumber: Yup.string()
@@ -70,7 +71,6 @@ interface BookingModalProps {
   onRequestClose: () => void;
   onSubmit: (values: any, actions: any) => void;
 }
-
 interface FormValues {
   city: string;
   pujaName: string;
@@ -88,6 +88,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
   onSubmit,
 }) => {
   if (!isOpen) return null;
+  const router = useRouter();
   const handleSubmit: (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => Promise<void> = async (values, { setSubmitting }) => {
     try {
       // Call the bookPujaService with form values

@@ -107,7 +107,7 @@ const Hero: React.FC = () => {
               Optimal ritual encounter with certified and seasoned {typedText}
             </h2>
             <p className="text-xl lg:text-2xl mb-6 lg:mb-8">
-              SmartPuja offers comprehensive solutions for your spiritual needs,
+              SriPandit offers comprehensive solutions for your spiritual needs,
               including Puja, Homa, and Astrology services.
             </p>
             <button
