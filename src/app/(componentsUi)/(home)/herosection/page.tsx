@@ -41,7 +41,7 @@ const Hero: React.FC = () => {
   const [typedText, setTypedText] = useState("");
   const [index, setIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const text = useMemo(() => ['Pandit.', 'Astrologer'], []);
+  const text = useMemo(() => ['Pandit.', 'Astrologer.'], []);
 
   const handleLocationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setLocation(event.target.value);
