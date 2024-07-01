@@ -1,4 +1,3 @@
-// BookingModal.tsx
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
@@ -32,7 +31,6 @@ const validationSchema = Yup.object({
     .required("Email is required"),
 });
 
-// location data
 const locations = [
   "Andhra Pradesh",
   "Arunachal Pradesh",
@@ -65,7 +63,6 @@ const locations = [
   "West Bengal",
 ];
 
-// language data
 const languages = [
   "Hindi",
   "English",
@@ -153,12 +150,12 @@ const BookingModal: React.FC<BookingModalProps> = ({
             language: "",
             date: null,
             time: "",
-            location: initialLocation,
+            location: "",
             contactNumber: "",
             email: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={(values, actions) => onSubmit(values, actions)}
+          onSubmit={handleSubmit}
         >
           {({ isSubmitting, setFieldValue }) => (
             <Form>
@@ -201,7 +198,6 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     type="text"
                     className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                     placeholder="Enter a Puja or Homa name"
-                    value={initialPujaName}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       const { value } = e.target;
                       setFieldValue("pujaName", value);
@@ -305,9 +301,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     name="location"
                     type="text"
                     className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                    placeholder="Location"
-                    value={initialLocation}
-                    readOnly
+                    placeholder="Enter Location"
                   />
                   <ErrorMessage
                     name="location"

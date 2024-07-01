@@ -45,13 +45,17 @@ const Hero: React.FC = () => {
   const [suggestedPujas, setSuggestedPujas] = useState<string[]>([]);
   const [selectedPuja, setSelectedPuja] = useState<string>("");
 
-  const text = useMemo(() => ['Pandit.', 'Astrologer.'], []);
+  const text = useMemo(() => ["Pandit.", "Astrologer."], []);
 
-  const handleLocationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleLocationChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setLocation(event.target.value);
   };
 
-  const handlePujaNameChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePujaNameChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const input = event.target.value;
     setPujaName(input);
     // Fetch suggestions when input length is at least 3 characters
@@ -59,12 +63,12 @@ const Hero: React.FC = () => {
       try {
         const response = await fetch(`/api/advicepujaname/?pujaName=${input}`);
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         const data = await response.json();
         setSuggestedPujas(data.map((item: any) => item.title));
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
       }
     } else {
       setSuggestedPujas([]);
@@ -87,21 +91,21 @@ const Hero: React.FC = () => {
 
   const handleFormSubmit = async (values: any, { setSubmitting }: any) => {
     try {
-      const response = await fetch('/api/pujabookingservice', {
-        method: 'POST',
+      const response = await fetch("/api/pujabookingservice", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(values),
       });
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       const data = await response.json();
       console.log(data);
       // Handle success (e.g., show a success message, close the modal, etc.)
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       // Handle error (e.g., show an error message)
     } finally {
       setSubmitting(false);
@@ -111,9 +115,9 @@ const Hero: React.FC = () => {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      setTypedText(prev => prev + text[index][prev.length]);
+      setTypedText((prev) => prev + text[index][prev.length]);
       if (typedText === text[index]) {
-        setIndex(prev => (prev + 1) % text.length);
+        setIndex((prev) => (prev + 1) % text.length);
         setTypedText("");
       }
     }, 200);
@@ -217,7 +221,10 @@ const Hero: React.FC = () => {
       <BookingModal
         isOpen={isModalOpen}
         onRequestClose={handleModalClose}
-        onSubmit={handleFormSubmit}/>
+        onSubmit={handleFormSubmit}
+        initialLocation={location} // Use the state variable for location
+        initialPujaName={pujaName} // Already using the state variable for pujaName
+      />
     </section>
   );
 };

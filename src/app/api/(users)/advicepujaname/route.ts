@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
   const userInput = url.searchParams.get('pujaName');
 
   // Check if the userInput has at least three letters
-  if (!userInput || userInput.trim().length < 3) {
+  if (!userInput || userInput.trim().length < 3 || userInput.trim().length > 3){
     return NextResponse.json({ error: 'Please enter at least three letters for suggestions.' }, { status: 400 });
   }
 
