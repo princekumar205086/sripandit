@@ -1,10 +1,18 @@
 // BookingModal.tsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { bookPujaService } from "./action";
 import { toast } from "react-toastify";
-import { useRouter } from 'next/navigation';
+import axios from "axios";
+
+interface BookingModalProps {
+  isOpen: boolean;
+  onRequestClose: () => void;
+  onSubmit: (values: any, actions: any) => void;
+  initialLocation: string;
+  initialPujaName: string;
+}
 
 const validationSchema = Yup.object({
   city: Yup.string().required("City is required"),
@@ -57,7 +65,7 @@ const locations = [
   "West Bengal",
 ];
 
-//language data
+// language data
 const languages = [
   "Hindi",
   "English",
@@ -66,11 +74,7 @@ const languages = [
   "Kannada",
   "Malayalam",
 ];
-interface BookingModalProps {
-  isOpen: boolean;
-  onRequestClose: () => void;
-  onSubmit: (values: any, actions: any) => void;
-}
+
 interface FormValues {
   city: string;
   pujaName: string;
@@ -86,19 +90,20 @@ const BookingModal: React.FC<BookingModalProps> = ({
   isOpen,
   onRequestClose,
   onSubmit,
+  initialLocation,
+  initialPujaName,
 }) => {
-  if (!isOpen) return null;
-  const router = useRouter();
-  const handleSubmit: (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => Promise<void> = async (values, { setSubmitting }) => {
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
+  const handleSubmit = async (
+    values: FormValues,
+    { setSubmitting }: FormikHelpers<FormValues>
+  ) => {
     try {
-      // Call the bookPujaService with form values
       await bookPujaService(values);
-      // On success, show a success toast
       toast.success("Puja service booked successfully!");
-      // Here, you might also want to reset the form or redirect the user
-      onRequestClose(); // Close the modal upon successful submission
+      onRequestClose();
     } catch (error) {
-      // On failure, show an error toast
       toast.error("Failed to book puja service. Please try again.");
       console.error(error);
     } finally {
@@ -106,8 +111,31 @@ const BookingModal: React.FC<BookingModalProps> = ({
     }
   };
 
+  const fetchSuggestions = async (pujaName: string) => {
+    if (pujaName.length >= 3) {
+      try {
+        const response = await axios.get("/api/advicepujaname", {
+          params: { pujaName },
+        });
+        setSuggestions(response.data.map((item: any) => item.title));
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+      }
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchSuggestions(""); // Clear suggestions on modal open
+  }, [isOpen]);
+
   return (
-    <div className="fixed inset-0 z-1100 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto z-50">
+    <div
+      className={`fixed inset-0 z-1100 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto z-50 ${
+        isOpen ? "" : "hidden"
+      }`}
+    >
       <div className="relative bg-white rounded-lg p-6 w-full max-w-7xl top-32">
         <button
           className="absolute top-2 right-5 text-gray-500 hover:text-gray-800 text-4xl"
@@ -125,14 +153,14 @@ const BookingModal: React.FC<BookingModalProps> = ({
             language: "",
             date: null,
             time: "",
-            location: "",
+            location: initialLocation,
             contactNumber: "",
             email: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={handleSubmit}
+          onSubmit={(values, actions) => onSubmit(values, actions)}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, setFieldValue }) => (
             <Form>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="mb-6 lg:mb-8">
@@ -173,7 +201,29 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     type="text"
                     className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                     placeholder="Enter a Puja or Homa name"
+                    value={initialPujaName}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      const { value } = e.target;
+                      setFieldValue("pujaName", value);
+                      fetchSuggestions(value);
+                    }}
                   />
+                  {suggestions.length > 0 && (
+                    <ul className="bg-white border border-gray-300 rounded-lg mt-2 max-h-40 overflow-auto">
+                      {suggestions.map((suggestion, index) => (
+                        <li
+                          key={index}
+                          className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                          onClick={() => {
+                            setFieldValue("pujaName", suggestion);
+                            setSuggestions([]);
+                          }}
+                        >
+                          {suggestion}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   <ErrorMessage
                     name="pujaName"
                     component="div"
@@ -227,7 +277,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
                 <div className="mb-6 lg:mb-8">
                   <label
                     htmlFor="time"
-                    className="block text-xl lg:text-2xl font-medium text-black mb-2"
+                    className="block text-xl lg:text-2xl font-medium text-black mb2"
                   >
                     Time
                   </label>
@@ -256,6 +306,8 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     type="text"
                     className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                     placeholder="Location"
+                    value={initialLocation}
+                    readOnly
                   />
                   <ErrorMessage
                     name="location"
