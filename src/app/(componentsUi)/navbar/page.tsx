@@ -8,11 +8,11 @@ import Link from "next/link";
 
 const menuList = [
   { name: "Puja Services", link: "/pujaservice" },
-  { name: "Product", link: "/about" },
-  { name: "Astrology", link: "/service" },
+  { name: "Product", link: "/product" },
+  { name: "Astrology", link: "/astrology" },
   { name: "Events", link: "/events" },
   { name: "Blog", link: "/blog" },
-  { name: "Enquiry", link: "/enquiry" },
+  { name: "Contatct us", link: "/contactus" },
 ];
 
 const Navbar = () => {

@@ -49,3 +49,13 @@ model PujaBooking {
   contactNumber  String
   email          String  
 }
+
+model AstrologyService {
+  id            Int      @id @default(autoincrement())
+  service_title String
+  service_image String   // Added attribute for service image
+  service_type  String
+  service_price Float
+  service_desc  String    @db.VarChar(5000)
+  timestamp     DateTime @default(now())
+}
