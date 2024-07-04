@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import { getAstrologyService } from "./action";
 import Section from "../../(home)/pujaservice/section";
 import Image from "next/image";
-
+import styles from "./Astrology.module.css";
+import CryptoJS from "crypto-js";
+import Link from "next/link";
+import slugify from "slugify";
 interface AstrologyService {
   id: number;
   service_title: string;
@@ -19,7 +22,6 @@ export default function Astrology() {
         const data = await getAstrologyService();
         setServices(data);
         console.log("Astrology services", data);
-        
       } catch (error) {
         console.error("Failed to fetch astrology services", error);
       }
@@ -27,6 +29,11 @@ export default function Astrology() {
 
     fetchServices();
   }, []);
+
+  // id incryption
+  const encryptId = (id: number) => {
+    return CryptoJS.AES.encrypt(id.toString(), "your-secret-key").toString();
+  };
 
   return (
     <>
@@ -48,22 +55,38 @@ export default function Astrology() {
       <div className="flex flex-row justify-center items-center m-0 p-2">
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {services.map((service, index) => (
-            <div
-              key={service.id} // Using service ID as a key for better performance and uniqueness
-              className="bg-white rounded-lg shadow-lg overflow-hidden w-full"
+            <Link
+              href={`/astrology/${slugify(
+                service.service_title
+              )}?id=${encodeURIComponent(encryptId(service.id))}`}
             >
-              <Image
-                src={service.service_image}
-                alt={service.service_title}
-                layout="responsive"
-                width={400}
-                height={400}
-                objectFit="cover"
-              />
-              <div className="p-4">
-                <h3 className="text-2xl font-bold text-center">{service.service_title}</h3>
+              <div
+                key={service.id}
+                className="bg-white rounded-lg shadow-lg overflow-hidden w-full relative group"
+              >
+                <Image
+                  src={service.service_image}
+                  alt={service.service_title}
+                  layout="responsive"
+                  width={400}
+                  height={400}
+                  objectFit="cover"
+                  className={`${styles.imageHover}`}
+                />
+                <div
+                  className={`${styles.titleOverlay} absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100`}
+                >
+                  <h3 className="text-2xl font-bold text-white text-center">
+                    {service.service_title}
+                  </h3>
+                </div>
+                <div className="p-4">
+                  <h3 className="text-2xl font-bold text-center">
+                    {service.service_title}
+                  </h3>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

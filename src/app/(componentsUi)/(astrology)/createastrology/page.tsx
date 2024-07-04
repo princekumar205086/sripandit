@@ -1,10 +1,14 @@
 "use client"
+import dynamic from 'next/dynamic';
 import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import Section from '../../(home)/pujaservice/section'
+import Section from '../../(home)/pujaservice/section';
+// Dynamically import ReactQuill with SSR disabled
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+import 'react-quill/dist/quill.snow.css'; // Import quill styles
 
 const validationSchema = yup.object({
   service_title: yup.string().required('Service title is required'),
@@ -48,77 +52,83 @@ const AstrologyServiceForm = () => {
     },
   });
 
+  // Custom handler to integrate with Formik
+  const handleServiceDescChange = (value:any) => {
+    formik.setFieldValue('service_desc', value);
+  };
+
   return (
     <>
-    <Section
+      <Section
         bgImageUrl="https://www.smartpuja.com/img/home/smartpuja-astrology.jpeg"
         title="Astrology Services"
         description="Explore the range of astrology services we provide."
       />
-    <form onSubmit={formik.handleSubmit} className="max-w-lg mx-auto p-4">
-      <label htmlFor="service_title" className="block mb-2  font-medium text-gray-900 text-xl">Service Title</label>
-      <input
-        id="service_title"
-        type="text"
-        name="service_title"
-        onChange={formik.handleChange}
-        value={formik.values.service_title}
-        placeholder="Service Title"
-        className="input input-bordered w-full text-gray-850 mb-4 h-12 border-2"
-      />
-      {formik.touched.service_title && formik.errors.service_title ? <div className="text-red-500">{formik.errors.service_title}</div> : null}
+      <form onSubmit={formik.handleSubmit} className="max-w-4xl mx-auto p-4 space-y-4">
+        <label htmlFor="service_title" className="block text-xl font-medium text-gray-900">Service Title</label>
+        <input
+          id="service_title"
+          type="text"
+          name="service_title"
+          onChange={formik.handleChange}
+          value={formik.values.service_title}
+          placeholder="Service Title"
+          className="input input-bordered w-full h-12 border-2 text-gray-850"
+        />
+        {formik.touched.service_title && formik.errors.service_title ? <div className="text-red-500">{formik.errors.service_title}</div> : null}
 
-      <label htmlFor="service_type" className="block mb-2  font-medium text-gray-900 text-xl">Service Type</label>
-      <input
-        id="service_type"
-        type="text"
-        name="service_type"
-        onChange={formik.handleChange}
-        value={formik.values.service_type}
-        placeholder="Service Type"
-        className="input input-bordered w-full text-gray-850 mb-4 h-12 border-2"
-      />
-      {formik.touched.service_type && formik.errors.service_type ? <div className="text-red-500">{formik.errors.service_type}</div> : null}
+        <label htmlFor="service_type" className="block text-xl font-medium text-gray-900">Service Type</label>
+        <input
+          id="service_type"
+          type="text"
+          name="service_type"
+          onChange={formik.handleChange}
+          value={formik.values.service_type}
+          placeholder="Service Type"
+          className="input input-bordered w-full h-12 border-2 text-gray-850"
+        />
+        {formik.touched.service_type && formik.errors.service_type ? <div className="text-red-500">{formik.errors.service_type}</div> : null}
 
-      <label htmlFor="service_price" className="block mb-2  font-medium text-gray-900 text-xl">Service Price</label>
-      <input
-        id="service_price"
-        type="number"
-        name="service_price"
-        onChange={formik.handleChange}
-        value={formik.values.service_price}
-        placeholder="Service Price"
-        className="input input-bordered w-full text-gray-850 mb-4 h-12 border-2"
-      />
-      {formik.touched.service_price && formik.errors.service_price ? <div className="text-red-500">{formik.errors.service_price}</div> : null}
+        <label htmlFor="service_price" className="block text-xl font-medium text-gray-900">Service Price</label>
+        <input
+          id="service_price"
+          type="number"
+          name="service_price"
+          onChange={formik.handleChange}
+          value={formik.values.service_price}
+          placeholder="Service Price"
+          className="input input-bordered w-full h-12 border-2 text-gray-850"
+        />
+        {formik.touched.service_price && formik.errors.service_price ? <div className="text-red-500">{formik.errors.service_price}</div> : null}
 
-      <label htmlFor="service_desc" className="block mb-2  font-medium text-gray-900 text-xl">Service Description</label>
-      <textarea
-        id="service_desc"
-        name="service_desc"
-        onChange={formik.handleChange}
-        value={formik.values.service_desc}
-        placeholder="Service Description"
-        className="textarea textarea-bordered w-full text-gray-850 mb-4 h-24 border-2"
-      />
-      {formik.touched.service_desc && formik.errors.service_desc ? <div className="text-red-500">{formik.errors.service_desc}</div> : null}
+        <label htmlFor="service_desc" className="block text-xl font-medium text-gray-900">Service Description</label>
+        <ReactQuill
+          theme="snow"
+          value={formik.values.service_desc}
+          onChange={handleServiceDescChange}
+          placeholder="Service Description"
+          className="h-60 text-gray-850"
+        />
+        {formik.touched.service_desc && formik.errors.service_desc ? <div className="text-red-500">{formik.errors.service_desc}</div> : null}
+        <br/>
+        <br/>
+        <br/>
+        <label htmlFor="service_image" className="block text-xl font-medium text-gray-900">Service Image</label>
+        <input
+          id="service_image"
+          type="file"
+          name="service_image"
+          onChange={(event) => {
+            if (event.currentTarget.files) {
+              formik.setFieldValue('service_image', event.currentTarget.files[0]);
+            }
+          }}
+          className="file:btn file:btn-bordered w-full h-12 border-2 text-gray-850"
+        />
+        {formik.touched.service_image && formik.errors.service_image ? <div className="text-red-500">{formik.errors.service_image}</div> : null}
 
-      <label htmlFor="service_image" className="block mb-2  font-medium text-gray-900 text-xl">Service Image</label>
-      <input
-        id="service_image"
-        type="file"
-        name="service_image"
-        onChange={(event) => {
-          if (event.currentTarget.files) {
-            formik.setFieldValue('service_image', event.currentTarget.files[0]);
-          }
-        }}
-        className="file:btn file:btn-bordered w-full text-gray-850 mb-4 h-12 border-2"
-      />
-      {formik.touched.service_image && formik.errors.service_image ? <div className="text-red-500">{formik.errors.service_image}</div> : null}
-
-      <button type="submit" className="btn btn-primary w-full bg-green-800 h-10 text-gray-50">Submit</button>
-    </form>
+        <button type="submit" className="btn btn-primary w-full bg-green-800 h-12 text-white">Submit</button>
+      </form>
     </>
   );
 };

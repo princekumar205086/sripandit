@@ -20,3 +20,4 @@ export async function getAstrologySingleService(id: string) {
     return null; // Return null if an error occurs
   }
 }
+
