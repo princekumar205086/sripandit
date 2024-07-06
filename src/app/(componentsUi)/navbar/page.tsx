@@ -47,6 +47,8 @@ const Navbar = () => {
     };
   }, []);
 
+  const closeMobileMenu = () => setShowMediaIcons(false);
+
   return (
     <>
       <nav
@@ -55,7 +57,7 @@ const Navbar = () => {
           isMobile ? "mobile" : ""
         }`}
       >
-        <Link href="/" className="logo">
+        <Link href="/" className="logo" onClick={closeMobileMenu}>
           <Image src="/image/logo.png" alt="logo" width={200} height={180} />
         </Link>
 
@@ -67,7 +69,7 @@ const Navbar = () => {
           <ul>
             {menuList.map((item, index) => (
               <li key={index}>
-                <Link href={item.link}>{item.name}</Link>
+                <Link href={item.link} onClick={closeMobileMenu}>{item.name}</Link>
               </li>
             ))}
           </ul>
@@ -93,9 +95,9 @@ const Navbar = () => {
           </ul>
 
           <div className="hamburger-menu mx-24">
-            <Link href="#" onClick={() => setShowMediaIcons(!showMediaIcons)}>
+            <button onClick={() => setShowMediaIcons(!showMediaIcons)}>
               <GiHamburgerMenu />
-            </Link>
+            </button>
           </div>
         </div>
       </nav>
