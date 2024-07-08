@@ -38,7 +38,7 @@ export default function Astrology() {
   return (
     <>
       <Section
-        bgImageUrl="https://www.smartpuja.com/img/home/smartpuja-astrology.jpeg"
+        bgImageUrl="/image/astrology.png"
         title="Astrology Services"
         description="Explore the range of astrology services we provide."
       />

@@ -199,7 +199,9 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                     placeholder="Enter a Puja or Homa name"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      const { value } = e.target;
+                      let { value } = e.target;
+                      // Replace null with "" or undefined
+                      value = value === null ? "" : value;
                       setFieldValue("pujaName", value);
                       fetchSuggestions(value);
                     }}

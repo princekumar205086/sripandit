@@ -58,7 +58,7 @@ const SingleAstroService = ({ params }: any) => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Section
-        bgImageUrl="https://www.smartpuja.com/img/home/smartpuja-astrology.jpeg"
+        bgImageUrl="/image/astrology.png"
         title="Astrology Services"
         description="See all the Astrology services that we offer"
       />
@@ -72,13 +72,30 @@ const SingleAstroService = ({ params }: any) => {
                     ASTROLOGY SERVICES / {astroService?.service_title}
                   </p>
                   <div className="card mt-8">
-                    <div className="card-header">
-                      <h2 className="text-4xl font-bold">
+                    <div className="card-header p-4">
+                      <h2 className="text-4xl font-bold text-black text-left">
                         {astroService?.service_title}
                       </h2>
                     </div>
                     <div className="col-span-10 md:col-span-6">
                       <div className="bg-white p-4 rounded-lg shadow-md">
+                        <div className="service-type-button flex p-2">
+                          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
+                            <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold">
+                              Service deliver on {astroService?.service_type}
+                            </h2>
+                          </button>
+                        </div>
+                        <div className="service-price p-2">
+                          <h2 className="text-2xl font-semibold text-black text-left">
+                            Price: &#8377; {astroService?.service_price}
+                          </h2>
+                        </div>
+                        <div className="service-book-button">
+                          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
+                            Book Now
+                          </button>
+                        </div>
                         {/* Displaying compiled HTML for description */}
                         <div
                           dangerouslySetInnerHTML={{
