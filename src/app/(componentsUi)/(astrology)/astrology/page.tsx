@@ -62,7 +62,7 @@ export default function Astrology() {
             >
               <div
                 key={service.id}
-                className="bg-white rounded-lg shadow-lg overflow-hidden w-full relative group"
+                className="bg-white rounded-lg shadow-lg overflow-hidden w-full relative group p-12"
               >
                 <Image
                   src={service.service_image}

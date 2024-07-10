@@ -6,6 +6,7 @@ import CryptoJS from "crypto-js";
 import { getAstrologySingleService } from "../action";
 import { useSearchParams, useRouter } from "next/navigation";
 import Section from "@/app/(componentsUi)/(home)/pujaservice/section";
+import AstrologyBookingModal from "../astrologyBookingModal";
 
 const SingleAstroService = ({ params }: any) => {
   // service data
@@ -55,6 +56,11 @@ const SingleAstroService = ({ params }: any) => {
     }
   }, [id]);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Section
@@ -92,12 +98,13 @@ const SingleAstroService = ({ params }: any) => {
                           </h2>
                         </div>
                         <div className="service-book-button">
-                          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
+                          <button onClick={openModal} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
                             Book Now
                           </button>
+                          <AstrologyBookingModal isOpen={isModalOpen} onClose={closeModal} />
                         </div>
                         {/* Displaying compiled HTML for description */}
-                        <div
+                        <div className="text-2xl"
                           dangerouslySetInnerHTML={{
                             __html: astroService?.service_desc || "",
                           }}
@@ -128,6 +135,7 @@ const SingleAstroService = ({ params }: any) => {
           </div>
         </div>
       </div>
+
     </Suspense>
   );
 };
