@@ -39,21 +39,21 @@ const AstrologyBookingModal = ({ isOpen, onClose }: any) => {
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 bg-black pt-16">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 bg-black pt-20">
       <div className="bg-white rounded-lg w-full p-4 sm:p-6 lg:p-8 max-w-full sm:max-w-3xl lg:max-w-5xl xl:max-w-6xl relative">
         <img
           alt="image"
           src="https://www.smartpuja.com/img/home/svg/smartpuja-leaf.svg"
           className="absolute top-0 right-0 w-16 h-16"
         />
-        <div className="header mb-4">
+        <div className="header text-2xl font-semibold mb-4">
           <h2>
             Astrology - In-depth Horoscope Report (<i>in-person</i>)
           </h2>
           <p>Please enter your details for the booking</p>
         </div>
-
-        <div className="body">
+        <hr />
+        <div className="body pt-4 mt-2">
           <form
             onSubmit={formik.handleSubmit}
             name="astrology-cart"
@@ -91,7 +91,7 @@ const AstrologyBookingModal = ({ isOpen, onClose }: any) => {
               <div>
                 <label className="text-xl">Preferred date*</label>
                 <input
-                  type="text"
+                  type="date"
                   name="preferred_date"
                   id="preferred_date"
                   className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -107,7 +107,7 @@ const AstrologyBookingModal = ({ isOpen, onClose }: any) => {
               <div>
                 <label className="text-xl">Preferred time*</label>
                 <input
-                  type="text"
+                  type="time"
                   name="preferred_time"
                   id="preferred_time"
                   className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -138,7 +138,7 @@ const AstrologyBookingModal = ({ isOpen, onClose }: any) => {
               <div>
                 <label className="text-xl">Date of Birth*</label>
                 <input
-                  type="text"
+                  type="date"
                   name="dob"
                   id="dob"
                   className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -153,7 +153,7 @@ const AstrologyBookingModal = ({ isOpen, onClose }: any) => {
               <div>
                 <label className="text-xl">Time of Birth*</label>
                 <input
-                  type="text"
+                  type="time"
                   name="time_birth"
                   id="time_birth"
                   className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
