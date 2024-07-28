@@ -59,3 +59,16 @@ model AstrologyService {
   service_desc  String    @db.VarChar(5000)
   timestamp     DateTime @default(now())
 }
+
+model AstrologyBooking {
+  id              Int      @id @default(autoincrement())
+  language        String
+  preferredDate   DateTime
+  preferredTime   DateTime
+  birthPlace      String
+  birthDate       DateTime
+  birthTime       DateTime
+  gender          String
+  questions       String?  // Optional field for questions
+  createdAt       DateTime @default(now())
+}

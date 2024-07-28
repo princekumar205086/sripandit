@@ -46,7 +46,7 @@ const AstrologyBookingModal = ({ isOpen, onClose }: any) => {
           src="https://www.smartpuja.com/img/home/svg/smartpuja-leaf.svg"
           className="absolute top-0 right-0 w-16 h-16"
         />
-        <div className="header text-2xl font-semibold mb-4">
+        <div className="header text-2xl font-semibold mb-4 text-black">
           <h2>
             Astrology - In-depth Horoscope Report (<i>in-person</i>)
           </h2>
