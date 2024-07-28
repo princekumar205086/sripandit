@@ -39,7 +39,7 @@ const AstrologyBookingModal = ({ isOpen, onClose }: any) => {
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 bg-black pt-16">
       <div className="bg-white rounded-lg w-full p-4 sm:p-6 lg:p-8 max-w-full sm:max-w-3xl lg:max-w-5xl xl:max-w-6xl relative">
         <img
           alt="image"
