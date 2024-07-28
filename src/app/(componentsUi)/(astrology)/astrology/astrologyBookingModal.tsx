@@ -221,13 +221,13 @@ const AstrologyBookingModal = ({ isOpen, onClose }: any) => {
                 type="submit"
                 className="bg-blue-500 text-white px-4 py-2 rounded"
               >
-                Add to Cart
+                Book service now
               </button>
             </div>
           </form>
         </div>
 
-        <button onClick={onClose} className="absolute top-2 right-2 text-black">
+        <button onClick={onClose} className="absolute top-4 right-4 bg-blue-400 text-white p-2">
           X
         </button>
       </div>
