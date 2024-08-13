@@ -137,7 +137,7 @@ const Hero: React.FC = () => {
               Optimal ritual encounter with certified and seasoned {typedText}
             </h2>
             <p className="text-xl lg:text-2xl mb-6 lg:mb-8">
-              SriPandit offers comprehensive solutions for your spiritual needs,
+              Okpuja offers comprehensive solutions for your spiritual needs,
               including Puja, Homa, and Astrology services.
             </p>
             <button
@@ -152,7 +152,7 @@ const Hero: React.FC = () => {
             <div className="bg-white p-8 rounded-lg shadow-lg">
               <p className="text-2xl lg:text-3xl text-black mb-6 lg:mb-8">
                 Secure the services of top-notch priests for your Pujas or Homas
-                with SriPandit{" "}
+                with Okpuja{" "}
                 <span className="font-bold text-red-500">{location}</span>
               </p>
               <div className="mb-6 lg:mb-8">

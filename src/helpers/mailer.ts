@@ -21,7 +21,7 @@ export const sendEmail = async ({ email, emailType, username, city, pujaName, da
       from: process.env.userid,
       to: email,
       subject: "Email Verification",
-      text: `Hello ${username},\n\nPlease verify your email address by clicking on the following link:\n\nhttps://www.sripandit.in/verify?token=${hashedToken}\n\nThank You!`,
+      text: `Hello ${username},\n\nPlease verify your email address by clicking on the following link:\n\nhttps://www.okpuja.com/verify?token=${hashedToken}\n\nThank You!`,
     };
 
     if (emailType === "VERIFY") {
@@ -44,8 +44,7 @@ export const sendEmail = async ({ email, emailType, username, city, pujaName, da
       mailOptions.subject = "Password Reset";
       mailOptions.text = `Hello ${username},\n\nPlease reset your password by clicking on the following link:\n\nhttp://your-website.com/reset?token=${hashedToken}\n\nThank You!`;
       await transporter.sendMail(mailOptions);
-    }
-    else if (emailType === "BOOKING") {
+    } else if (emailType === "BOOKING") {
       mailOptions.subject = "New Puja Booking";
       mailOptions.text = `Hello ${username},\n\nA new puja booking has been made with the following details:\n\nCity: ${city}\nPuja Name: ${pujaName}\nDate: ${date}\nTime: ${time}\nLocation: ${location}\nContact Number: ${contactNumber}\nEmail: ${useremail}\n\nThank You!`;
       await transporter.sendMail(mailOptions);
@@ -55,7 +54,20 @@ export const sendEmail = async ({ email, emailType, username, city, pujaName, da
         from: process.env.userid,
         to: useremail, // Send to the user's email
         subject: "We Received Your Puja Booking",
-        text: `Hello,\n\nWe have received your request for a puja booking. Our team will review the details and get back to you shortly.\n\nThank you for choosing us!\n\nBest Regards,\nSriPandit Team`,
+        text: `Hello,\n\nWe have received your request for a puja booking. Our team will review the details and get back to you shortly.\n\nThank you for choosing us!\n\nBest Regards,\nOkpuja Team`,
+      };
+      await transporter.sendMail(userReplyOptions);
+    } else if (emailType === "ASTROLOGY_BOOKING") {
+      mailOptions.subject = "Astrology Booking Confirmation";
+      mailOptions.text = `Hello Admin,\n\nAn astrology booking has been confirmed with the following details:\n\nEmail: ${useremail}\nPlease login to admin panel\nThank You!`;
+      await transporter.sendMail(mailOptions);
+
+      // Send auto-reply to the user
+      let userReplyOptions = {
+        from: process.env.userid,
+        to: useremail, // Send to the user's email
+        subject: "We Received Your Astrology Booking",
+        text: `Hello, user! \n\nWe have received your request for an astrology booking. Our team will review the details and get back to you shortly.\n\nThank you for choosing us!\n\nBest Regards,\nOkpuja Team`,
       };
       await transporter.sendMail(userReplyOptions);
     }

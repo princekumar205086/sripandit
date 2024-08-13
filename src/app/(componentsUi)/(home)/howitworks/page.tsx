@@ -34,7 +34,7 @@ const HowItWorks = () => {
         <div className="md:w-1/2 flex items-center justify-center text-center p-4">
           <div className="bg-white flex flex-col justify-center shadow-md p-8 text-center">
             <h2 className="text-3xl md:text-5xl font-bold mb-4 text-orange-600">
-              How Sripandit works
+              How okpuja works
             </h2>
             <p className="text-gray-600 text-lg md:text-2xl mt-3">
               Immerse yourself in the serenity of sacred puja services

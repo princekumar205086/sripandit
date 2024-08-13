@@ -10,7 +10,7 @@ import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });  
 export const metadata: Metadata = {
-  title: "SRIPANDIT | Your vedic astrology partner",
+  title: "OKPUJA | Your vedic astrology partner",
   description: "Your vedic astrology partner",
 };
 

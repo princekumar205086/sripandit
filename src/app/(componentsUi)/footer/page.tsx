@@ -46,7 +46,7 @@ const Footer = () => {
             <div className="mb-8">
               <Image src="/image/logo.png" alt="Logo" width={200} height={180} />
               <p className="text-2xl text-white mt-2">
-                SriPandit offers seamless and sacred Puja services, ensuring a
+                Okpuja offers seamless and sacred Puja services, ensuring a
                 blissful experience from booking to completion. Our platform boasts
                 the best Pandits and Purohits, with options available in multiple
                 languages for various types of Pujas. Enjoy hassle-free
@@ -96,7 +96,7 @@ const Footer = () => {
             <p className="text-2xl text-white mt-2">
               Address: Ram Ratan Ji Nagar Rambagh, Purnia, Bihar, 854301 <br />
               Phone: 9471661636 <br />
-              Email: hello@sripandit.com
+              Email: namaste@okpuja.com
             </p>
             <div className="flex items-center justify-center md:justify-start mt-4">
               <Link href="#" className="mr-4 text-4xl">
@@ -119,7 +119,7 @@ const Footer = () => {
       {/* Footer Credit */}
       <div className="text-center mt-8">
         <p className="text-3xl font-bold">
-          &copy; {new Date().getFullYear()} SriPandit. All Rights Reserved. |{" "}
+          &copy; {new Date().getFullYear()} Okpuja. All Rights Reserved. |{" "}
           Powered by <Link href="https://wwww.webdigger.in">Webdigger.</Link>
         </p>
       </div>
