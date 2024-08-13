@@ -5,7 +5,7 @@ const nextConfig = {
                 hostname: 'randomuser.me',
             },
             {
-                hostname: ['www.okpuja.in', 'www.sripandit.com'],
+                hostname: 'www.okpuja.in',
             },
         ],
     },
