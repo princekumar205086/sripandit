@@ -99,7 +99,7 @@ const Footer = () => {
               Email: namaste@okpuja.com
             </p>
             <div className="flex items-center justify-center md:justify-start mt-4">
-              <Link href="#" className="mr-4 text-4xl">
+              <Link href="https://www.facebook.com/profile.php?id=61564270386024" className="mr-4 text-4xl">
                 <FaFacebook />
               </Link>
               <Link href="https://wa.me/919471661636" className="mr-4 text-4xl">
