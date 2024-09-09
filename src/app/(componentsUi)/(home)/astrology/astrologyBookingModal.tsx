@@ -75,7 +75,7 @@ const AstrologyBookingModal = ({ isOpen, onClose }: any) => {
                   onChange={formik.handleChange}
                   value={formik.values.language_consultation}
                 >
-                  <option value="">Select Language</option>
+                  <option value="null">Select Language</option>
                   <option value="english">English</option>
                   <option value="hindi">Hindi</option>
                   <option value="kannada">Kannada</option>

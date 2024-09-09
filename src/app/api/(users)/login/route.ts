@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import bcryptjs from 'bcryptjs';
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+
+const prisma = new PrismaClient();
+const JWT_SECRET = process.env.JWT_SECRET || 'myjwtsecretkey';
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,37 +14,46 @@ export async function POST(request: NextRequest) {
     // Check if user exists
     const user = await prisma.user.findUnique({
       where: { email },
+      select: { id: true, email: true, password: true, role: true },
     });
 
     if (!user) {
       return NextResponse.json(
-        { error: "User does not exist" },
+        { error: "Invalid email or password" },
         { status: 400 }
       );
     }
 
-    // Check password
-    const isMatch = await bcryptjs.compare(password, user.password);
+    // Compare password
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return NextResponse.json(
-        { error: "Invalid credentials" },
+        { error: "Invalid email or password" },
         { status: 400 }
       );
     }
 
-    // Create and sign JWT
-    const payload = { userId: user.id };
-    const secret = process.env.SECRET_TOKEN!;
-    const token = jwt.sign(payload, secret);
+    // Generate JWT token
+    const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET!, { expiresIn: '1h' });
 
-    return NextResponse.json({
-      message: "Logged in successfully",
-      success: true,
+    // Optionally set the token in an HTTP-only cookie for better security
+    const response = NextResponse.json({
+      message: "Login successful",
       token,
+      role: user.role,
     });
+
+    // Set token in HTTP-only cookie (secure, httpOnly, sameSite)
+    response.cookies.set('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 3600, // 1 hour in seconds
+    });
+
+    return response;
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error('Error during login:', error);
+    return NextResponse.json({ error: "An error occurred. Please try again later." }, { status: 500 });
   }
 }
-
-

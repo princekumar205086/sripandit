@@ -87,8 +87,8 @@ export default function Layout(props: Props) {
       </Toolbar>
       <Divider />
       <List>
-        {["Dashboard", "Profile", "Users", "Analytics"].map((text, index) => (
-          <Link href={`/${text.toLowerCase()}`} key={text}>
+        {["Dashboard", "Profile", "AstrologyService", "PujaService"].map((text, index) => (
+          <Link href={`/admin/${text.toLowerCase()}`} key={text}>
             <ListItem
               disablePadding
               className={
@@ -140,7 +140,7 @@ export default function Layout(props: Props) {
       <Collapse in={isCollapse} timeout="auto" unmountOnExit>
         <List>
           {["Support", "Change-Password", "Contact"].map((text, index) => (
-            <Link href={`/${text.toLowerCase()}`} key={text}>
+            <Link href={`/admin/${text.toLowerCase()}`} key={text}>
               <ListItem
                 disablePadding
                 className={

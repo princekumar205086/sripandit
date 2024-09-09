@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { getAstrologyService } from "./action";
-import Section from "../../(home)/pujaservice/section";
+import Section from "../pujaservice/section";
 import Image from "next/image";
 import styles from "./Astrology.module.css";
 import CryptoJS from "crypto-js";

@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
@@ -72,7 +73,8 @@ const languages = [
   "Malayalam",
 ];
 
-interface FormValues {
+// Define the FormValues type to match the expected structure
+type FormValues = {
   city: string;
   pujaName: string;
   language: string;
@@ -81,7 +83,7 @@ interface FormValues {
   location: string;
   contactNumber: string;
   email: string;
-}
+};
 
 const BookingModal: React.FC<BookingModalProps> = ({
   isOpen,
@@ -145,8 +147,8 @@ const BookingModal: React.FC<BookingModalProps> = ({
         </h2>
         <Formik
           initialValues={{
-            city: "",
-            pujaName: "",
+            city: initialLocation || "",
+            pujaName: initialPujaName || "",
             language: "",
             date: null,
             time: "",
@@ -157,7 +159,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ isSubmitting, setFieldValue }) => (
+          {({ isSubmitting, setFieldValue, values }) => (
             <Form>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="mb-6 lg:mb-8">
@@ -200,11 +202,11 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     placeholder="Enter a Puja or Homa name"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       let { value } = e.target;
-                      // Replace null with "" or undefined
                       value = value === null ? "" : value;
                       setFieldValue("pujaName", value);
                       fetchSuggestions(value);
                     }}
+                    value={values.pujaName || ""}
                   />
                   {suggestions.length > 0 && (
                     <ul className="bg-white border border-gray-300 rounded-lg mt-2 max-h-40 overflow-auto">
@@ -265,6 +267,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     name="date"
                     type="date"
                     className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    value={values.date || ""}
                   />
                   <ErrorMessage
                     name="date"
@@ -284,6 +287,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     name="time"
                     type="time"
                     className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    value={values.time || ""}
                   />
                   <ErrorMessage
                     name="time"
@@ -304,6 +308,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     type="text"
                     className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                     placeholder="Enter Location"
+                    value={values.location || ""}
                   />
                   <ErrorMessage
                     name="location"
@@ -324,6 +329,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     type="text"
                     className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                     placeholder="Contact Number"
+                    value={values.contactNumber || ""}
                   />
                   <ErrorMessage
                     name="contactNumber"
@@ -344,6 +350,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     type="email"
                     className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                     placeholder="Email"
+                    value={values.email || ""}
                   />
                   <ErrorMessage
                     name="email"

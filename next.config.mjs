@@ -2,11 +2,15 @@ const nextConfig = {
     images: {
         remotePatterns: [
             {
-                hostname: 'randomuser.me',
+                hostname: 'www.okpuja.com',
             },
             {
-                hostname: 'www.okpuja.in',
+                hostname: 'www.randomuser.me',
             },
+            {
+                hostname: 'randomuser.me',
+            },
+            // Add other valid hostnames if needed
         ],
     },
 };

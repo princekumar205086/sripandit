@@ -1,26 +1,17 @@
 "use client";
 
-import Link from "next/link";
 import React, { useState } from "react";
+import Link from "next/link";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useLogin, FormState, Errors } from "./action";
 import { useRouter } from "next/navigation";
 
-interface FormState {
-  email: string;
-  password: string;
-  staySignedIn: boolean;
-}
-
-interface Errors {
-  email?: string;
-  password?: string;
-}
-
 export default function LoginForm() {
+  const { handleSubmit } = useLogin();
   const router = useRouter();
+
   const [formState, setFormState] = useState<FormState>({
     email: "",
     password: "",
@@ -29,38 +20,26 @@ export default function LoginForm() {
 
   const [errors, setErrors] = useState<Errors>({});
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (event: any) => {
+  const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    // Basic form validation
-    if (!formState.email || !formState.password) {
-      toast.error("Please fill in all fields");
-      return;
-    }
+    setLoading(true);
 
     try {
-      const response = await axios.post("/api/login", formState);
-
-      // Handle response here. For example, you might store the returned token in local storage
-      localStorage.setItem("token", response.data.token);
-      toast.success("Logged in successfully");
-      router.push("/dashboard"); // Redirect to dashboard
-    } catch (error: any) {
-      // Handle error here. For example, you might set the error state
-      setErrors(error.response.data);
-      toast.error("Login failed");
+      await handleSubmit(formState, setErrors);
+    } catch (error) {
+      console.error("Login error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleChange = (event: any) => {
-    const value =
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, checked, type } = event.target;
     setFormState({
       ...formState,
-      [event.target.name]: value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
@@ -81,7 +60,7 @@ export default function LoginForm() {
           <p className="text-center text-lg text-orange-400 mb-4 md:mb-8">
             Enter your credentials to login.
           </p>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={onSubmit}>
             <div className="space-y-4">
               <div>
                 <label className="text-lg font-medium text-gray-700">
@@ -141,9 +120,12 @@ export default function LoginForm() {
             <div className="mt-6">
               <button
                 type="submit"
-                className="w-full px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                disabled={loading}
+                className={`w-full px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+                  loading ? "bg-gray-400" : "bg-orange-600 hover:bg-orange-700"
+                }`}
               >
-                Login
+                {loading ? "Signing in..." : "Login"}
               </button>
             </div>
           </form>

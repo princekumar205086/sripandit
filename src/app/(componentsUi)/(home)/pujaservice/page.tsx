@@ -176,7 +176,7 @@ const PujaServices = () => {
                 onChange={handleCategoryChange}
                 value={selectedCategory}
               >
-                <option value="">All Categories</option>
+                <option value="null">All Categories</option>
                 {categories.map((category, index) => (
                   <option key={index} value={category.id}>
                     {category.name}
