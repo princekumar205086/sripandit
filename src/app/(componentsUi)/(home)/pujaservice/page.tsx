@@ -1,15 +1,15 @@
 "use client";
+
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useEffect, useCallback } from "react";
 import { FaSearch } from "react-icons/fa";
-import { getPujaCategory, getPujaService } from "./action";
+import { getPujaService, getPujaCategory } from "./action";
 import Section from "./section";
 import slugify from "slugify";
 import CryptoJS from "crypto-js";
 
 const PujaServices = () => {
-  // Inside your component
   interface Service {
     id: number;
     title: string;
@@ -30,50 +30,59 @@ const PujaServices = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [filteredServices, setFilteredServices] = useState<Service[]>([]);
   const [searchValue, setSearchValue] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  // Fetching puja services
+  // Fetching puja services with caching
   const fetchServices = async () => {
-    const response = await getPujaService();
-    console.log(response);
-
-    if (response && response.length > 0) {
-      const data = response.map((service: Service) => ({
-        id: service.id,
-        title: service.title,
-        img: service.img,
-        category: {
-          id: service.category.id,
-          name: service.category.name,
-        },
-      }));
-      setServices(data);
-      setFilteredServices(data); // Initialize filtered services
+    const cachedServices = sessionStorage.getItem("pujaServices");
+    if (cachedServices) {
+      setServices(JSON.parse(cachedServices));
+      setFilteredServices(JSON.parse(cachedServices));
+      setLoading(false);
     } else {
-      console.error("No data received from getPujaService");
+      const response = await getPujaService();
+      if (response && response.length > 0) {
+        const data = response.map((service: Service) => ({
+          id: service.id,
+          title: service.title,
+          img: service.img,
+          category: {
+            id: service.category.id,
+            name: service.category.name,
+          },
+        }));
+        sessionStorage.setItem("pujaServices", JSON.stringify(data));
+        setServices(data);
+        setFilteredServices(data);
+      } else {
+        console.error("No data received from getPujaService");
+      }
+      setLoading(false);
+    }
+  };
+
+  // Fetching puja categories with caching
+  const fetchCategories = async () => {
+    const cachedCategories = sessionStorage.getItem("pujaCategories");
+    if (cachedCategories) {
+      setCategories(JSON.parse(cachedCategories));
+    } else {
+      const response = await getPujaCategory();
+      if (response && response.length > 0) {
+        const data = response.map((category: Category) => ({
+          id: category.id,
+          name: category.name,
+        }));
+        sessionStorage.setItem("pujaCategories", JSON.stringify(data));
+        setCategories(data);
+      } else {
+        console.error("No data received from getPujaCategory");
+      }
     }
   };
 
   useEffect(() => {
     fetchServices();
-  }, []);
-
-  // Fetching puja categories
-  const fetchCategories = async () => {
-    const response = await getPujaCategory();
-    console.log(response);
-
-    if (response && response.length > 0) {
-      const data = response.map((category: Category) => ({
-        id: category.id,
-        name: category.name,
-      }));
-      setCategories(data);
-    } else {
-      console.error("No data received from getPujaCategory");
-    }
-  };
-
-  useEffect(() => {
     fetchCategories();
   }, []);
 
@@ -96,7 +105,8 @@ const PujaServices = () => {
 
     if (selectedCategory !== "") {
       filtered = filtered.filter(
-        (service: Service) => service.category.id.toString() === selectedCategory
+        (service: Service) =>
+          service.category.id.toString() === selectedCategory
       );
     }
 
@@ -127,6 +137,7 @@ const PujaServices = () => {
               className="w-full"
               width="400"
               height="450"
+              loading="lazy"
             />
             <div className="px-6 py-4">
               <div className="font-bold text-2xl mb-2 text-center">
@@ -141,6 +152,10 @@ const PujaServices = () => {
       </div>
     ));
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -176,7 +191,7 @@ const PujaServices = () => {
                 onChange={handleCategoryChange}
                 value={selectedCategory}
               >
-                <option value="null">All Categories</option>
+                <option value="">All Categories</option>
                 {categories.map((category, index) => (
                   <option key={index} value={category.id}>
                     {category.name}

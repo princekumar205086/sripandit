@@ -1,3 +1,4 @@
+/* I want same exact code in the below pasted code but this time with tailwindcss classes dont change anything excluidng adding some extra annimation that suits professional website. make sure nothing change and nothing is removed. */
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import "./navbar.css";
@@ -8,11 +9,10 @@ import Link from "next/link";
 
 const menuList = [
   { name: "Puja Services", link: "/pujaservice" },
-  { name: "Product", link: "/product" },
   { name: "Astrology", link: "/astrology" },
-  { name: "Events", link: "/events" },
   { name: "Blog", link: "/blog" },
   { name: "Contatct us", link: "/contactus" },
+  { name: "Signup/Signin", link: "/register" },
 ];
 
 const Navbar = () => {

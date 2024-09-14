@@ -7,13 +7,20 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import PeopleIcon from "@mui/icons-material/People";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import SettingsIcon from "@mui/icons-material/Settings";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import LockIcon from "@mui/icons-material/Lock";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
+import LogoutIcon from "@mui/icons-material/Logout";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -59,7 +66,6 @@ export default function Layout(props: Props) {
 
   const router = useRouter();
   const pathname = usePathname();
-  console.log("pathname " + pathname);
 
   useEffect(() => {
     if (
@@ -82,13 +88,13 @@ export default function Layout(props: Props) {
     <div>
       <Toolbar className="shadow-lg">
         <Typography variant="h6" noWrap component="div" className="font-semibold">
-          APP-DASHBOARD
+          OKPUJA
         </Typography>
       </Toolbar>
       <Divider />
       <List>
-        {["Dashboard", "Profile", "Users", "Analytics"].map((text, index) => (
-          <Link href={`/${text.toLowerCase()}`} key={text}>
+        {["Dashboard", "Profile", "Users", "Analytics"].map((text) => (
+          <Link href={`/${text.toLowerCase()}`} key={text} style={{ textDecoration: "none", color: "black" }}>
             <ListItem
               disablePadding
               className={
@@ -105,7 +111,10 @@ export default function Layout(props: Props) {
                       : "text-slate-700"
                   }
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {text === "Dashboard" && <DashboardIcon />}
+                  {text === "Profile" && <AccountCircleIcon />}
+                  {text === "Users" && <PeopleIcon />}
+                  {text === "Analytics" && <BarChartIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
@@ -130,7 +139,7 @@ export default function Layout(props: Props) {
                   : "text-slate-700"
               }
             >
-              <MailIcon />
+              <SettingsIcon />
             </ListItemIcon>
             <ListItemText primary="Setting" />
             {isCollapse ? <ExpandLessIcon /> : <ExpandMoreIcon />}
@@ -139,8 +148,8 @@ export default function Layout(props: Props) {
       </List>
       <Collapse in={isCollapse} timeout="auto" unmountOnExit>
         <List>
-          {["Support", "Change-Password", "Contact"].map((text, index) => (
-            <Link href={`/${text.toLowerCase()}`} key={text}>
+          {["Support", "Change-Password", "Contact"].map((text) => (
+            <Link href={`/${text.toLowerCase()}`} key={text} style={{ textDecoration: "none", color: "black" }}>
               <ListItem
                 disablePadding
                 className={
@@ -157,7 +166,9 @@ export default function Layout(props: Props) {
                         : "text-slate-700"
                     }
                   >
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    {text === "Support" && <SupportAgentIcon />}
+                    {text === "Change-Password" && <LockIcon />}
+                    {text === "Contact" && <ContactMailIcon />}
                   </ListItemIcon>
                   <ListItemText primary={text} />
                 </ListItemButton>
@@ -166,6 +177,17 @@ export default function Layout(props: Props) {
           ))}
         </List>
       </Collapse>
+      <Divider />
+      <List>
+        <ListItem disablePadding onClick={handleLogout} sx={{ mt: 2 }}>
+          <ListItemButton>
+            <ListItemIcon>
+              <LogoutIcon color="error" />
+            </ListItemIcon>
+            <ListItemText primary="Logout" sx={{ color: "error.main" }} />
+          </ListItemButton>
+        </ListItem>
+      </List>
     </div>
   );
 
@@ -181,10 +203,10 @@ export default function Layout(props: Props) {
             sx={{
               width: { sm: `calc(100% - ${drawerWidth}px)` },
               ml: { sm: `${drawerWidth}px` },
-              bgcolor: "#ffffff",
-              color: "black",
+              bgcolor: "linear-gradient(to right, #6a11cb, #2575fc)",
+              color: "#ffffff",
               boxShadow: "none",
-              borderBottom: "solid black 1px",
+              borderBottom: "solid #6a11cb 1px",
             }}
           >
             <Toolbar>
@@ -197,14 +219,24 @@ export default function Layout(props: Props) {
               >
                 <MenuIcon />
               </IconButton>
-              <Typography variant="h6" noWrap component="div">
+              <Typography variant="h6" noWrap component="div" sx={{ fontWeight: "bold" }}>
                 {pathname.replace(/^\//, "").toUpperCase()}
               </Typography>
               <Box sx={{ flexGrow: 1 }} />
               <Button
-                color="inherit"
+                color="error"
+                variant="contained"
                 onClick={handleLogout}
-                sx={{ textTransform: "none" }}
+                sx={{
+                  textTransform: "none",
+                  borderRadius: "20px",
+                  px: 3,
+                  backgroundColor: "#f50057",
+                  "&:hover": {
+                    backgroundColor: "#c51162",
+                  },
+                }}
+                startIcon={<LogoutIcon />}
               >
                 Logout
               </Button>

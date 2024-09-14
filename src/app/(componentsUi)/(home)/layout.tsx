@@ -3,13 +3,14 @@ import { Inter } from "next/font/google";
 import Navbar from "./navbar/page";
 import Footer from "./footer/page";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { FaWhatsapp } from "react-icons/fa";
 import Link from "next/link";
 import ToastProvider from "@/lib/ToastProvider";
 import "@/app/globals.css";
-
+import LoaderWrapper from "./LoaderWrapper";
+import { FaWhatsapp } from "react-icons/fa";
 
 const inter = Inter({ subsets: ["latin"] });
+
 export const metadata: Metadata = {
   title: "OKPUJA | Your vedic astrology partner",
   description: "Your vedic astrology partner",
@@ -23,9 +24,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        <ToastProvider>{children}</ToastProvider>
-        <Footer />
+        {/* Ensure the entire layout is wrapped inside LoaderWrapper */}
+        <LoaderWrapper>
+          {/* Navbar, children, and Footer are hidden until the LoaderWrapper finishes loading */}
+          <Navbar />
+          <ToastProvider>{children}</ToastProvider>
+          <Footer />
+        </LoaderWrapper>
+
+        {/* Additional content that is not tied to loading */}
         <SpeedInsights />
         <Link
           href="https://wa.me/9471661636"
