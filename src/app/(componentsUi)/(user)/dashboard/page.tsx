@@ -1,7 +1,7 @@
 "use client";
 
 import { Typography } from "@mui/material";
-import Layout from "../layout";
+import Layout from '../layout'
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useAuth from "@/app/helper/useAuth";
