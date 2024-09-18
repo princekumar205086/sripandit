@@ -10,7 +10,8 @@ import IconButton from "@mui/material/IconButton";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PeopleIcon from "@mui/icons-material/People";
-import BarChartIcon from "@mui/icons-material/BarChart";
+import HdrAutoIcon from '@mui/icons-material/HdrAuto';
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import SettingsIcon from "@mui/icons-material/Settings";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import LockIcon from "@mui/icons-material/Lock";
@@ -93,8 +94,8 @@ export default function Layout(props: Props) {
       </Toolbar>
       <Divider />
       <List>
-        {["Dashboard", "Profile", "Users", "Analytics"].map((text) => (
-          <Link href={`/${text.toLowerCase()}`} key={text} style={{ textDecoration: "none", color: "black" }}>
+        {["Dashboard", "Profile", "AstrologyService", "PujaService", "Users"].map((text) => (
+          <Link href={`/admin/${text.toLowerCase()}`} key={text} style={{ textDecoration: "none", color: "black" }}>
             <ListItem
               disablePadding
               className={
@@ -113,8 +114,9 @@ export default function Layout(props: Props) {
                 >
                   {text === "Dashboard" && <DashboardIcon />}
                   {text === "Profile" && <AccountCircleIcon />}
+                  {text === "AstrologyService" && <HdrAutoIcon />}
                   {text === "Users" && <PeopleIcon />}
-                  {text === "Analytics" && <BarChartIcon />}
+                  {text === "PujaService" && <LocalFireDepartmentIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
@@ -149,7 +151,7 @@ export default function Layout(props: Props) {
       <Collapse in={isCollapse} timeout="auto" unmountOnExit>
         <List>
           {["Support", "Change-Password", "Contact"].map((text) => (
-            <Link href={`/${text.toLowerCase()}`} key={text} style={{ textDecoration: "none", color: "black" }}>
+            <Link href={`/admin/${text.toLowerCase()}`} key={text} style={{ textDecoration: "none", color: "black" }}>
               <ListItem
                 disablePadding
                 className={

@@ -7,6 +7,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id                        Int      @id @default(autoincrement())
   username                  String
@@ -19,6 +24,7 @@ model User {
   verifyTokenExpiry         DateTime?
   forgotPasswordToken       String?  @db.VarChar(255)
   forgotPasswordTokenExpiry DateTime?
+  role     Role     @default(USER)
 }
 
 

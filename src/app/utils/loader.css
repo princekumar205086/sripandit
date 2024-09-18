@@ -1,0 +1,115 @@
+body {
+    background-color: #3f3c3b;
+}
+
+.swastik-wrapper {
+    width: 100%;
+    height: 33%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: rotate 2s linear infinite;
+}
+
+.design-wrapper {
+    display: flex;
+    flex-direction: column; /* Added to stack elements vertically */
+    justify-content: center;
+    align-items: center;
+    transform: scale(1.5) translate(-50%, -50%); /* Reduced scale */
+    margin: 0 4rem;
+    width: 25px; /* Reduced width */
+    height: 50px; /* Reduced height */
+    position: fixed;
+    top: 70%;
+    left: 50%;
+}
+
+.swastik1 {
+    width: 15px; /* Reduced width */
+    height: 1px; /* Reduced height */
+    background-color: rgba(218, 226, 176, 1);
+    position: absolute;
+}
+
+.swastik1:before {
+    content: "";
+    width: 1px; /* Reduced width */
+    height: 7.5px; /* Reduced height */
+    background-color: rgba(218, 226, 176, 1);
+    top: -7px; /* Adjusted position */
+    position: absolute;
+}
+
+.swastik1:after {
+    content: "";
+    width: 1px; /* Reduced width */
+    height: 7.5px; /* Reduced height */
+    background-color: rgba(218, 226, 176, 1);
+    left: 14px; /* Adjusted position */
+    position: absolute;
+}
+
+.rotate-90 {
+    transform: rotate(90deg);
+}
+
+.dot1 {
+    width: 1.5px; /* Reduced width */
+    height: 1.5px; /* Reduced height */
+    background-color: rgba(218, 226, 176, 1);
+    position: absolute;
+    top: 4px; /* Adjusted position */
+    left: 8.5px; /* Adjusted position */
+    border-radius: 50%;
+}
+
+.dot1:before {
+    content: '';
+    width: 1.5px; /* Reduced width */
+    height: 1.5px; /* Reduced height */
+    background-color: rgba(218, 226, 176, 1);
+    position: absolute;
+    left: 7px; /* Adjusted position */
+    border-radius: 50%;
+}
+
+.dot2 {
+    width: 1.5px; /* Reduced width */
+    height: 1.5px; /* Reduced height */
+    background-color: rgba(218, 226, 176, 1);
+    position: absolute;
+    top: 10px; /* Adjusted position */
+    left: 7.5px; /* Adjusted position */
+    border-radius: 50%;
+}
+
+.dot2:before {
+    content: '';
+    width: 1.5px; /* Reduced width */
+    height: 1.5px; /* Reduced height */
+    background-color: rgba(218, 226, 176, 1);
+    position: absolute;
+    left: 7px; /* Adjusted position */
+    border-radius: 50%;
+}
+
+.loading-text {
+    margin-top: 10px; /* Space between loader and text */
+    color: rgba(218, 226, 176, 1);
+    font-size: 12px; /* Adjust font size as needed */
+}
+
+*, :after, :before {
+    box-sizing: border-box;
+    position: relative;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

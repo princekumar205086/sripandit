@@ -1,35 +1,47 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+import { Typography } from "@mui/material";
+import Layout from "../layout";
 import { useRouter } from "next/navigation";
-import Layout from "../Layout";
+import { useEffect, useState } from "react";
+import useAuth from "@/app/helper/useAuth";
 
-
-export default function DashBoard() {
+export default function UserHome() {
+  const isAuthenticated = useAuth();
   const router = useRouter();
-  const [token, setToken] = useState<string | null>(null);
+  const [role, setRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true); // Track loading state for role fetching
 
+  // Fetch the role from localStorage on the client side
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setToken(localStorage.getItem("token"));
+      const storedRole = localStorage.getItem('role');
+      setRole(storedRole);
+      setLoading(false); // Finished loading role
     }
   }, []);
 
-  const handleLogout = () => {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("token");
+  // Handle redirection based on authentication and role
+  useEffect(() => {
+    if (!loading) { // Only run after loading completes
+      if (!isAuthenticated) {
+        router.push('/login'); // Redirect to login if not authenticated
+      } else if (role !== 'USER') {
+        router.push('/login'); // Redirect to unauthorized page if role is not USER
+      }
     }
-    router.push("/login"); // Redirect to login page
-  };
+  }, [isAuthenticated, role, loading, router]);
+
+  // Show loading state while determining role or authentication
+  if (!isAuthenticated || loading) {
+    return <div>Loading...</div>; // Replace with a better loading indicator if needed
+  }
 
   return (
-    <>
+    <div>
       <Layout>
-        <div className=" mt-44">
-          <h1>Your are logged in</h1>
-          <h2>Your jwt token is: {token}</h2>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
+        <Typography variant="h4">Dashboard</Typography>
       </Layout>
-    </>
+    </div>
   );
 }
