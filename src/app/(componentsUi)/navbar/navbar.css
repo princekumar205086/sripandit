@@ -129,13 +129,16 @@ li {
 
 .menu-link ul li a {
   text-transform: capitalize;
-  color: rgb(247, 247, 253);
+  color: white;
   transition: 0.5s;
 }
 
 .menu-link ul li:hover > a {
   transform-origin: left;
-  color: rgb(150, 25, 252);
+  color: #ff3838;
+  padding: 5px;
+  border-radius: 15px;
+  background-color:#F8EFBA;
   text-decoration: underline;
   transition: 0.5s;
 }
@@ -200,8 +203,7 @@ li {
   }
 
   .mobile-menu-link {
-    background-color: purple;
-    color: white;
+    background-color: #F8EFBA;
     height: 20rem;
     display: grid;
     grid-column: 2/5;
@@ -214,7 +216,10 @@ li {
   }
 
   .mobile-menu-link ul li a {
-    color: white;
+    color: #ff3838;
+    border-radius: 5px;
+    transition: 0.5s;
+    background-color: #fff;
   }
 
   .mobile-menu-link ul li:hover > a {
@@ -322,7 +327,23 @@ li {
 
 .main-nav.scrolled {
   height: 80px; /* Adjust to desired height after scrolling */
-  background-color: lightblue;
+  background-color: #F8EFBA;
+  color: #ff3838;
+}
+.main-nav.scrolled .menu-link ul li a {
+  text-transform: capitalize;
+  color: #ff3838;
+  transition: 0.5s;
+}
+
+.main-nav.scrolled .menu-link ul li:hover > a {
+  transform-origin: left;
+  color: #ff3838;
+  padding: 5px;
+  border-radius: 15px;
+  background-color: white;
+  text-decoration: underline;
+  transition: 0.5s;
 }
 @media (max-width: 767px) {
   .main-nav.mobile {

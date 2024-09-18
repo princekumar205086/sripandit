@@ -57,8 +57,8 @@ const Navbar = () => {
           isMobile ? "mobile" : ""
         }`}
       >
-        <Link href="/" className="logo" onClick={closeMobileMenu}>
-          <Image src="/image/logo.png" alt="logo" width={200} height={180} />
+        <Link href="/" className="logo bg-transparent" onClick={closeMobileMenu}>
+          <Image src="/image/logo6.png" alt="logo" width={200} height={180} />
         </Link>
 
         <div

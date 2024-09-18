@@ -38,14 +38,14 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-blue-500 text-white py-12">
+    <footer className="py-12" style={{backgroundColor:"#F8EFBA"}}>
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-4">
         {/* First Section */}
         <div className="card">
           <div className="text-center md:text-left w-full p-6">
             <div className="mb-8">
-              <Image src="/image/logo.png" alt="Logo" width={200} height={180} />
-              <p className="text-2xl text-white mt-2">
+              <Image src="/image/logo6.png" alt="Logo" width={200} height={180} />
+              <p className="text-2xl text-black mt-2">
                 Okpuja offers seamless and sacred Puja services, ensuring a
                 blissful experience from booking to completion. Our platform boasts
                 the best Pandits and Purohits, with options available in multiple
