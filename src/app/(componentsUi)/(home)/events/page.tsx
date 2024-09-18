@@ -93,7 +93,7 @@ export default function Events() {
     <>
       <Slider
         {...settings}
-        className="flex flex-wrap justify-center overflow-hidden pl-20 bg-purple-600"
+        className="flex flex-wrap justify-center overflow-hidden pl-20 bg-cream"
       >
         {data.map((item, index) => (
           <div key={index} className="p-4 md:p-2 sm:p-1">

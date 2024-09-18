@@ -24,9 +24,9 @@ const data=[
 export default function Servicerange() {
   return (
     <>
-      <div className="m-0 p-3 bg-orange-500">
-        <h2 className="text-center text-white text-4xl mb-2">We provide a range of services</h2>
-        <h6 className="text-center text-xl text-white">
+      <div className="m-0 p-3 bg-cream">
+        <h2 className="text-center text-orange-500 text-4xl mb-2">We provide a range of services</h2>
+        <h6 className="text-center text-xl text-orange-600">
           Book online for a Sacred, Hassle-free Puja Ceremony
         </h6>
       </div>
@@ -41,10 +41,11 @@ export default function Servicerange() {
                   alt={item.title}
                   width={100}
                   height={100}
+                  quality={100}
                 />
               </div>
-              <div className="servicerange-card-body bg-orange-700">
-                <h5 className="servicerange-card-title font-bold text-2xl p-2 text-center text-white">
+              <div className="servicerange-card-body bg-cream">
+                <h5 className="servicerange-card-title font-bold text-2xl p-2 text-center text-orange-500">
                   {item.title}
                 </h5>
               </div>

@@ -5,7 +5,7 @@ import "./servicecard.css";
 
 export default function ServiceCard() {
   return (
-    <section className="relative bg-light-500 py-12 bg-orange-600">
+    <section className="relative bg-light-500 py-12 bg-cream">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap justify-center text-center">
           {[
@@ -33,9 +33,10 @@ export default function ServiceCard() {
                   className="mx-auto mb-4"
                   width="120"
                   height="100"
+                  quality={100}
                 />
-                <p className="service-card-number text-6xl font-bold mb-2 text-purple-700">{item.number}</p>
-                <p className="service-card-text text-purple-600 text-3xl">{item.text}</p>
+                <p className="service-card-number text-6xl font-bold mb-2 text-orange-500">{item.number}</p>
+                <p className="service-card-text text-orange-500 text-3xl">{item.text}</p>
               </div>
             </div>
           ))}

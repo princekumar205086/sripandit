@@ -72,7 +72,7 @@ const FeaturedPujas = ({}:any) => {
   };
   return (
     <>
-      <div className="row m-0 p-2 bg-purple-700">
+      <div className="row m-0 p-2 bg-redOrange">
         <h2 className="text-center">Featured Pujas</h2>
         <h6 className="text-center text-2xl text-white">Here are some of the most popular Pujas and Homas booked on our portal</h6>
       </div>
@@ -86,16 +86,16 @@ const FeaturedPujas = ({}:any) => {
               width={200}
               height={200}
             />
-            <div className="featurespuja-card-body bg-orange-700 m-0 p-0">
-              <h5 className="featurespuja-card-title font-bold text-2xl p-1 text-center text-white">
+            <div className="featurespuja-card-body bg-cream m-0 p-0">
+              <h5 className="featurespuja-card-title font-bold text-2xl p-1 text-center text-orange-800">
                 {puja.pujaName}
               </h5>
             </div>
           </div>
         ))}
       </Slider>
-      <div className="row bg-purple-700 p-1">
-          <Link href='/pujaservice' className="card-btn text-xl">Explore all our puja services</Link>
+      <div className="row bg-redOrange p-1">
+          <Link href='/pujaservice' className="card-btn bg-cream text-xl text-black">Explore all our puja services</Link>
       </div>
     </>
   );

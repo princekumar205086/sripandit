@@ -30,7 +30,7 @@ const data = [
 const HowItWorks = () => {
   return (
     <>
-      <div className="flex flex-col md:flex-row items-stretch justify-center bg-purple-600">
+      <div className="flex flex-col md:flex-row items-stretch justify-center bg-redOrange">
         <div className="md:w-1/2 flex items-center justify-center text-center p-4">
           <div className="bg-white flex flex-col justify-center shadow-md p-8 text-center">
             <h2 className="text-3xl md:text-5xl font-bold mb-4 text-orange-600">
@@ -56,28 +56,28 @@ const HowItWorks = () => {
               time.
             </p>
             <div className="flex justify-center mt-4">
-              <button className="bg-purple-500 hover:bg-purple-700 text-white text-sm md:text-base font-bold py-2 px-4 rounded outline-none">
+              <button className="bg-cream hover:bg-orange-700 hover:text-white text-orange-500 md:text-base text-2xl font-bold py-2 px-4 rounded outline-none">
                 Book Now
               </button>
             </div>
           </div>
         </div>
         <div className="md:w-1/2 flex items-center justify-center">
-          <div className="bg-white shadow-md rounded-lg overflow-hidden">
+          <div className="shadow-md rounded-lg overflow-hidden">
             <Image
               src="/image/hawan.jpg"
               alt="howitworks"
               className="object-cover w-full h-full"
-              width={500}
-              height={500}
+              width={400}
+              height={400}
             />
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap justify-center bg-purple-600">
+      <div className="flex flex-wrap justify-center bg-cream">
         {data.map((item, index) => (
           <div key={index} className="w-full sm:w-1/2 lg:w-1/4 p-4">
-            <div className="flex flex-col items-center justify-center border bg-white shadow-md border-gray-300 rounded-lg p-4">
+            <div className="flex flex-col items-center justify-center border bg-redOrange shadow-md border-gray-300 rounded-lg p-4">
               <img
                 src={item.imagesrc}
                 alt={item.title}
@@ -85,10 +85,10 @@ const HowItWorks = () => {
                 width={100}
                 height={80}
               />
-              <h2 className="text-2xl font-semibold text-black mb-2">
+              <h2 className="text-2xl font-semibold text-white mb-2">
                 {item.title}
               </h2>
-              <p className="text-center">{item.description}</p>
+              <p className="text-center text-white">{item.description}</p>
             </div>
           </div>
         ))}
