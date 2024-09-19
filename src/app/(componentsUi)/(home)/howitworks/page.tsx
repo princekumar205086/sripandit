@@ -56,7 +56,7 @@ const HowItWorks = () => {
               time.
             </p>
             <div className="flex justify-center mt-4">
-              <button className="bg-cream hover:bg-orange-700 hover:text-white text-orange-500 md:text-base text-2xl font-bold py-2 px-4 rounded outline-none">
+              <button className="bg-redOrange hover:bg-orange-700 hover:text-white text-orange-500 md:text-base text-2xl font-bold py-2 px-4 rounded outline-none">
                 Book Now
               </button>
             </div>
