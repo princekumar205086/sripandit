@@ -53,12 +53,12 @@ const Navbar = () => {
     <>
       <nav
         ref={headerRef}
-        className={`main-nav fixed top-0 w-full bg-transparent border-b border-white ${
+        className={`main-nav fixed top-0 w-full border-b border-white ${
           isMobile ? "mobile" : ""
         }`}
       >
         <Link href="/" className="logo" onClick={closeMobileMenu}>
-          <Image src="/image/logo7.png" alt="logo" width={200} height={180} />
+          <Image src="/image/okpuja logo.png" alt="logo" width={220} height={160} />
         </Link>
 
         <div

@@ -44,10 +44,12 @@ const Footer = () => {
         <div className="card">
           <div className="text-center md:text-left w-full p-6">
             <div className="mb-8">
-              <Image src="/image/logo8.png" alt="Logo" width={150} height={150} />
+              <Image src="/image/okpuja logo social.png" alt="Logo" width={150} height={150} />
               <p className="text-2xl text-orange-500 mt-2">
-                Okpuja offers seamless and sacred Puja services, ensuring a
-                blissful experience from booking to completion.
+              Okpuja offers seamless and sacred Puja services, ensuring a
+                blissful experience from booking to completion. Our platform boasts
+                the best Pandits and Purohits, with options available in multiple
+                languages for various types of Pujas.
               </p>
             </div>
           </div>
@@ -95,16 +97,16 @@ const Footer = () => {
               Email: namaste@okpuja.com
             </p>
             <div className="flex items-center justify-center md:justify-start mt-4">
-              <Link href="https://www.facebook.com/profile.php?id=61564270386024" className="mr-4 text-4xl">
+              <Link href="https://www.facebook.com/profile.php?id=61564270386024" className="mr-4 text-4xl text-orange-500">
                 <FaFacebook />
               </Link>
-              <Link href="https://wa.me/919471661636" className="mr-4 text-4xl">
+              <Link href="https://wa.me/919471661636" className="mr-4 text-4xl text-orange-500">
                 <FaWhatsapp />
               </Link>
-              <Link href="#" className="mr-4 text-4xl">
+              <Link href="#" className="mr-4 text-4xl text-orange-500">
                 <FaInstagram />
               </Link>
-              <Link href="#" className="mr-4 text-4xl">
+              <Link href="#" className="mr-4 text-4xl text-orange-500">
                 <FaLinkedin />
               </Link>
             </div>
@@ -116,7 +118,7 @@ const Footer = () => {
       <div className="text-center mt-8">
         <p className="text-3xl font-bold text-orange-500">
           &copy; {new Date().getFullYear()} Okpuja. All Rights Reserved. |{" "}
-          Powered by <Link href="https://wwww.webdigger.in">Webdigger.</Link>
+          Powered by <Link href="https://wwww.webdigger.in"><u><strong>Webdigger</strong></u></Link>
         </p>
       </div>
     </footer>
