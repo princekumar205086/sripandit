@@ -149,8 +149,8 @@ const Hero: React.FC = () => {
           </div>
           {/* Right half (form card) */}
           <div className="lg:w-1/3 flex justify-center items-center mt-12 lg:mt-20">
-            <div className="bg-white p-8 rounded-lg shadow-lg">
-              <p className="text-2xl lg:text-3xl text-black mb-6 lg:mb-8">
+            <div className="bg-cream p-8 rounded-lg shadow-lg">
+              <p className="text-2xl lg:text-3xl text-orange-500 mb-6 lg:mb-8">
                 Secure the services of top-notch priests for your Pujas or Homas
                 with Okpuja{" "}
                 <span className="font-bold text-red-500">{location}</span>
@@ -158,13 +158,13 @@ const Hero: React.FC = () => {
               <div className="mb-6 lg:mb-8">
                 <label
                   htmlFor="location"
-                  className="block text-xl lg:text-2xl font-medium text-black mb-2"
+                  className="block text-xl lg:text-2xl font-medium text-orange-500 mb-2"
                 >
                   Select City
                 </label>
                 <select
                   id="location"
-                  className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-orange-500 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
                   value={location}
                   onChange={handleLocationChange}
                 >
@@ -178,14 +178,14 @@ const Hero: React.FC = () => {
               <div className="mb-6 lg:mb-8">
                 <label
                   htmlFor="pujaName"
-                  className="block text-xl lg:text-2xl font-medium text-black mb-2"
+                  className="block text-xl lg:text-2xl font-medium text-orange-500 mb-2"
                 >
                   Enter a Puja or Homa name
                 </label>
                 <input
                   id="pujaName"
                   type="text"
-                  className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-orange-500 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                   placeholder="Enter a Puja or Homa name"
                   value={pujaName}
                   onChange={handlePujaNameChange}

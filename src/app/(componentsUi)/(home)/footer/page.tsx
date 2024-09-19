@@ -44,8 +44,8 @@ const Footer = () => {
         <div className="card">
           <div className="text-center md:text-left w-full p-6">
             <div className="mb-8">
-              <Image src="/image/OKPUJA.png" alt="Logo" width={150} height={150} />
-              <p className="text-2xl text-black mt-2">
+              <Image src="/image/logo8.png" alt="Logo" width={150} height={150} />
+              <p className="text-2xl text-orange-500 mt-2">
                 Okpuja offers seamless and sacred Puja services, ensuring a
                 blissful experience from booking to completion.
               </p>
@@ -56,11 +56,11 @@ const Footer = () => {
         {/* Second Section */}
         <div className="card">
           <div className="text-center md:text-left w-full p-6">
-            <h3 className="text-3xl text-black font-bold mb-4">Hindu Puja</h3>
+            <h3 className="text-3xl text-orange-500 font-bold mb-4">Hindu Puja</h3>
             <ul>
               {pujaList.map((puja, index) => (
                 <li key={index}>
-                  <Link href="#" className="hover:text-black-900 text-black text-2xl">
+                  <Link href="#" className="hover:text-orange-600 text-orange-500 text-2xl">
                     {puja}
                   </Link>
                 </li>
@@ -72,11 +72,11 @@ const Footer = () => {
         {/* Third Section */}
         <div className="card">
           <div className="text-center md:text-left w-full p-6">
-            <h3 className="text-3xl font-bold text-black mb-4">Menu</h3>
+            <h3 className="text-3xl font-bold text-orange-500 mb-4">Menu</h3>
             <ul>
               {menuList.map((menuItem, index) => (
                 <li key={index}>
-                  <a href="#" className="hover:text-black-400 text-black text-2xl">
+                  <a href="#" className="hover:text-orange-600 text-orange-500 text-2xl">
                     {menuItem}
                   </a>
                 </li>
@@ -88,8 +88,8 @@ const Footer = () => {
         {/* Fourth Section */}
         <div className="card">
           <div className="text-center md:text-left w-full p-6">
-            <h3 className="font-bold mb-4 text-black text-3xl">Contact Us</h3>
-            <p className="text-2xl text-black mt-2">
+            <h3 className="font-bold mb-4 text-orange-500 text-3xl">Contact Us</h3>
+            <p className="text-2xl text-orange-500 mt-2">
               Address: Ram Ratan Ji Nagar Rambagh, Purnia, Bihar, 854301 <br />
               Phone: 9471661636 <br />
               Email: namaste@okpuja.com
@@ -114,7 +114,7 @@ const Footer = () => {
 
       {/* Footer Credit */}
       <div className="text-center mt-8">
-        <p className="text-3xl font-bold">
+        <p className="text-3xl font-bold text-orange-500">
           &copy; {new Date().getFullYear()} Okpuja. All Rights Reserved. |{" "}
           Powered by <Link href="https://wwww.webdigger.in">Webdigger.</Link>
         </p>
