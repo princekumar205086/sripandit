@@ -118,7 +118,7 @@ const Footer = () => {
       <div className="text-center mt-8">
         <p className="text-3xl font-bold text-orange-500">
           &copy; {new Date().getFullYear()} Okpuja. All Rights Reserved. |{" "}
-          Powered by <Link href="https://wwww.webdigger.in"><u><strong>Webdigger</strong></u></Link>
+          Powered by <Link href="https://www.webdigger.in"><u><strong>Webdigger</strong></u></Link>
         </p>
       </div>
     </footer>
