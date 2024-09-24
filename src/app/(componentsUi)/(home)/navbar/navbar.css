@@ -360,7 +360,7 @@ li {
   transition: 0.5s;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1024px) {
   .main-nav.scrolled {
     height: 70px;
   }
@@ -371,7 +371,7 @@ li {
 
   .main-nav.scrolled .menu-link ul,
   .main-nav.scrolled .social-media ul {
-    height: 70px;
+    height: 20px;
   }
 }
 
@@ -390,7 +390,7 @@ li {
   }
 }
 
-@media (max-width: 798px) {
+@media (max-width: 820px) {
   .main-nav.scrolled {
     height: 50px;
   }
@@ -402,6 +402,36 @@ li {
   .main-nav.scrolled .menu-link ul,
   .main-nav.scrolled .social-media ul {
     height: 50px;
+  }
+  .main-nav.scrolled {
+    height: 60px;
+  }
+
+  .main-nav.scrolled .logo {
+    position: relative;
+    width: 150px !important;
+    bottom: 20px;
+  }
+
+
+  .main-nav.scrolled .logo {
+    width: 80px !important;
+  }
+  .main-nav.scrolled .menu-link{
+    position: relative;
+    top: -20px;
+    width: 100%;
+  }
+
+  .main-nav.scrolled .menu-link ul,
+  .main-nav.scrolled .social-media ul {
+    height: 40px;
+  }
+  .main-nav.scrolled .hamburger-menu {
+    display: block;
+    font-size: 2.5rem;
+    position: relative;
+    bottom: 15px;
   }
 }
 
@@ -420,6 +450,11 @@ li {
   .main-nav.scrolled .logo {
     width: 80px !important;
   }
+  .main-nav.scrolled .menu-link{
+    position: relative;
+    top: -20px;
+    width: 100%;
+  }
 
   .main-nav.scrolled .menu-link ul,
   .main-nav.scrolled .social-media ul {
@@ -433,7 +468,7 @@ li {
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .main-nav.mobile {
     flex-direction: column;
   }
@@ -445,5 +480,84 @@ li {
   .main-nav.mobile .menu-link,
   .main-nav.mobile .social-media {
     width: 100%;
+  }
+
+  .main-nav.scrolled {
+    height: 60px;
+  }
+
+  .main-nav.scrolled .logo {
+    position: relative;
+    width: 150px !important;
+    bottom: 20px;
+  }
+
+
+  .main-nav.scrolled .logo {
+    width: 80px !important;
+  }
+  .main-nav.scrolled .menu-link{
+    position: relative;
+    top: -20px;
+    width: 100%;
+  }
+
+  .main-nav.scrolled .menu-link ul,
+  .main-nav.scrolled .social-media ul {
+    height: 40px;
+  }
+  .main-nav.scrolled .hamburger-menu {
+    display: block;
+    font-size: 2.5rem;
+    position: relative;
+    bottom: 15px;
+  }
+}
+
+/* iPad specific styles */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .main-nav {
+    height: 7rem;
+    grid-template-columns: 2rem 2fr 3fr 2rem 2rem;
+  }
+
+  .logo,
+  .menu-link ul,
+  .social-media ul {
+    height: 7rem;
+  }
+  .main-nav.scrolled .menu-link{
+    position: relative;
+    top: -20px;
+    width: 100%;
+  }
+
+  .main-nav.scrolled {
+    height: 60px;
+  }
+  
+
+  .main-nav.scrolled .logo {
+    width: 120px !important;
+  }
+
+  .main-nav.scrolled .menu-link ul,
+  .main-nav.scrolled .social-media ul {
+    height: 60px;
+  }
+}
+
+/* iPad Pro specific styles */
+@media (min-width: 1024px) and (max-width: 1366px) {
+  .social-media {
+    display: none;
+  }
+  .main-nav.scrolled .logo{
+    position: relative;
+    top: -25px;
+  }
+  .main-nav.scrolled .menu-link{
+    position: relative;
+    top: -18px;
   }
 }
