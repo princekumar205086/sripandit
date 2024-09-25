@@ -1,7 +1,5 @@
-// create nextjs component
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
 const data = [
@@ -22,7 +20,7 @@ const data = [
   },
   {
     title: "Get frequent updates",
-    description: "All details are shared on email, sms and Whatsapp.",
+    description: "All details are shared on email, SMS, and WhatsApp.",
     imagesrc: "/image/get update.jpeg",
   },
 ];
@@ -37,23 +35,7 @@ const HowItWorks = () => {
               How okpuja works
             </h2>
             <p className="text-orange-500 text-lg md:text-2xl mt-3">
-              Immerse yourself in the serenity of sacred puja services
-              effortlessly. Our dedicated team of qualified pandits and purohits
-              ensures seamless rituals tailored to your specific requirements.
-              With just a few clicks, you can book your puja online and have the
-              puja samagri delivered right to your doorstep, making the entire
-              process convenient and stress-free. Trust in our verified pandits
-              who are committed to upholding the authenticity and sanctity of
-              every ritual. Whether it's a traditional ceremony or a special
-              occasion, we guarantee a truly memorable experience. Our experts
-              bring years of experience and dedication, ensuring that each puja
-              is conducted with utmost sincerity and reverence. Experience the
-              peace of mind that comes with knowing your spiritual needs are
-              handled by professionals who prioritize your satisfaction. Embrace
-              the beauty of divine rituals and celebrate your faith with
-              confidence, knowing that our team is dedicated to providing you
-              with a seamless puja experience that exceeds expectations every
-              time.
+              Immerse yourself in the serenity of sacred puja services effortlessly. Our dedicated team of qualified pandits and purohits ensures seamless rituals tailored to your specific requirements. With just a few clicks, you can book your puja online and have the puja samagri delivered right to your doorstep, making the entire process convenient and stress-free.
             </p>
             <div className="flex justify-center mt-4">
               <button className="bg-redOrange hover:bg-orange-700 hover:text-white text-white md:text-base text-3xl font-bold py-2 px-4 rounded outline-none">
@@ -74,16 +56,17 @@ const HowItWorks = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap justify-center bg-cream">
+      <div className="flex flex-wrap justify-center bg-cream py-6">
         {data.map((item, index) => (
           <div key={index} className="w-full sm:w-1/2 lg:w-1/4 p-4">
             <div className="flex flex-col items-center justify-center border bg-redOrange shadow-md border-gray-300 rounded-lg p-4">
-              <img
+              <Image
                 src={item.imagesrc}
                 alt={item.title}
                 className="w-full mb-4"
                 width={100}
                 height={80}
+                quality={100}
               />
               <h2 className="text-2xl font-semibold text-white mb-2">
                 {item.title}

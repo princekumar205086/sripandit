@@ -1,4 +1,3 @@
-// want nested route to be: /pujaservice/:id/page
 "use client";
 import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
@@ -9,7 +8,6 @@ import Section from "@/app/(componentsUi)/(home)/pujaservice/section";
 import AstrologyBookingModal from "../astrologyBookingModal";
 
 const SingleAstroService = ({ params }: any) => {
-  // service data
   const searchParams = useSearchParams();
   const router = useRouter();
   const encryptedId = searchParams.get("id");
@@ -39,9 +37,9 @@ const SingleAstroService = ({ params }: any) => {
     service_price: String;
     service_desc: String;
   }
-  const [astroService, setAstroService] = useState<AstrologyService | null>(
-    null
-  );
+  
+  const [astroService, setAstroService] = useState<AstrologyService | null>(null);
+  
   useEffect(() => {
     if (!id) {
       router.replace("/not-found");
@@ -74,12 +72,12 @@ const SingleAstroService = ({ params }: any) => {
             <div className="grid grid-cols-1 md:grid-cols-10 gap-8">
               <div className="col-span-10 md:col-span-6">
                 <div className="bg-white p-4 rounded-lg shadow-md">
-                  <p className="text-center md:text-left text-xl">
+                  <p className="text-center md:text-left text-lg"> {/* Changed to lg */}
                     ASTROLOGY SERVICES / {astroService?.service_title}
                   </p>
                   <div className="card mt-8">
                     <div className="card-header p-4">
-                      <h2 className="text-4xl font-bold text-black text-left">
+                      <h2 className="text-3xl font-bold text-black text-left"> {/* Changed to 3xl */}
                         {astroService?.service_title}
                       </h2>
                     </div>
@@ -87,13 +85,13 @@ const SingleAstroService = ({ params }: any) => {
                       <div className="bg-white p-4 rounded-lg shadow-md">
                         <div className="service-type-button flex p-2">
                           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
-                            <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold">
-                              Service deliver on {astroService?.service_type}
+                            <h2 className="text-lg md:text-xl lg:text-2xl font-semibold"> {/* Changed to lg and adjusted sizes */}
+                              Service delivered on {astroService?.service_type}
                             </h2>
                           </button>
                         </div>
                         <div className="service-price p-2">
-                          <h2 className="text-2xl font-semibold text-black text-left">
+                          <h2 className="text-xl font-semibold text-black text-left"> {/* Changed to xl */}
                             Price: &#8377; {astroService?.service_price}
                           </h2>
                         </div>
@@ -103,8 +101,7 @@ const SingleAstroService = ({ params }: any) => {
                           </button>
                           <AstrologyBookingModal isOpen={isModalOpen} onClose={closeModal} />
                         </div>
-                        {/* Displaying compiled HTML for description */}
-                        <div className="text-2xl"
+                        <div className="text-lg" 
                           dangerouslySetInnerHTML={{
                             __html: astroService?.service_desc || "",
                           }}
@@ -125,8 +122,7 @@ const SingleAstroService = ({ params }: any) => {
                     width="500"
                     height="500"
                   />
-
-                  <h2 className="text-xl font-semibold mt-4 text-center text-black">
+                  <h2 className="text-lg font-semibold mt-4 text-center text-black"> {/* Changed to lg */}
                     {astroService?.service_title}
                   </h2>
                 </div>
@@ -135,7 +131,6 @@ const SingleAstroService = ({ params }: any) => {
           </div>
         </div>
       </div>
-
     </Suspense>
   );
 };

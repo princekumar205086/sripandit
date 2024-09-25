@@ -44,7 +44,7 @@ export default function SignupForm() {
       email: "",
       contact: "",
       password: "",
-      confirmPassword: "", // Add confirm password to errors
+      confirmPassword: "",
     };
 
     if (!formState.username || !/^[a-z0-9]{3,50}$/i.test(formState.username)) {
@@ -73,7 +73,6 @@ export default function SignupForm() {
         "Password must be at least 8 characters, start with a capital letter, contain alphanumeric and special characters";
     }
 
-    // Add validation for confirm password
     if (formState.password !== formState.confirmPassword) {
       valid = false;
       errors.confirmPassword = "Passwords do not match";
@@ -85,31 +84,23 @@ export default function SignupForm() {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    // Check if the form is valid
     if (!validateForm()) {
-      // If the form is not valid, stop the form submission
       return;
     }
 
     try {
       const response = await axios.post("/api/signup", formState);
-
-      // If the operation was successful
       if (response.data.success) {
-        // Clear the form
         setFormState(initialFormState);
-
-        // Show a success toast
         toast.success("Signup successful! Verification email has been sent.");
       } else {
-        // Show an error toast
         toast.error("Signup failed.");
       }
     } catch (error: any) {
-      // Show an error toast
       toast.error("An error occurred." + error.message);
     }
   };
+  
   const handleChange = (event: any) => {
     setFormState({
       ...formState,
@@ -126,18 +117,18 @@ export default function SignupForm() {
           filter: "blur(50px)",
         }}
       ></div>
-      <div className="bg-white bg-opacity-60 rounded-lg shadow-lg overflow-hidden max-w-lg w-full relative z-10">
-        <div className="px-6 py-8 md:p-10">
-          <h2 className="text-4xl font-bold text-center text-purple-600">
+      <div className="bg-white bg-opacity-70 rounded-lg shadow-lg overflow-hidden max-w-lg w-full relative z-10">
+        <div className="px-8 py-10 md:p-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-purple-600">
             Create an account
           </h2>
-          <p className="text-center text-lg text-orange-400 mb-4 md:mb-8">
+          <p className="text-center text-md md:text-lg text-orange-400 mb-4 md:mb-6">
             Enter your information to create your account.
           </p>
           <form onSubmit={handleSubmit}>
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div>
-                <label className="text-lg font-medium text-gray-700">
+                <label className="text-md md:text-lg font-medium text-gray-700">
                   Username
                 </label>
                 <input
@@ -145,15 +136,16 @@ export default function SignupForm() {
                   name="username"
                   value={formState.username}
                   onChange={handleChange}
-                  className="mt-1 w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+                  className="mt-1 w-full px-4 py-3 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
                   placeholder="Username"
+                  required
                 />
                 {errors.username && (
                   <p className="text-red-500 text-xs">{errors.username}</p>
                 )}
               </div>
               <div>
-                <label className="text-lg font-medium text-gray-700">
+                <label className="text-md md:text-lg font-medium text-gray-700">
                   Email
                 </label>
                 <input
@@ -161,15 +153,16 @@ export default function SignupForm() {
                   name="email"
                   value={formState.email}
                   onChange={handleChange}
-                  className="mt-1 w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+                  className="mt-1 w-full px-4 py-3 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
                   placeholder="Email"
+                  required
                 />
                 {errors.email && (
                   <p className="text-red-500 text-xs">{errors.email}</p>
                 )}
               </div>
               <div>
-                <label className="text-lg font-medium text-gray-700">
+                <label className="text-md md:text-lg font-medium text-gray-700">
                   Contact
                 </label>
                 <input
@@ -177,15 +170,16 @@ export default function SignupForm() {
                   name="contact"
                   value={formState.contact}
                   onChange={handleChange}
-                  className="mt-1 w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+                  className="mt-1 w-full px-4 py-3 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
                   placeholder="Contact"
+                  required
                 />
                 {errors.contact && (
                   <p className="text-red-500 text-xs">{errors.contact}</p>
                 )}
               </div>
               <div>
-                <label className="text-lg font-medium text-gray-700">
+                <label className="text-md md:text-lg font-medium text-gray-700">
                   Password
                 </label>
                 <div className="relative">
@@ -194,13 +188,14 @@ export default function SignupForm() {
                     name="password"
                     value={formState.password}
                     onChange={handleChange}
-                    className="mt-1 w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+                    className="mt-1 w-full px-4 py-3 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
                     placeholder="Password"
+                    required
                   />
                   <button
                     type="button"
                     onClick={toggleShowPassword}
-                    className="absolute right-3 top-4"
+                    className="absolute right-3 top-3 text-gray-600 hover:text-gray-800"
                   >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
@@ -210,7 +205,7 @@ export default function SignupForm() {
                 )}
               </div>
               <div>
-                <label className="text-lg font-medium text-gray-700">
+                <label className="text-md md:text-lg font-medium text-gray-700">
                   Confirm Password
                 </label>
                 <div className="relative">
@@ -219,13 +214,14 @@ export default function SignupForm() {
                     name="confirmPassword"
                     value={formState.confirmPassword}
                     onChange={handleChange}
-                    className="mt-1 w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+                    className="mt-1 w-full px-4 py-3 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
                     placeholder="Confirm Password"
+                    required
                   />
                   <button
                     type="button"
                     onClick={toggleShowConfirmPassword}
-                    className="absolute right-3 top-4"
+                    className="absolute right-3 top-3 text-gray-600 hover:text-gray-800"
                   >
                     {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
@@ -240,14 +236,14 @@ export default function SignupForm() {
             <div className="mt-6">
               <button
                 type="submit"
-                className="w-full px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full px-5 py-3 border border-transparent text-md font-medium rounded-lg text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Sign up
               </button>
             </div>
           </form>
           <div className="mt-6 text-center">
-            <p className="text-xl text-purple-600">
+            <p className="text-md md:text-lg text-purple-600">
               Already registered?{" "}
               <Link href="/login" className="text-orange-500 hover:underline">
                 Sign In

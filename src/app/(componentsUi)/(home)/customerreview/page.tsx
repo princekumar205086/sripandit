@@ -138,61 +138,46 @@ export default function CustomerReviews() {
     autoplay: true,
     autoplaySpeed: 5000,
     responsive: [
-      {
-        breakpoint: 480, // breakpoint for mobile devices
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-      {
-        breakpoint: 768, // breakpoint for tablets
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 1024, // breakpoint for small laptops
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 1368, // breakpoint for large screens
-        settings: {
-          slidesToShow: 3,
-        },
-      },
+      { breakpoint: 480, settings: { slidesToShow: 1 } },
+      { breakpoint: 768, settings: { slidesToShow: 2 } },
+      { breakpoint: 1024, settings: { slidesToShow: 2 } },
+      { breakpoint: 1368, settings: { slidesToShow: 3 } },
     ],
   };
 
   return (
     <>
-      <div className="p-2 md:p-4 lg:p-4 bg-orange-600">
-        <h2 className="text-4xl md:text-3xl sm:text-2xl font-bold text-white text-center">
+      <div className="p-4 bg-orange-600">
+        <h2 className="text-3xl font-bold text-white text-center">
           Customer Reviews
         </h2>
       </div>
-      <div className="bg-purple-600 p-4 md:p-8 lg:p-8 h-auto" style={{backgroundImage: "url(/image/reviews.jpeg)", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}}>
+      <div
+        className="bg-purple-600 p-8 h-auto"
+        style={{
+          backgroundImage: "url(/image/reviews.jpeg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Slider
-            {...settings}
-            className="px-8 md:px-16 lg:px-24 grid grid-cols-12 gap-4"
-          >
+          <Slider {...settings} className="px-8 grid grid-cols-12 gap-4">
             {reviews.map((review) => (
               <div
                 key={review.id}
                 className="col-span-12 md:col-span-4 flex h-auto justify-center"
               >
-                <div className="max-w-lg w-full mx-auto px-4 sm:px-6 lg:px-8">
-                  <div className="bg-white rounded-lg shadow-2xl border border-gray-200 p-2 md:p-8 lg:p-8 text-center">
+                <div className="max-w-lg w-full mx-auto">
+                  <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 text-center">
                     <Image
                       src={review.image}
                       alt={review.name}
-                      className="w-16 h-16 rounded-full mx-auto"
-                      height={50}
-                      width={50}
+                      className="w-20 h-20 rounded-full mx-auto"
+                      height={80}
+                      width={80}
                     />
-                    <h3 className="text-lg font-semibold text-gray-900 mt-2">
+                    <h3 className="text-xl font-semibold text-gray-900 mt-3">
                       {review.name}
                     </h3>
                     <div className="flex justify-center items-center mt-2">
@@ -212,7 +197,7 @@ export default function CustomerReviews() {
                         </svg>
                       ))}
                     </div>
-                    <p className="text-gray-700 text-lg leading-relaxed mt-2">
+                    <p className="text-gray-700 text-md leading-relaxed mt-2">
                       {review.review}
                     </p>
                   </div>

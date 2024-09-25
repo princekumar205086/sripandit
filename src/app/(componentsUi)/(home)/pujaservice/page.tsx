@@ -140,10 +140,10 @@ const PujaServices = () => {
               loading="lazy"
             />
             <div className="px-6 py-4">
-              <div className="font-bold text-2xl mb-2 text-center">
+              <div className="font-bold text-xl mb-2 text-center"> {/* Reduced text size */}
                 {service.title}
               </div>
-              <p className="text-gray-700 text-lg text-center">
+              <p className="text-gray-700 text-base text-center"> {/* Reduced text size */}
                 {service.category.name}
               </p>
             </div>
@@ -173,7 +173,7 @@ const PujaServices = () => {
                   type="text"
                   name="s"
                   placeholder="Search by Puja name or Havan.."
-                  className="w-full px-3 py-4 pr-10 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-xl"
+                  className="w-full px-3 py-4 pr-10 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-lg"
                   id="on-page-search"
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
@@ -187,7 +187,7 @@ const PujaServices = () => {
               <select
                 name="category"
                 id="category"
-                className="w-full px-3 text-xl py-4 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="w-full px-3 text-lg py-4 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 onChange={handleCategoryChange}
                 value={selectedCategory}
               >

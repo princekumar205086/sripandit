@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./featurecard.css";
 import Link from "next/link";
-import Image from 'next/image';
+import Image from "next/image";
 
 const pujas = [
   {
@@ -34,7 +34,7 @@ const pujas = [
   },
 ];
 
-const FeaturedPujas = ({}:any) => {
+const FeaturedPujas = ({}: any) => {
   const settings = {
     accessibility: true,
     dots: true,
@@ -73,8 +73,8 @@ const FeaturedPujas = ({}:any) => {
   return (
     <>
       <div className="row m-0 p-2 bg-redOrange">
-        <h2 className="text-center">Featured Pujas</h2>
-        <h6 className="text-center text-2xl text-white">Here are some of the most popular Pujas and Homas booked on our portal</h6>
+        <h2 className="text-center text-3xl font-semibold text-white">Featured Pujas</h2>
+        <p className="text-center text-lg text-white">Here are some of the most popular Pujas and Homas booked on our portal</p>
       </div>
       <Slider {...settings} className="m-0 p-0 row overflow-hidden">
         {pujas.map((puja, index) => (
@@ -87,7 +87,7 @@ const FeaturedPujas = ({}:any) => {
               height={200}
             />
             <div className="featurespuja-card-body bg-cream m-0 p-0">
-              <h5 className="featurespuja-card-title font-bold text-2xl p-1 text-center text-orange-800">
+              <h5 className="featurespuja-card-title font-bold text-xl text-center text-orange-800">
                 {puja.pujaName}
               </h5>
             </div>
@@ -95,7 +95,9 @@ const FeaturedPujas = ({}:any) => {
         ))}
       </Slider>
       <div className="row bg-redOrange p-1">
-          <Link href='/pujaservice' className="card-btn bg-cream text-xl text-black">Explore all our puja services</Link>
+        <Link href="/pujaservice" className="card-btn bg-cream text-lg text-black px-4 text-center block mx-auto rounded-lg">
+          Explore all our puja services
+        </Link>
       </div>
     </>
   );

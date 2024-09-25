@@ -1,5 +1,5 @@
-import React from 'react'
-import './pujaservice.css';
+import React from 'react';
+
 interface SectionProps {
   bgImageUrl: string;
   title: string;
@@ -8,18 +8,20 @@ interface SectionProps {
 
 export default function Section({ bgImageUrl, title, description }: SectionProps) {
   return (
-    <section className="our-service-listing relative bg-fixed bg-cover bg-center h-200 flex justify-center items-center" style={{backgroundImage: `url('${bgImageUrl}')`}}>
-      <div className="container mx-auto">
-        <div className="text-center mt-28">
-          <p className="title mt-0 text-5xl font-bold text-white">
-            {title}
-          </p>
-          <hr className="w-16 border-t-2 border-white my-4 mx-auto" />
-          <p className="text text-xl text-white">
-            {description}
-          </p>
-        </div>
+    <section 
+      className="relative bg-fixed bg-cover bg-center h-[300px] md:h-[400px] lg:h-[500px] flex justify-center items-center" 
+      style={{ backgroundImage: `url('${bgImageUrl}')` }}
+    >
+      <div className="absolute inset-0 bg-black bg-opacity-40" /> {/* Overlay for better text readability */}
+      <div className="container mx-auto relative z-10 flex flex-col justify-center items-center text-center p-4">
+        <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+          {title}
+        </h2>
+        <hr className="w-16 border-t-2 border-orange-500 my-4 mx-auto" />
+        <p className="text-lg md:text-xl lg:text-2xl text-white max-w-3xl">
+          {description}
+        </p>
       </div>
     </section>
-  )
+  );
 }

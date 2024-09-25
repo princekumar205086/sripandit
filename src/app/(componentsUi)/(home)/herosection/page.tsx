@@ -1,4 +1,3 @@
-// Hero.tsx
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
 import BookingModal from "../utils/BookingModal";
@@ -47,18 +46,14 @@ const Hero: React.FC = () => {
 
   const text = useMemo(() => ["Pandit.", "Astrologer."], []);
 
-  const handleLocationChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handleLocationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setLocation(event.target.value);
   };
 
-  const handlePujaNameChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handlePujaNameChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;
     setPujaName(input);
-    // Fetch suggestions when input length is at least 3 characters
+
     if (input.length >= 3) {
       try {
         const response = await fetch(`/api/advicepujaname/?pujaName=${input}`);
@@ -78,7 +73,7 @@ const Hero: React.FC = () => {
   const handleSuggestionClick = (puja: string) => {
     setPujaName(puja);
     setSelectedPuja(puja);
-    setSuggestedPujas([]); // Clear suggestions after selection
+    setSuggestedPujas([]);
   };
 
   const handleModalOpen = () => {
@@ -103,10 +98,8 @@ const Hero: React.FC = () => {
       }
       const data = await response.json();
       console.log(data);
-      // Handle success (e.g., show a success message, close the modal, etc.)
     } catch (error) {
       console.error("Error:", error);
-      // Handle error (e.g., show an error message)
     } finally {
       setSubmitting(false);
       handleModalClose();
@@ -133,38 +126,36 @@ const Hero: React.FC = () => {
         <div className="flex flex-col lg:flex-row justify-between items-center h-full py-24">
           {/* Left half */}
           <div className="lg:w-2/3 flex flex-col justify-center items-center text-center text-white lg:text-left">
-            <h2 className="text-4xl lg:text-5xl font-bold leading-tight mb-6 lg:mb-8">
-              Optimal ritual encounter with certified and seasoned {typedText}
+            <h2 className="text-xl lg:text-2xl font-semibold leading-tight mb-6 lg:mb-6">
+              Optimal rituals encounter with certified and seasoned {typedText}
             </h2>
-            <p className="text-xl lg:text-2xl mb-6 lg:mb-8">
-              Okpuja offers comprehensive solutions for your spiritual needs,
-              including Puja, Homa, and Astrology services.
+            <p className="text-sm lg:text-base mb-6 lg:mb-6">
+            "Okpuja delivers a full suite of spiritual services tailored to meet your needs. Whether you're seeking traditional Puja ceremonies, powerful Homa rituals, or personalized Astrology consultations, our experienced professionals ensure a meaningful and enriching spiritual experience."
             </p>
             <button
-              className="rounded-full bg-red-500 px-8 py-4 font-semibold text-white text-lg lg:text-xl hover:bg-red-600 transition duration-300 ease-in-out"
+              className="rounded-full bg-red-500 px-6 py-3 lg:px-6 lg:py-3 font-semibold text-white hover:bg-red-600 transition duration-300 ease-in-out"
               onClick={handleModalOpen}
             >
               Book Now
             </button>
           </div>
           {/* Right half (form card) */}
-          <div className="lg:w-1/3 flex justify-center items-center mt-12 lg:mt-20">
-            <div className="bg-cream p-8 rounded-lg shadow-lg">
-              <p className="text-2xl lg:text-3xl text-orange-500 mb-6 lg:mb-8">
-                Secure the services of top-notch priests for your Pujas or Homas
-                with Okpuja{" "}
+          <div className="lg:w-1/3 flex justify-center items-center mt-12 lg:mt-0">
+            <div className="bg-cream p-6 lg:p-6 rounded-lg shadow-lg">
+              <p className="text-lg lg:text-xl text-orange-500 mb-6 lg:mb-6">
+                Secure the services of top-notch priests for your Pujas or Homas with Okpuja{" "}
                 <span className="font-bold text-red-500">{location}</span>
               </p>
-              <div className="mb-6 lg:mb-8">
+              <div className="mb-6 lg:mb-6">
                 <label
                   htmlFor="location"
-                  className="block text-xl lg:text-2xl font-medium text-orange-500 mb-2"
+                  className="block text-md lg:text-lg font-medium text-orange-500 mb-2"
                 >
                   Select City
                 </label>
                 <select
                   id="location"
-                  className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-orange-500 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="rounded-lg px-4 py-2 w-full text-md lg:text-lg text-orange-500 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
                   value={location}
                   onChange={handleLocationChange}
                 >
@@ -175,31 +166,30 @@ const Hero: React.FC = () => {
                   ))}
                 </select>
               </div>
-              <div className="mb-6 lg:mb-8">
+              <div className="mb-6 lg:mb-6">
                 <label
                   htmlFor="pujaName"
-                  className="block text-xl lg:text-2xl font-medium text-orange-500 mb-2"
+                  className="block text-md lg:text-lg font-medium text-orange-500 mb-2"
                 >
                   Enter a Puja or Homa name
                 </label>
                 <input
                   id="pujaName"
                   type="text"
-                  className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-orange-500 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="rounded-lg px-4 py-2 w-full text-md lg:text-lg text-orange-500 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                   placeholder="Enter a Puja or Homa name"
                   value={pujaName}
                   onChange={handlePujaNameChange}
                 />
-                {/* Display suggestions */}
                 {suggestedPujas.length > 0 && (
                   <div className="mt-2">
-                    <p className="text-gray-600 text-sm">Suggestions:</p>
+                    <p className="text-gray-600 text-xs">Suggestions:</p>
                     <ul className="divide-y divide-gray-200 rounded-lg bg-white shadow-lg">
                       {suggestedPujas.map((puja, index) => (
                         <li
                           key={index}
                           className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                          onClick={() => handleSuggestionClick(puja)} // Handle click on suggestion
+                          onClick={() => handleSuggestionClick(puja)}
                         >
                           {puja}
                         </li>
@@ -209,7 +199,7 @@ const Hero: React.FC = () => {
                 )}
               </div>
               <button
-                className="block w-full rounded-lg bg-red-500 px-8 py-4 font-semibold text-white text-xl lg:text-2xl hover:bg-red-600 transition duration-300 ease-in-out"
+                className="block w-full rounded-lg bg-red-500 px-6 py-3 lg:px-6 lg:py-3 font-semibold text-white text-md lg:text-lg hover:bg-red-600 transition duration-300 ease-in-out"
                 onClick={handleModalOpen}
               >
                 Book a Service
@@ -222,8 +212,8 @@ const Hero: React.FC = () => {
         isOpen={isModalOpen}
         onRequestClose={handleModalClose}
         onSubmit={handleFormSubmit}
-        initialLocation={location} // Use the state variable for location
-        initialPujaName={pujaName} // Already using the state variable for pujaName
+        initialLocation={location}
+        initialPujaName={pujaName}
       />
     </section>
   );

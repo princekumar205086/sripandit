@@ -21,3 +21,17 @@
 .bg-redOrange{
   background-color: #ff3838;
 }
+/* .content-wrapper {
+  padding-top: 85px;
+} */
+.bg-trans{
+  background-color: #000000da;
+}
+
+.text-orangeRed {
+  color: #ff4500 !important; 
+}
+
+.text-cream{
+  color:#F8EFBA;
+}

@@ -23,9 +23,12 @@ export default function ServiceCard() {
               image: "/image/deep.jpeg",
               number: "400+",
               text: "Total unique services",
-            }
+            },
           ].map((item, index) => (
-            <div key={index} className="service-card w-full md:w-1/3 px-4 mb-8 md:mb-0">
+            <div
+              key={index}
+              className="service-card w-full md:w-1/3 px-4 mb-8 md:mb-0"
+            >
               <div className="h-full p-4 bg-white rounded-lg shadow flex flex-col justify-center items-center">
                 <Image
                   alt="image"
@@ -35,8 +38,12 @@ export default function ServiceCard() {
                   height="100"
                   quality={100}
                 />
-                <p className="service-card-number text-6xl font-bold mb-2 text-orange-500">{item.number}</p>
-                <p className="service-card-text text-orange-500 text-3xl">{item.text}</p>
+                <p className="service-card-number text-4xl font-extrabold mb-2 text-orange-500">
+                  {item.number}
+                </p>
+                <p className="service-card-text text-orange-500 text-lg font-medium">
+                  {item.text}
+                </p>
               </div>
             </div>
           ))}

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
@@ -33,47 +33,18 @@ const validationSchema = Yup.object({
 });
 
 const locations = [
-  "Andhra Pradesh",
-  "Arunachal Pradesh",
-  "Assam",
-  "Bihar",
-  "Chhattisgarh",
-  "Goa",
-  "Delhi",
-  "Gujarat",
-  "Haryana",
-  "Himachal Pradesh",
-  "Jharkhand",
-  "Karnataka",
-  "Kerala",
-  "Madhya Pradesh",
-  "Maharashtra",
-  "Manipur",
-  "Meghalaya",
-  "Mizoram",
-  "Nagaland",
-  "Odisha",
-  "Punjab",
-  "Rajasthan",
-  "Sikkim",
-  "Tamil Nadu",
-  "Telangana",
-  "Tripura",
-  "Uttar Pradesh",
-  "Uttarakhand",
-  "West Bengal",
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+  "Goa", "Delhi", "Gujarat", "Haryana", "Himachal Pradesh",
+  "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra",
+  "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha",
+  "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana",
+  "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
 ];
 
 const languages = [
-  "Hindi",
-  "English",
-  "Tamil",
-  "Telugu",
-  "Kannada",
-  "Malayalam",
+  "Hindi", "English", "Tamil", "Telugu", "Kannada", "Malayalam",
 ];
 
-// Define the FormValues type to match the expected structure
 type FormValues = {
   city: string;
   pujaName: string;
@@ -131,18 +102,21 @@ const BookingModal: React.FC<BookingModalProps> = ({
 
   return (
     <div
-      className={`fixed inset-0 z-1100 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto z-50 ${
+      className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto z-50 ${
         isOpen ? "" : "hidden"
       }`}
+      role="dialog"
+      aria-modal="true"
     >
-      <div className="relative bg-white rounded-lg p-6 w-full max-w-7xl top-32">
+      <div className="relative bg-white rounded-lg p-6 w-full max-w-2xl top-32">
         <button
-          className="absolute top-2 right-5 text-gray-500 hover:text-gray-800 text-4xl"
+          className="absolute top-2 right-5 text-gray-500 hover:text-gray-800 text-3xl"
           onClick={onRequestClose}
+          aria-label="Close modal"
         >
           &times;
         </button>
-        <h2 className="text-3xl font-bold mb-6 text-black">
+        <h2 className="text-3xl font-bold mb-4 text-black">
           Book Puja Service
         </h2>
         <Formik
@@ -162,17 +136,17 @@ const BookingModal: React.FC<BookingModalProps> = ({
           {({ isSubmitting, setFieldValue, values }) => (
             <Form>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <div className="mb-6 lg:mb-8">
+                <div className="mb-4 lg:mb-6">
                   <label
                     htmlFor="city"
-                    className="block text-xl lg:text-2xl font-medium text-black mb-2"
+                    className="block text-lg lg:text-xl font-medium text-black mb-2"
                   >
                     Select City
                   </label>
                   <Field
                     name="city"
                     as="select"
-                    className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="rounded-lg px-4 py-3 w-full text-lg lg:text-xl text-gray-800 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
                   >
                     <option value="" label="Select city" />
                     {locations.map((state, index) => (
@@ -187,10 +161,10 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     className="text-red-500 text-sm"
                   />
                 </div>
-                <div className="mb-6 lg:mb-8">
+                <div className="mb-4 lg:mb-6">
                   <label
                     htmlFor="pujaName"
-                    className="block text-xl lg:text-2xl font-medium text-black mb-2"
+                    className="block text-lg lg:text-xl font-medium text-black mb-2"
                   >
                     Enter a Puja or Homa name
                   </label>
@@ -198,11 +172,10 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     id="pujaName"
                     name="pujaName"
                     type="text"
-                    className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="rounded-lg px-4 py-3 w-full text-lg lg:text-xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                     placeholder="Enter a Puja or Homa name"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      let { value } = e.target;
-                      value = value === null ? "" : value;
+                      const value = e.target.value || "";
                       setFieldValue("pujaName", value);
                       fetchSuggestions(value);
                     }}
@@ -230,17 +203,17 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     className="text-red-500 text-sm"
                   />
                 </div>
-                <div className="mb-6 lg:mb-8">
+                <div className="mb-4 lg:mb-6">
                   <label
                     htmlFor="language"
-                    className="block text-xl lg:text-2xl font-medium text-black mb-2"
+                    className="block text-lg lg:text-xl font-medium text-black mb-2"
                   >
                     Select Language
                   </label>
                   <Field
                     name="language"
                     as="select"
-                    className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="rounded-lg px-4 py-3 w-full text-lg lg:text-xl text-gray-800 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
                   >
                     <option value="" label="Select language" />
                     {languages.map((lang, index) => (
@@ -255,10 +228,10 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     className="text-red-500 text-sm"
                   />
                 </div>
-                <div className="mb-6 lg:mb-8">
+                <div className="mb-4 lg:mb-6">
                   <label
                     htmlFor="date"
-                    className="block text-xl lg:text-2xl font-medium text-black mb-2"
+                    className="block text-lg lg:text-xl font-medium text-black mb-2"
                   >
                     Date
                   </label>
@@ -266,7 +239,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     id="date"
                     name="date"
                     type="date"
-                    className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="rounded-lg px-4 py-3 w-full text-lg lg:text-xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                     value={values.date || ""}
                   />
                   <ErrorMessage
@@ -275,10 +248,10 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     className="text-red-500 text-sm"
                   />
                 </div>
-                <div className="mb-6 lg:mb-8">
+                <div className="mb-4 lg:mb-6">
                   <label
                     htmlFor="time"
-                    className="block text-xl lg:text-2xl font-medium text-black mb2"
+                    className="block text-lg lg:text-xl font-medium text-black mb-2"
                   >
                     Time
                   </label>
@@ -286,7 +259,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     id="time"
                     name="time"
                     type="time"
-                    className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="rounded-lg px-4 py-3 w-full text-lg lg:text-xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                     value={values.time || ""}
                   />
                   <ErrorMessage
@@ -295,10 +268,10 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     className="text-red-500 text-sm"
                   />
                 </div>
-                <div className="mb-6 lg:mb-8">
+                <div className="mb-4 lg:mb-6">
                   <label
                     htmlFor="location"
-                    className="block text-xl lg:text-2xl font-medium text-black mb-2"
+                    className="block text-lg lg:text-xl font-medium text-black mb-2"
                   >
                     Location
                   </label>
@@ -306,9 +279,8 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     id="location"
                     name="location"
                     type="text"
-                    className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                    placeholder="Enter Location"
-                    value={values.location || ""}
+                    className="rounded-lg px-4 py-3 w-full text-lg lg:text-xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    placeholder="Enter your location"
                   />
                   <ErrorMessage
                     name="location"
@@ -316,10 +288,10 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     className="text-red-500 text-sm"
                   />
                 </div>
-                <div className="mb-6 lg:mb-8">
+                <div className="mb-4 lg:mb-6">
                   <label
                     htmlFor="contactNumber"
-                    className="block text-xl lg:text-2xl font-medium text-black mb-2"
+                    className="block text-lg lg:text-xl font-medium text-black mb-2"
                   >
                     Contact Number
                   </label>
@@ -327,9 +299,8 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     id="contactNumber"
                     name="contactNumber"
                     type="text"
-                    className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                    placeholder="Contact Number"
-                    value={values.contactNumber || ""}
+                    className="rounded-lg px-4 py-3 w-full text-lg lg:text-xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    placeholder="Enter your contact number"
                   />
                   <ErrorMessage
                     name="contactNumber"
@@ -337,10 +308,10 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     className="text-red-500 text-sm"
                   />
                 </div>
-                <div className="mb-6 lg:mb-8">
+                <div className="mb-4 lg:mb-6">
                   <label
                     htmlFor="email"
-                    className="block text-xl lg:text-2xl font-medium text-black mb-2"
+                    className="block text-lg lg:text-xl font-medium text-black mb-2"
                   >
                     Email
                   </label>
@@ -348,9 +319,8 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     id="email"
                     name="email"
                     type="email"
-                    className="rounded-lg px-4 py-3 w-full text-xl lg:text-2xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                    placeholder="Email"
-                    value={values.email || ""}
+                    className="rounded-lg px-4 py-3 w-full text-lg lg:text-xl text-gray-800 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    placeholder="Enter your email address"
                   />
                   <ErrorMessage
                     name="email"
@@ -361,10 +331,10 @@ const BookingModal: React.FC<BookingModalProps> = ({
               </div>
               <button
                 type="submit"
-                className="block w-full rounded-lg bg-red-500 px-8 py-4 font-semibold text-white text-xl lg:text-2xl hover:bg-red-600 transition duration-300 ease-in-out"
                 disabled={isSubmitting}
+                className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white font-semibold text-lg lg:text-xl py-3 rounded-lg focus:outline-none"
               >
-                Submit
+                {isSubmitting ? "Booking..." : "Book Now"}
               </button>
             </Form>
           )}
