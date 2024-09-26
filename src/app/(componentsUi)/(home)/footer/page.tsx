@@ -38,10 +38,10 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="py-12 bg-[#F8EFBA]">
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-4">
+    <footer className="bg-[#F8EFBA]">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-4 p-2">
         {/* First Section */}
-        <div className="p-6">
+        <div className="p-6 shadow-lg">
           <div className="mb-8 text-center md:text-left">
             <Image src="/image/okpuja logo social.png" alt="Logo" width={150} height={150} />
             <p className="text-sm sm:text-base md:text-lg text-orange-500 mt-2">
@@ -51,7 +51,7 @@ const Footer = () => {
         </div>
 
         {/* Second Section */}
-        <div className="p-6">
+        <div className="p-6 shadow-lg">
           <h3 className="text-lg md:text-xl font-bold text-orange-500 mb-4">Hindu Puja</h3>
           <ul>
             {pujaList.map((puja, index) => (
@@ -65,7 +65,7 @@ const Footer = () => {
         </div>
 
         {/* Third Section */}
-        <div className="p-6">
+        <div className="p-6 shadow-lg">
           <h3 className="text-lg md:text-xl font-bold text-orange-500 mb-4">Menu</h3>
           <ul>
             {menuList.map((menuItem, index) => (
@@ -79,7 +79,7 @@ const Footer = () => {
         </div>
 
         {/* Fourth Section */}
-        <div className="p-6">
+        <div className="p-6 shadow-lg">
           <h3 className="text-lg md:text-xl font-bold text-orange-500 mb-4">Contact Us</h3>
           <p className="text-base md:text-lg text-orange-500">
             Address: Ram Ratan Ji Nagar Rambagh, Purnia, Bihar, 854301 <br />
@@ -93,7 +93,7 @@ const Footer = () => {
             <Link href="https://wa.me/919471661636" className="mr-4 text-3xl text-orange-500 hover:text-orange-600">
               <FaWhatsapp />
             </Link>
-            <Link href="#" className="mr-4 text-3xl text-orange-500 hover:text-orange-600">
+            <Link href="https://www.instagram.com/invites/contact/?i=1j2rqp3o76eq5&utm_content=v2q78s6" className="mr-4 text-3xl text-orange-500 hover:text-orange-600">
               <FaInstagram />
             </Link>
             <Link href="#" className="mr-4 text-3xl text-orange-500 hover:text-orange-600">
@@ -104,8 +104,8 @@ const Footer = () => {
       </div>
 
       {/* Footer Credit */}
-      <div className="text-center mt-8">
-        <p className="text-lg md:text-xl font-bold text-orange-500">
+      <div className="text-center bg-redOrange sticky-bottom">
+        <p className="text-lg md:text-xl font-bold text-cream">
           &copy; {new Date().getFullYear()} Okpuja. All Rights Reserved. |{" "}
           Powered by <Link href="https://www.webdigger.in"><u><strong>Webdigger</strong></u></Link>
         </p>

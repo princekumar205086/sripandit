@@ -90,9 +90,9 @@ const Navbar = () => {
 
         {/* Mobile Menu Sliding from Left */}
         <div
-          className={`md:hidden fixed top-0 left-0 w-64 h-full mt-20 transform transition-transform duration-300 ease-in-out ${
+          className={`md:hidden fixed left-0 w-64 h-full transform transition-transform duration-300 ease-in-out ${
             isMenuOpen ? "translate-x-0" : "-translate-x-full"
-          } ${isScrolled ? "bg-cream text-orangeRed mt-14" : "bg-trans"}`}
+          } ${isScrolled ? "bg-cream text-orangeRed" : "bg-trans"}`}
         >
           <div className="p-6 space-y-4">
             {menuData.map((item, index) => (
