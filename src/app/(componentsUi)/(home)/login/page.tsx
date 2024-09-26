@@ -44,26 +44,26 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-6 sm:py-12 relative mt-16">
+    <div className="min-h-screen flex items-center justify-center py-6 sm:py-12 relative mt-24">
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center bg-opacity-40"
         style={{
           backgroundImage: 'url("/image/astro.jpg")',
-          filter: "blur(15px)",
+          filter: "blur(50px)",
         }}
       ></div>
-      <div className="bg-white bg-opacity-60 rounded-lg shadow-lg overflow-hidden max-w-lg w-full relative z-10">
-        <div className="px-6 py-8 md:p-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-purple-600">
+      <div className="bg-cream bg-opacity-70 rounded-lg shadow-lg overflow-hidden max-w-md w-full relative z-10">
+        <div className="px-8 py-10 md:p-12">
+          <h2 className="text-xl md:text-2xl font-bold text-center text-orange-500">
             Login to your account
           </h2>
-          <p className="text-center text-lg text-orange-400 mb-4 md:mb-6">
+          <p className="text-center text-sm md:text-md text-orange-400 mb-4 md:mb-6">
             Enter your credentials to login.
           </p>
           <form onSubmit={onSubmit}>
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div>
-                <label className="text-lg font-medium text-gray-700">
+                <label className="text-sm md:text-md font-small text-orange-500">
                   Email
                 </label>
                 <input
@@ -71,40 +71,36 @@ export default function LoginForm() {
                   name="email"
                   value={formState.email}
                   onChange={handleChange}
-                  className="mt-1 w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-                  placeholder="Email"
+                  className="mt-1 w-full px-4 py-3 border rounded-lg text-orange-500 focus:outline-none focus:border-orange-500"
                   required
                 />
                 {errors.email && (
-                  <p className="text-red-500 text-sm">{errors.email}</p>
+                  <p className="text-red-500 text-xs">{errors.email}</p>
                 )}
               </div>
-              <div className="relative">
-                <label className="text-lg font-medium text-gray-700">
+              <div>
+                <label className="text-sm md:text-md font-small text-orange-500">
                   Password
                 </label>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={formState.password}
-                  onChange={handleChange}
-                  className="mt-1 w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-                  placeholder="Password"
-                  required
-                />
-                <div
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-5 pr-3 flex items-center cursor-pointer"
-                  style={{
-                    top: "calc(50% + 1rem)",
-                    transform: "translateY(-50%)",
-                  }}
-                  title="Toggle password visibility"
-                >
-                  {showPassword ? <FiEyeOff /> : <FiEye />}
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formState.password}
+                    onChange={handleChange}
+                    className="mt-1 w-full px-4 py-3 border rounded-lg text-orange-500 focus:outline-none focus:border-orange-500"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 bottom-3 text-orange-600 hover:text-orange-700"
+                  >
+                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                  </button>
                 </div>
                 {errors.password && (
-                  <p className="text-red-500 text-sm">{errors.password}</p>
+                  <p className="text-red-500 text-xs">{errors.password}</p>
                 )}
               </div>
               <div className="flex items-center">
@@ -115,7 +111,7 @@ export default function LoginForm() {
                   onChange={handleChange}
                   className="mt-1 mr-2"
                 />
-                <label className="text-lg font-medium text-gray-700">
+                <label className="text-sm md:text-md font-small text-orange-500">
                   Stay Signed In
                 </label>
               </div>
@@ -124,7 +120,7 @@ export default function LoginForm() {
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full px-4 py-2 border border-transparent text-lg font-medium rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+                className={`w-full px-5 py-3 border border-transparent text-md font-medium rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
                   loading ? "bg-gray-400" : "bg-orange-600 hover:bg-orange-700"
                 }`}
               >
@@ -133,26 +129,17 @@ export default function LoginForm() {
             </div>
           </form>
           <div className="mt-6 text-center">
-            <p className="text-lg text-purple-600">
+            <p className="text-md md:text-lg text-purple-600">
               Don&apos;t have an account?{" "}
-              <Link
-                href="/register"
-                className="text-orange-500 hover:underline"
-              >
+              <Link href="/register" className="text-orange-500 hover:underline">
                 Sign Up
               </Link>
             </p>
-            <p className="text-lg text-purple-600">
-              <Link
-                href="/forgot-password"
-                className="text-orange-500 hover:underline"
-              >
+            <p className="text-md md:text-lg text-purple-600">
+              <Link href="/forgot-password" className="text-orange-500 hover:underline">
                 Forgot Password?
               </Link>
             </p>
-            <button className="w-full px-4 py-2 border border-transparent text-lg font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-4">
-              Login with Google
-            </button>
           </div>
         </div>
       </div>

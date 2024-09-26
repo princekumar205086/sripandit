@@ -60,11 +60,11 @@ const Astrology = () => {
         title="Astrology Services"
         description="Explore the range of astrology services we provide."
       />
-      <div className="flex flex-col justify-center items-center m-0 p-6 bg-purple-700">
-        <h2 className="text-2xl md:text-3xl text-white font-extrabold text-center mb-4">
+      <div className="flex flex-col justify-center items-center m-0 p-2 bg-redOrange">
+        <h2 className="text-xl md:text-2xl text-cream font-extrabold text-center mb-4">
           Please select your preferred astrology service
         </h2>
-        <p className="text-lg md:text-xl text-gray-100">
+        <p className="text-md md:text-lg text-cream">
           Make an appointment with our Astrologers.
         </p>
       </div>

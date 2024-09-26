@@ -6,11 +6,12 @@ import Link from "next/link";
 import Image from "next/image";
 
 const menuData = [
+  { name: "Home", link: "/" },
   { name: "Puja Service", link: "/pujaservice" },
   { name: "Astrology", link: "/astrology" },
   { name: "Blog", link: "/blog" },
   { name: "Contact", link: "/contactus" },
-  { name: "Signup/Signin", link: "/register" },
+  { name: "SignUp/SignIn", link: "/register" },
 ];
 
 const Navbar = () => {
@@ -53,7 +54,7 @@ const Navbar = () => {
             </div>
 
             {/* Unified Menu Links (Desktop) */}
-            <div className="hidden md:flex flex-1 justify-center space-x-6 items-center">
+            <div className="hidden md:flex flex-1 justify-center space-x-3 text-md font-bold items-center h-full w-full">
               {menuData.map((item, index) => (
                 <Link key={index} href={item.link}>
                   <span className="text-orangeRed hover:text-orange-400 cursor-pointer relative group">

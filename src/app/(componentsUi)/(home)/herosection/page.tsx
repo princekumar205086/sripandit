@@ -142,20 +142,20 @@ const Hero: React.FC = () => {
           {/* Right half (form card) */}
           <div className="lg:w-1/3 flex justify-center items-center mt-12 lg:mt-0">
             <div className="bg-cream p-6 lg:p-6 rounded-lg shadow-lg">
-              <p className="text-lg lg:text-xl text-orange-500 mb-6 lg:mb-6">
+              <p className="text-base lg:text-lg text-orange-500 mb-6 lg:mb-6">
                 Secure the services of top-notch priests for your Pujas or Homas with Okpuja{" "}
                 <span className="font-bold text-red-500">{location}</span>
               </p>
               <div className="mb-6 lg:mb-6">
                 <label
                   htmlFor="location"
-                  className="block text-md lg:text-lg font-medium text-orange-500 mb-2"
+                  className="block text-sm lg:text-base font-medium text-orange-500 mb-2"
                 >
                   Select City
                 </label>
                 <select
                   id="location"
-                  className="rounded-lg px-4 py-2 w-full text-md lg:text-lg text-orange-500 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="rounded-lg px-4 py-2 w-full text-sm lg:text-md text-orange-500 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
                   value={location}
                   onChange={handleLocationChange}
                 >
@@ -169,22 +169,22 @@ const Hero: React.FC = () => {
               <div className="mb-6 lg:mb-6">
                 <label
                   htmlFor="pujaName"
-                  className="block text-md lg:text-lg font-medium text-orange-500 mb-2"
+                  className="block text-sm lg:text-md font-medium text-orange-500 mb-2"
                 >
                   Enter a Puja or Homa name
                 </label>
                 <input
                   id="pujaName"
                   type="text"
-                  className="rounded-lg px-4 py-2 w-full text-md lg:text-lg text-orange-500 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="rounded-lg px-4 py-2 w-full text-sm lg:text-md text-orange-500 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
                   placeholder="Enter a Puja or Homa name"
                   value={pujaName}
                   onChange={handlePujaNameChange}
                 />
                 {suggestedPujas.length > 0 && (
                   <div className="mt-2">
-                    <p className="text-gray-600 text-xs">Suggestions:</p>
-                    <ul className="divide-y divide-gray-200 rounded-lg bg-white shadow-lg">
+                    <p className="text-red-600 text-xs">Suggestions:</p>
+                    <ul className="divide-y divide-gray-200 rounded-lg bg-white shadow-lg text-orange-500">
                       {suggestedPujas.map((puja, index) => (
                         <li
                           key={index}
@@ -199,7 +199,7 @@ const Hero: React.FC = () => {
                 )}
               </div>
               <button
-                className="block w-full rounded-lg bg-red-500 px-6 py-3 lg:px-6 lg:py-3 font-semibold text-white text-md lg:text-lg hover:bg-red-600 transition duration-300 ease-in-out"
+                className="block w-full rounded-lg bg-red-500 px-6 py-3 lg:px-6 lg:py-3 font-semibold text-white text-sm lg:text-md hover:bg-red-600 transition duration-300 ease-in-out"
                 onClick={handleModalOpen}
               >
                 Book a Service

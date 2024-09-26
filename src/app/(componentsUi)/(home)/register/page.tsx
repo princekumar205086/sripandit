@@ -111,24 +111,24 @@ export default function SignupForm() {
   return (
     <div className="min-h-screen flex items-center justify-center py-6 sm:py-12 relative mt-24">
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center bg-opacity-40"
         style={{
           backgroundImage: 'url("/image/astro.jpg")',
           filter: "blur(50px)",
         }}
       ></div>
-      <div className="bg-white bg-opacity-70 rounded-lg shadow-lg overflow-hidden max-w-lg w-full relative z-10">
+      <div className="bg-cream bg-opacity-70 rounded-lg shadow-lg overflow-hidden max-w-md w-full relative z-10">
         <div className="px-8 py-10 md:p-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-purple-600">
+          <h2 className="text-xl md:text-2xl font-bold text-center text-orange-500">
             Create an account
           </h2>
-          <p className="text-center text-md md:text-lg text-orange-400 mb-4 md:mb-6">
+          <p className="text-center text-sm md:text-md text-orange-400 mb-4 md:mb-6">
             Enter your information to create your account.
           </p>
           <form onSubmit={handleSubmit}>
             <div className="space-y-5">
               <div>
-                <label className="text-md md:text-lg font-medium text-gray-700">
+                <label className="text-sm md:text-md font-small text-orange-500">
                   Username
                 </label>
                 <input
@@ -136,8 +136,7 @@ export default function SignupForm() {
                   name="username"
                   value={formState.username}
                   onChange={handleChange}
-                  className="mt-1 w-full px-4 py-3 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-                  placeholder="Username"
+                  className="mt-1 w-full px-4 py-3 border rounded-lg text-orange-500 focus:outline-none focus:border-orange-500"
                   required
                 />
                 {errors.username && (
@@ -145,7 +144,7 @@ export default function SignupForm() {
                 )}
               </div>
               <div>
-                <label className="text-md md:text-lg font-medium text-gray-700">
+                <label className="text-sm md:text-md font-small text-orange-500">
                   Email
                 </label>
                 <input
@@ -153,8 +152,7 @@ export default function SignupForm() {
                   name="email"
                   value={formState.email}
                   onChange={handleChange}
-                  className="mt-1 w-full px-4 py-3 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-                  placeholder="Email"
+                  className="mt-1 w-full px-4 py-3 border rounded-lg text-orange-500 focus:outline-none focus:border-orange-500"
                   required
                 />
                 {errors.email && (
@@ -162,7 +160,7 @@ export default function SignupForm() {
                 )}
               </div>
               <div>
-                <label className="text-md md:text-lg font-medium text-gray-700">
+                <label className="text-sm md:text-md font-small text-orange-500">
                   Contact
                 </label>
                 <input
@@ -170,8 +168,7 @@ export default function SignupForm() {
                   name="contact"
                   value={formState.contact}
                   onChange={handleChange}
-                  className="mt-1 w-full px-4 py-3 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-                  placeholder="Contact"
+                  className="mt-1 w-full px-4 py-3 border rounded-lg text-orange-500 focus:outline-none focus:border-orange-500"
                   required
                 />
                 {errors.contact && (
@@ -179,7 +176,7 @@ export default function SignupForm() {
                 )}
               </div>
               <div>
-                <label className="text-md md:text-lg font-medium text-gray-700">
+                <label className="text-sm md:text-md font-small text-orange-500">
                   Password
                 </label>
                 <div className="relative">
@@ -188,14 +185,13 @@ export default function SignupForm() {
                     name="password"
                     value={formState.password}
                     onChange={handleChange}
-                    className="mt-1 w-full px-4 py-3 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-                    placeholder="Password"
+                    className="mt-1 w-full px-4 py-3 border rounded-lg text-orange-500 focus:outline-none focus:border-orange-500"
                     required
                   />
                   <button
                     type="button"
                     onClick={toggleShowPassword}
-                    className="absolute right-3 top-3 text-gray-600 hover:text-gray-800"
+                    className="absolute right-3 bottom-3 text-orange-600 hover:text-orange-700"
                   >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
@@ -205,7 +201,7 @@ export default function SignupForm() {
                 )}
               </div>
               <div>
-                <label className="text-md md:text-lg font-medium text-gray-700">
+                <label className="text-sm md:text-md font-small text-orange-500">
                   Confirm Password
                 </label>
                 <div className="relative">
@@ -214,14 +210,13 @@ export default function SignupForm() {
                     name="confirmPassword"
                     value={formState.confirmPassword}
                     onChange={handleChange}
-                    className="mt-1 w-full px-4 py-3 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-                    placeholder="Confirm Password"
+                    className="mt-1 w-full px-4 py-3 border rounded-lg text-orange-500 focus:outline-none focus:border-orange-500"
                     required
                   />
                   <button
                     type="button"
                     onClick={toggleShowConfirmPassword}
-                    className="absolute right-3 top-3 text-gray-600 hover:text-gray-800"
+                    className="absolute right-3 bottom-3 text-orange-600 hover:text-orange-700"
                   >
                     {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>

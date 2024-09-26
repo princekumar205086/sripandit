@@ -31,14 +31,14 @@ const HowItWorks = () => {
       <div className="flex flex-col md:flex-row items-stretch justify-center bg-redOrange">
         <div className="md:w-1/2 flex items-center justify-center text-center p-4">
           <div className="bg-cream flex flex-col justify-center shadow-md p-8 text-center">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-orange-600">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-orange-600">
               How okpuja works
             </h2>
-            <p className="text-orange-500 text-lg md:text-2xl mt-3">
+            <p className="text-orange-500 text-lg md:text-xl mt-3">
               Immerse yourself in the serenity of sacred puja services effortlessly. Our dedicated team of qualified pandits and purohits ensures seamless rituals tailored to your specific requirements. With just a few clicks, you can book your puja online and have the puja samagri delivered right to your doorstep, making the entire process convenient and stress-free.
             </p>
             <div className="flex justify-center mt-4">
-              <button className="bg-redOrange hover:bg-orange-700 hover:text-white text-white md:text-base text-3xl font-bold py-2 px-4 rounded outline-none">
+              <button className="bg-redOrange hover:bg-orange-700 hover:text-white text-white md:text-base text-xl font-bold py-2 px-4 rounded outline-none">
                 Book Now
               </button>
             </div>
@@ -68,10 +68,10 @@ const HowItWorks = () => {
                 height={80}
                 quality={100}
               />
-              <h2 className="text-2xl font-semibold text-white mb-2">
+              <h2 className="text-xl font-semibold text-cream mb-2">
                 {item.title}
               </h2>
-              <p className="text-center text-white">{item.description}</p>
+              <p className="text-center text-cream text-base">{item.description}</p>
             </div>
           </div>
         ))}

@@ -139,11 +139,11 @@ const PujaServices = () => {
               height="450"
               loading="lazy"
             />
-            <div className="px-6 py-4">
-              <div className="font-bold text-xl mb-2 text-center"> {/* Reduced text size */}
+            <div className="px-6 py-4 bg-cream">
+              <div className="font-bold text-sm mb-2 text-center text-orangeRed"> {/* Reduced text size */}
                 {service.title}
               </div>
-              <p className="text-gray-700 text-base text-center"> {/* Reduced text size */}
+              <p className="text-orange-500 text-xs text-center"> {/* Reduced text size */}
                 {service.category.name}
               </p>
             </div>
@@ -172,14 +172,14 @@ const PujaServices = () => {
                 <input
                   type="text"
                   name="s"
-                  placeholder="Search by Puja name or Havan.."
-                  className="w-full px-3 py-4 pr-10 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-lg"
+                  placeholder="Search by Puja name or Havan."
+                  className="w-full px-3 py-4 pr-10 border rounded text-orange-500 leading-tight focus:outline-none focus:shadow-outline text-md"
                   id="on-page-search"
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                 />
                 <div className="absolute right-5 top-1/2 transform -translate-y-1/2 mr-3">
-                  <FaSearch className="text-gray-600 font-bold" />
+                  <FaSearch className="text-orange-600 font-bold" />
                 </div>
               </div>
             </div>
@@ -187,7 +187,7 @@ const PujaServices = () => {
               <select
                 name="category"
                 id="category"
-                className="w-full px-3 text-lg py-4 border rounded text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="w-full px-3 text-md py-4 border rounded text-orange-500 leading-tight focus:outline-none focus:shadow-outline"
                 onChange={handleCategoryChange}
                 value={selectedCategory}
               >
