@@ -8,6 +8,7 @@ import ToastProvider from "@/lib/ToastProvider";
 import "@/app/globals.css";
 import LoaderWrapper from "./LoaderWrapper";
 import { FaWhatsapp } from "react-icons/fa";
+import 'react-toastify/ReactToastify.min.css';
 
 const inter = Inter({ subsets: ["latin"] });
 

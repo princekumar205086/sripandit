@@ -1,5 +1,5 @@
 "use client";
-// this is root layout for user
+// this is the root layout for user
 import React, { ReactNode, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -31,6 +31,9 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import "react-toastify/ReactToastify.min.css";
+import "@/app/globals.css";
+import Image from "next/image";
 
 interface Props {
   children?: ReactNode;
@@ -85,30 +88,40 @@ export default function Layout(props: Props) {
   };
 
   const drawer = (
-    <div>
-      <Toolbar className="shadow-lg">
-        <Typography variant="h6" noWrap component="div" className="font-semibold">
-          OKPUJA
-        </Typography>
+    <div className="bg-redOrange text-cream h-full">
+      {/* Apply background and text color */}
+      <Toolbar className="shadow-lg bg-cream">
+        <Link href="/">
+          <Image
+            alt="logo"
+            src="/image/okpuja logo.png"
+            height={50}
+            width={180}
+          />
+        </Link>
       </Toolbar>
       <Divider />
       <List>
         {["Dashboard", "Profile", "Users", "Analytics"].map((text) => (
-          <Link href={`/${text.toLowerCase()}`} key={text} style={{ textDecoration: "none", color: "black" }}>
+          <Link
+            href={`/${text.toLowerCase()}`}
+            key={text}
+            style={{ textDecoration: "none", color: "black" }}
+          >
             <ListItem
               disablePadding
               className={
                 pathname.startsWith("/" + text.toLowerCase())
-                  ? "text-sky-600 bg-slate-100"
-                  : "text-slate-700"
+                  ? "text-orangeRed bg-cream"
+                  : "text-cream" // Change text color to cream
               }
             >
               <ListItemButton>
                 <ListItemIcon
                   className={
                     pathname.startsWith("/" + text.toLowerCase())
-                      ? "text-sky-600 bg-slate-100"
-                      : "text-slate-700"
+                      ? "text-orangeRed bg-cream"
+                      : "text-cream" // Change text color to cream
                   }
                 >
                   {text === "Dashboard" && <DashboardIcon />}
@@ -128,7 +141,7 @@ export default function Layout(props: Props) {
           className={
             pathname.startsWith("/setting")
               ? "text-sky-600 bg-slate-100"
-              : "text-slate-700"
+              : "text-cream" // Change text color to cream
           }
         >
           <ListItemButton>
@@ -136,7 +149,7 @@ export default function Layout(props: Props) {
               className={
                 pathname.startsWith("/setting")
                   ? "text-sky-600 bg-slate-100"
-                  : "text-slate-700"
+                  : "text-cream" // Change text color to cream
               }
             >
               <SettingsIcon />
@@ -149,13 +162,17 @@ export default function Layout(props: Props) {
       <Collapse in={isCollapse} timeout="auto" unmountOnExit>
         <List>
           {["Support", "Change-Password", "Contact"].map((text) => (
-            <Link href={`/${text.toLowerCase()}`} key={text} style={{ textDecoration: "none", color: "black" }}>
+            <Link
+              href={`/${text.toLowerCase()}`}
+              key={text}
+              style={{ textDecoration: "none", color: "black" }}
+            >
               <ListItem
                 disablePadding
                 className={
                   pathname.startsWith("/" + text.toLowerCase())
                     ? "text-sky-600 bg-slate-100"
-                    : "text-slate-700"
+                    : "text-cream" // Change text color to cream
                 }
               >
                 <ListItemButton>
@@ -163,7 +180,7 @@ export default function Layout(props: Props) {
                     className={
                       pathname.startsWith("/" + text.toLowerCase())
                         ? "text-sky-600 bg-slate-100"
-                        : "text-slate-700"
+                        : "text-cream" // Change text color to cream
                     }
                   >
                     {text === "Support" && <SupportAgentIcon />}
@@ -178,7 +195,7 @@ export default function Layout(props: Props) {
         </List>
       </Collapse>
       <Divider />
-      <List>
+      <List className="bg-cream text-orangeRed">
         <ListItem disablePadding onClick={handleLogout} sx={{ mt: 2 }}>
           <ListItemButton>
             <ListItemIcon>
@@ -195,7 +212,7 @@ export default function Layout(props: Props) {
 
   return (
     <html lang="en">
-      <body>
+      <body className="bg-cream">
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <AppBar
@@ -203,8 +220,8 @@ export default function Layout(props: Props) {
             sx={{
               width: { sm: `calc(100% - ${drawerWidth}px)` },
               ml: { sm: `${drawerWidth}px` },
-              bgcolor: "linear-gradient(to right, #6a11cb, #2575fc)",
-              color: "#ffffff",
+              bgcolor: "#ff4500",
+              color: "#F8EFBA",
               boxShadow: "none",
               borderBottom: "solid #6a11cb 1px",
             }}
@@ -219,7 +236,12 @@ export default function Layout(props: Props) {
               >
                 <MenuIcon />
               </IconButton>
-              <Typography variant="h6" noWrap component="div" sx={{ fontWeight: "bold" }}>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ fontWeight: "bold" }}
+              >
                 {pathname.replace(/^\//, "").toUpperCase()}
               </Typography>
               <Box sx={{ flexGrow: 1 }} />
@@ -230,13 +252,14 @@ export default function Layout(props: Props) {
                 sx={{
                   textTransform: "none",
                   borderRadius: "20px",
+                  color: "#ff4500",
                   px: 3,
-                  backgroundColor: "#f50057",
+                  backgroundColor: "#F8EFBA",
                   "&:hover": {
-                    backgroundColor: "#c51162",
+                    backgroundColor: "#F8EF99",
                   },
                 }}
-                startIcon={<LogoutIcon />}
+                startIcon={<LogoutIcon className="text-orange-500" />}
               >
                 Logout
               </Button>
@@ -286,9 +309,9 @@ export default function Layout(props: Props) {
               flexGrow: 1,
               p: 3,
               width: { sm: `calc(100% - ${drawerWidth}px)` },
+              mt: 4,
             }}
           >
-            <Toolbar />
             {children}
           </Box>
         </Box>

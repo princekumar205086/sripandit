@@ -44,7 +44,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-6 sm:py-12 relative mt-24">
+    <div className="min-h-screen flex items-center justify-center py-6 sm:py-12 relative mt-12">
       <div
         className="absolute inset-0 bg-cover bg-center bg-opacity-40"
         style={{
@@ -52,8 +52,8 @@ export default function LoginForm() {
           filter: "blur(50px)",
         }}
       ></div>
-      <div className="bg-cream bg-opacity-70 rounded-lg shadow-lg overflow-hidden max-w-md w-full relative z-10">
-        <div className="px-8 py-10 md:p-12">
+      <div className="bg-cream bg-opacity-70 rounded-lg shadow-sm overflow-hidden max-w-md w-full relative z-10 mx-4 sm:mx-0">
+        <div className="px-6 py-8 sm:px-8 sm:py-10 md:p-12">
           <h2 className="text-xl md:text-2xl font-bold text-center text-orange-500">
             Login to your account
           </h2>
