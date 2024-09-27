@@ -42,13 +42,13 @@ const Navbar = () => {
         <div className="container mx-auto px-4 h-full">
           <div className="flex items-center justify-between h-full">
             {/* Logo Section */}
-            <div className="w-3/12 md:w-2/12 flex items-center">
+            <div className="w-3/12 md:w-2/12 flex">
               <Link href="/">
                 <Image
                   alt="logo"
                   src="/image/okpuja logo.png"
-                  height={100}
-                  width={180}
+                  height={120}
+                  width={220}
                 />
               </Link>
             </div>
