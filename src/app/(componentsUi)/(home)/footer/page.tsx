@@ -23,18 +23,15 @@ const Footer = () => {
 
   // Sample data for Menu list
   const menuList = [
-    "About Us",
-    "Services",
-    "Contact Us",
-    "Terms of Service",
-    "Privacy Policy",
-    "FAQs",
-    "Testimonials",
-    "Blog",
-    "Careers",
-    "Gallery",
-    "Events",
-    "Book Now",
+    { name: "About Us", link: "/about" },
+    { name: "Puja Services", link: "/pujaservice" },
+    { name: "Astrology Services", link: "/astrology" },
+    { name: "Contact Us", link: "/contactus" },
+    { name: "Terms of Service", link: "/terms-of-tervice" },
+    { name: "Privacy Policy", link: "/privacy-policy" },
+    { name: "Blog", link: "/blog" },
+    { name: "Careers", link: "/careers" },
+    { name: "Gallery", link: "/gallery" },
   ];
 
   return (
@@ -70,8 +67,8 @@ const Footer = () => {
           <ul>
             {menuList.map((menuItem, index) => (
               <li key={index}>
-                <Link href="#" className="hover:text-orange-600 text-orange-500 text-base md:text-lg">
-                  {menuItem}
+                <Link href={menuItem.link} className="hover:text-orange-600 text-orange-500 text-base md:text-lg">
+                  {menuItem.name}
                 </Link>
               </li>
             ))}

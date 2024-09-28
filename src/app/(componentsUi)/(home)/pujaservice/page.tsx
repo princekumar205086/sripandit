@@ -123,7 +123,7 @@ const PujaServices = () => {
 
   const renderServices = () => {
     return filteredServices.map((service, index) => (
-      <div key={index} className="lg:w-1/4 md:w-1/2 w-full px-4 mb-4">
+      <div key={index} className="lg:w-1/4 md:w-1/2 w-full p-2 shadow-lg">
         <Link
           href={`/pujaservice/${slugify(service.title)}?id=${encodeURIComponent(
             encryptId(service.id)
@@ -164,7 +164,7 @@ const PujaServices = () => {
         title="Puja Services"
         description="See all the Puja services that we offer"
       />
-      <section className="mt-0 bg-gray-200 border-0">
+      <section className="mt-0 bg-redOrange border-0">
         <div className="container mx-auto p-4">
           <div className="flex flex-wrap -mx-4 mb-4">
             <div className="md:w-3/4 w-full px-4">
@@ -200,7 +200,7 @@ const PujaServices = () => {
               </select>
             </div>
           </div>
-          <div className="flex flex-wrap -mx-4">{renderServices()}</div>
+          <div className="flex flex-wrap mx-4">{renderServices()}</div>
         </div>
       </section>
     </>

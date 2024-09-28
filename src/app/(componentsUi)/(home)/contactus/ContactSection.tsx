@@ -40,7 +40,7 @@ const ContactSection = () => {
                 <div className="mb-4" aria-hidden="true">
                   {info.icon}
                 </div>
-                <h2 className="text-xl font-bold mb-2" id={`contact-${index}`}>
+                <h2 className="text-xl text-orange-500 font-bold mb-2" id={`contact-${index}`}>
                   {info.title}
                 </h2>
                 <div

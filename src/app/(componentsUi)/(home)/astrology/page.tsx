@@ -56,19 +56,19 @@ const Astrology = () => {
   return (
     <>
       <Section
-        bgImageUrl="/image/astrology.png"
+        bgImageUrl="/image/astrology.jpeg"
         title="Astrology Services"
         description="Explore the range of astrology services we provide."
       />
-      <div className="flex flex-col justify-center items-center m-0 p-2 bg-redOrange">
-        <h2 className="text-xl md:text-2xl text-cream font-extrabold text-center mb-4">
+      <div className="flex flex-col justify-center items-center m-0 p-2 bg-cream">
+        <h2 className="text-xl md:text-2xl text-orangeRed font-extrabold text-center mb-4">
           Please select your preferred astrology service
         </h2>
-        <p className="text-md md:text-lg text-cream">
+        <p className="text-md md:text-lg text-orangeRed">
           Make an appointment with our Astrologers.
         </p>
       </div>
-      <div className="flex flex-row justify-center items-center m-0 p-4">
+      <div className="flex flex-row justify-center items-center m-0 p-4 bg-redOrange">
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service) => (
             <Link
@@ -87,12 +87,12 @@ const Astrology = () => {
                   loading="lazy"
                 />
                 <div className={`${styles.titleOverlay} absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100`}>
-                  <h3 className="text-lg md:text-2xl font-bold text-white text-center">
+                  <h3 className="text-lg md:text-xl font-bold text-orange-500 text-center">
                     {service.service_title}
                   </h3>
                 </div>
-                <div className="p-4">
-                  <h3 className="text-lg md:text-xl font-bold text-center">
+                <div className="p-4 bg-cream">
+                  <h3 className="text-md md:text-lg font-bold text-center text-orangeRed">
                     {service.service_title}
                   </h3>
                 </div>

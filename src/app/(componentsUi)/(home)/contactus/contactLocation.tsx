@@ -20,9 +20,9 @@ const LocationMap = () => {
   };
 
   return (
-    <section className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800 flex items-center">
-        <FaMapMarkerAlt className="mr-2 text-red-500" />
+    <section className="max-w-full mx-auto p-6 bg-orange-500 rounded-lg shadow-lg">
+      <h2 className="text-3xl font-bold mb-6 text-cream flex items-center">
+        <FaMapMarkerAlt className="mr-2 text-cream" />
         Location
       </h2>
       <div className="relative overflow-hidden rounded-lg">
@@ -38,7 +38,7 @@ const LocationMap = () => {
         )}
         <iframe
           title="Location Map"
-          src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215635695635!2d-73.98511678459418!3d40.74881797932847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1629794729599!5m2!1sen!2sus&maptype=${mapType}`}
+          src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14369.238922855546!2d87.48947373349961!3d25.79335390729325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eff853106a9d3f%3A0xa869de0557562fd4!2sRambagh%2C%20Purnia%2C%20Bihar!5e0!3m2!1sen!2sin!4v1727535356695!5m2!1sen!2sin=${mapType}`}
           width="100%"
           height="450"
           style={{ border: 0 }}
@@ -51,7 +51,7 @@ const LocationMap = () => {
       <div className="flex justify-center mt-4 space-x-4">
         <button
           onClick={() => toggleMapType("roadmap")}
-          className={`flex items-center px-4 py-2 rounded-full ${mapType === "roadmap" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"} transition-colors duration-300`}
+          className={`flex items-center px-4 py-2 rounded-full ${mapType === "roadmap" ? "bg-cream text-orange-500" : "bg-gray-200 text-gray-700"} transition-colors duration-300`}
         >
           <FaMapMarkerAlt className="mr-2" /> Road Map
         </button>
