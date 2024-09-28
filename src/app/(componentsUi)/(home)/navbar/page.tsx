@@ -42,13 +42,14 @@ const Navbar = () => {
         <div className="container mx-auto px-4 h-full">
           <div className="flex items-center justify-between h-full">
             {/* Logo Section */}
-            <div className="w-3/12 md:w-2/12 flex">
+            <div className="flex items-center justify-center w-3/12 md:w-2/12">
               <Link href="/">
                 <Image
                   alt="logo"
                   src="/image/okpuja logo.png"
-                  height={120}
-                  width={220}
+                  height={80} // Set a reasonable height for mobile
+                  width={160} // Set a reasonable width for mobile
+                  className="h-auto w-full md:max-h-16 md:max-w-[150px] object-contain" // Maintain aspect ratio
                 />
               </Link>
             </div>
