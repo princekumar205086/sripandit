@@ -42,15 +42,18 @@ const Navbar = () => {
         <div className="container mx-auto px-4 h-full">
           <div className="flex items-center justify-between h-full">
             {/* Logo Section */}
-            <div className="flex items-center justify-center w-3/12 md:w-2/12">
+            <div className="w-3/12 md:w-2/12 flex items-center h-full">
               <Link href="/">
-                <Image
-                  alt="logo"
-                  src="/image/okpuja logo.png"
-                  height={100} // Set a reasonable height for mobile
-                  width={180} // Set a reasonable width for mobile
-                  className="h-auto w-full md:max-h-16 md:max-w-[150px] object-contain" // Maintain aspect ratio
-                />
+                <div className="relative logo-wrapper h-full flex items-center">
+                  <Image
+                    alt="logo"
+                    src="/image/okpuja logo.png"
+                    layout="responsive"
+                    width={220}
+                    height={120}
+                    className="logo-image"
+                  />
+                </div>
               </Link>
             </div>
 
@@ -74,7 +77,7 @@ const Navbar = () => {
             </div>
 
             {/* Menu Button for Mobile */}
-            <div className="md:hidden flex items-center">
+            <div className="md:hidden flex items-center h-full">
               <button
                 onClick={toggleMenu}
                 className="text-orangeRed focus:outline-none transition-transform duration-300 transform hover:scale-110"
@@ -108,6 +111,16 @@ const Navbar = () => {
         </div>
       </nav>
       <hr className="border-b border-x-white" />
+
+      {/* Logo Resizing for Mobile */}
+      <style jsx>{`
+        @media (max-width: 640px) {
+          .logo-wrapper {
+            width: 150px;
+            height: 60px;
+          }
+        }
+      `}</style>
     </>
   );
 };

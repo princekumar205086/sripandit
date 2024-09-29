@@ -1,0 +1,20 @@
+/* styles/navbar.css */
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo-image {
+    width: 220px;
+    height: 120px;
+    background-color: aqua;
+  }
+  
+  @media (max-width: 640px) {
+    .logo-image {
+      width: 250px; /* Adjust the width for mobile */
+      height: 80px; /* Adjust the height for mobile */
+    }
+  }
+  
