@@ -47,8 +47,8 @@ const Navbar = () => {
                 <Image
                   alt="logo"
                   src="/image/okpuja logo.png"
-                  height={80} // Set a reasonable height for mobile
-                  width={160} // Set a reasonable width for mobile
+                  height={100} // Set a reasonable height for mobile
+                  width={180} // Set a reasonable width for mobile
                   className="h-auto w-full md:max-h-16 md:max-w-[150px] object-contain" // Maintain aspect ratio
                 />
               </Link>
