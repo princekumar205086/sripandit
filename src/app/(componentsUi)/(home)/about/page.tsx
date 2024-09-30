@@ -13,7 +13,7 @@ const AboutPage = () => {
 
   const profiles = [
     {
-      name: "Rohan Shree",
+      name: "Shri Rohan Shree",
       title: "Founder & CEO",
       image: "/image/rohan.jpg",
       social: {
