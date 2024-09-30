@@ -13,25 +13,25 @@ const AboutPage = () => {
 
   const profiles = [
     {
-      name: "Pandit Suraj Bhardwaj",
-      title: "Founder",
-      image: "/image/suraj1.jpg",
-      social: {
-        linkedin: "https://linkedin.com/in/johndoe",
-        twitter: "https://twitter.com/johndoe",
-        github: "https://github.com/johndoe",
-      }
-    },
-    {
       name: "Rohan Shree",
-      title: "Managing Director & CEO",
-      image: "/image/rohan1.jpg",
+      title: "Founder & CEO",
+      image: "/image/rohan.jpg",
       social: {
         linkedin: "https://linkedin.com/in/janesmith",
         twitter: "https://twitter.com/janesmith",
         github: "https://github.com/janesmith",
       }
     },
+    {
+      name: "Pandit Suraj Bhardwaj",
+      title: "Managing Director",
+      image: "/image/suraj.jpg",
+      social: {
+        linkedin: "https://linkedin.com/in/johndoe",
+        twitter: "https://twitter.com/johndoe",
+        github: "https://github.com/johndoe",
+      }
+    }
   ];
 
   return (
