@@ -194,28 +194,28 @@ export default function Gallery() {
         title="Check out our gallery"
         description="We have a collection of images from our past events and ceremonies. Check out our gallery to see the beautiful moments we have captured."
       />
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-center mb-8">Puja Gallery</h1>
+      <div className="container-fluid mx-auto px-4 w-full py-8 bg-redOrange">
+        <h1 className="text-4xl font-bold text-center text-cream mb-8">Puja Gallery</h1>
 
         {/* Search, Filter, and Sort Section */}
-        <div className="mb-6 flex flex-wrap items-center justify-between">
+        <div className="mb-6 flex flex-wrap items-center justify-between text-cream">
           <div className="w-full md:w-1/3 mb-4 md:mb-0">
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search puja ceremonies"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+                className="w-full px-4 py-2 border text-orange-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
                 value={searchQuery}
                 onChange={handleSearch}
                 aria-label="Search puja ceremonies"
               />
-              <FaSearch className="absolute right-3 top-3 text-gray-400" />
+              <FaSearch className="absolute right-3 top-3 text-orange-500" />
             </div>
           </div>
 
           <div className="w-full md:w-1/3 mb-4 md:mb-0">
             <select
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
+              className="w-full px-4 py-2 border text-orange-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
               value={selectedCategory}
               onChange={(e) => handleCategoryChange(e.target.value)}
               aria-label="Filter by category"
@@ -235,8 +235,8 @@ export default function Gallery() {
               <button
                 className={`px-4 py-2 rounded-lg mr-2 ${
                   sortCriteria === "date"
-                    ? "bg-purple-600 text-white"
-                    : "bg-gray-200"
+                    ? "bg-cream text-orange-500"
+                    : "bg-cream text-orange-500"
                 }`}
                 onClick={() => handleSortChange("date")}
                 aria-label="Sort by date"
@@ -246,8 +246,8 @@ export default function Gallery() {
               <button
                 className={`px-4 py-2 rounded-lg ${
                   sortCriteria === "popularity"
-                    ? "bg-purple-600 text-white"
-                    : "bg-gray-200"
+                    ? "bg-cream text-orange-500"
+                    : "bg-cream text-orange-500"
                 }`}
                 onClick={() => handleSortChange("popularity")}
                 aria-label="Sort by popularity"
@@ -259,7 +259,7 @@ export default function Gallery() {
         </div>
 
         {items.length === 0 ? (
-          <div className="text-center text-gray-600 mt-8">
+          <div className="text-center text-cream mt-8">
             <p>
               No results found. Please try a different search query or category.
             </p>
@@ -292,7 +292,7 @@ export default function Gallery() {
 
                   {/* Heart Button with Popularity Counter */}
                   <button
-                    className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-lg flex items-center"
+                    className="absolute top-2 right-2 bg-white text-black p-2 rounded-full shadow-lg flex items-center"
                     onClick={() => increasePopularity(items[currentSlide].id)}
                     aria-label="Increase popularity"
                   >
@@ -338,7 +338,6 @@ export default function Gallery() {
               exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
               className="relative cursor-pointer"
-              onClick={() => setCurrentSlide(index)}
             >
               <img
                 src={item.image}
@@ -353,6 +352,16 @@ export default function Gallery() {
                   <span>{item.popularity}</span>
                 </div>
               </div>
+
+              {/* Heart Button on top-right */}
+              <button
+                className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-lg flex items-center"
+                onClick={() => increasePopularity(item.id)}
+                aria-label="Increase popularity"
+              >
+                <FaHeart className="text-red-500 mr-1" />
+                <span>{item.popularity}</span>
+              </button>
             </motion.div>
           ))}
         </div>
