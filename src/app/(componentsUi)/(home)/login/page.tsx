@@ -3,14 +3,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useLogin, FormState, Errors } from "./action";
-import { useRouter } from "next/navigation";
+
 
 export default function LoginForm() {
   const { handleSubmit } = useLogin();
-  const router = useRouter();
 
   const [formState, setFormState] = useState<FormState>({
     email: "",

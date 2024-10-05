@@ -1,5 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import 'react-toastify/ReactToastify.min.css';
 import { useRouter } from "next/navigation";
 
 export interface FormState {
@@ -25,16 +26,21 @@ export function useLogin() {
         email: formState.email,
         password: formState.password,
       });
-  
-      if (response.data.token) {
+
+      const { token, role, account_status, message } = response.data;
+
+      if (account_status === "1") {
         // Set token and role in localStorage
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('role', response.data.role);
-  
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', role);
+
         // Redirect based on the user's role
-        const role = response.data.role;
-        toast.success("Logged in successfully!");
+        toast.success(message || "Logged in successfully!");
         router.push(role === "ADMIN" ? "/admin/dashboard" : "/dashboard");
+      } else if (account_status === "0") {
+        toast.error("Verify your email first.");
+      } else if (account_status === "2") {
+        toast.error("You can't log in, your account is blocked.");
       } else {
         toast.error("Login failed. Please try again.");
       }

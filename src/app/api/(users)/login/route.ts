@@ -14,13 +14,26 @@ export async function POST(request: NextRequest) {
     // Check if user exists
     const user = await prisma.user.findUnique({
       where: { email },
-      select: { id: true, email: true, password: true, role: true },
+      select: { id: true, email: true, password: true, role: true, account_status: true },
     });
 
     if (!user) {
       return NextResponse.json(
         { error: "Invalid email or password" },
         { status: 400 }
+      );
+    }
+
+    // Check account status
+    if (user.account_status === "0") {
+      return NextResponse.json(
+        { error: "Verify your email first." },
+        { status: 403 }
+      );
+    } else if (user.account_status === "2") {
+      return NextResponse.json(
+        { error: "You can't log in, your account is blocked." },
+        { status: 403 }
       );
     }
 
@@ -41,6 +54,7 @@ export async function POST(request: NextRequest) {
       message: "Login successful",
       token,
       role: user.role,
+      account_status: user.account_status,
     });
 
     // Set token in HTTP-only cookie (secure, httpOnly, sameSite)
