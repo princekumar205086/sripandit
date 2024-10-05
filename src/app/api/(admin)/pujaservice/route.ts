@@ -1,111 +1,100 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { promises as fs } from "fs";
-import path from "path";
-import os from "os";
+import { NextRequest, NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+import path from 'path';
+import fs from 'fs/promises';
 
-type Params = {
-  id: string;
-};
+const prisma = new PrismaClient();
 
-export async function POST(request: NextRequest, context: { params: Params }) {
+export async function POST(request: NextRequest) {
   try {
-    // Parse the form data
     const formData = await request.formData();
 
-    // Handle file upload
-    const file = formData.get("file") as File;
-    if (!file) {
-      return NextResponse.json({ error: "No file found" }, { status: 400 });
+    const title = formData.get("title") as string;
+    const categoryId = formData.get("category") as string;
+    const description = formData.get("description") as string;
+    const image = formData.get("image") as File;
+    const packages = JSON.parse(formData.get("packages") as string);
+
+    console.log('Category ID:', categoryId);
+
+    if (!categoryId || isNaN(parseInt(categoryId))) {
+      return NextResponse.json({ success: false, error: "Invalid category ID" });
     }
 
-    // Before processing the file, validate its type and size
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-    const maxSize = 5 * 1024 * 1024; // 5MB
-
-    if (!allowedTypes.includes(file.type) || file.size > maxSize) {
-      return NextResponse.json({ error: "Invalid file type or size" }, { status: 400 });
-    }
-
-    const byteData = await file.arrayBuffer();
-    const buffer = Buffer.from(byteData);
-
-    // Define the uploads directory path (assuming the public directory is at the root of your project)
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-    console.log(`Uploads directory: ${uploadsDir}`);
-
-    // Ensure the uploads directory exists
-    await fs.mkdir(uploadsDir, { recursive: true });
-
-    // Create the file path in the uploads directory
-    const filePath = path.join(uploadsDir, file.name);
-    console.log(`File path: ${filePath}`);
-
-    // Write the file the uploads directory
-    await fs.writeFile(filePath, buffer);
-    console.log(`File written: ${filePath}`);
-
-    // Prepare the relative path for storage (if needed for your DB entry)
-    const relativePath = path.join("/uploads", file.name).replace(/\\/g, '/');
-    console.log(`Relative path: ${relativePath}`);
-
-    // Parse the data
-    const data = formData.get("data");
-    if (typeof data !== "string") {
-      return NextResponse.json({ error: "Invalid data" }, { status: 400 });
-    }
-    const reqBody = JSON.parse(data);
-    const { title, desc, category } = reqBody;
-
-    // Check if category exists
-    const existingCategory = await prisma.pujaCategory.findUnique({
-      where: { id: parseInt(category) },
+    const categoryExists = await prisma.pujaCategory.findUnique({
+      where: { id: parseInt(categoryId) },
     });
 
-    if (!existingCategory) {
-      return NextResponse.json(
-        { error: "Category does not exist" },
-        { status: 400 }
-      );
+    if (!categoryExists) {
+      return NextResponse.json({ success: false, error: "Category not found" });
     }
 
-    // Create a new PujaService and connect it to the existing category
-    const newPujaService = await prisma.pujaService.create({
+    // Handle file upload
+    let imgPath = "";
+    if (image) {
+      const buffer = await image.arrayBuffer();
+      const fileName = `${Date.now()}-${image.name}`;
+      const uploadsDir = path.join(process.cwd(), 'public/uploads'); // Ensure this path exists
+      await fs.mkdir(uploadsDir, { recursive: true }); // Create the directory if it doesn't exist
+      const filePath = path.join(uploadsDir, fileName);
+      await fs.writeFile(filePath, Buffer.from(buffer));
+      imgPath = `/uploads/${fileName}`; // Construct the path to be stored in the database
+    }
+
+    // Validate input data
+    if (title.length > 255) {
+      throw new Error('Title is too long');
+    }
+    if (description.length > 2000) {
+      throw new Error('Description is too long');
+    }
+
+    const pujaService = await prisma.pujaService.create({
       data: {
         title,
-        desc,
-        img: relativePath, // store the relative path
+        img: imgPath,
+        desc: description,
         category: {
-          connect: {
-            id: parseInt(category),
-          },
+          connect: { id: parseInt(categoryId) },
         },
+        date_of_create: new Date(),
       },
     });
 
-    return NextResponse.json(newPujaService);
-  } catch (error: any) {
-    console.error('Error details:', error);
-    return NextResponse.json(
-      { error: "An error occurred while creating the PujaService", details: error.message },
-      { status: 500 }
+    await Promise.all(
+      packages.map((pkg: any) =>
+        prisma.package.create({
+          data: {
+            location: pkg.location,
+            language: pkg.language,
+            type: pkg.type,
+            price: parseFloat(pkg.price),
+            description: pkg.description,
+            pujaServiceId: pujaService.id,
+          },
+        })
+      )
     );
+
+    return NextResponse.json({ success: true, data: pujaService });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ success: false, error: (error as Error).message });
   }
 }
 
-
-
-// Function to handle GET request for all services
-// Function to handle GET request for all services
-export async function GET() {
+// fetch all puja 
+export async function GET(request: NextRequest) {
   try {
-    const services = await prisma.pujaService.findMany({
+    const pujaServices = await prisma.pujaService.findMany({
       include: {
         category: true,
+        packages: true,
       },
     });
-    return NextResponse.json(services);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
+
+    return NextResponse.json(pujaServices);
+  } catch (error) {
+    return NextResponse.json({ error: (error as Error).message }, { status: 400 });
   }
 }

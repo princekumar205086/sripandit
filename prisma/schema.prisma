@@ -3,6 +3,7 @@ datasource db {
   url      = env("POSTGRES_PRISMA_URL") 
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -24,24 +25,35 @@ model User {
   verifyTokenExpiry         DateTime?
   forgotPasswordToken       String?  @db.VarChar(255)
   forgotPasswordTokenExpiry DateTime?
-  role     Role     @default(USER)
+  role                      Role     @default(USER)
 }
 
-
 model PujaService {
-  id            Int          @id @default(autoincrement())
-  title         String
-  img           String
-  desc          String       @db.VarChar(2000)
-  category      PujaCategory @relation(fields: [categoryId], references: [id])
-  categoryId    Int
-  date_of_create DateTime    @default(now())
+  id             Int          @id @default(autoincrement())
+  title          String
+  img            String
+  desc           String       @db.VarChar(10000) 
+  category       PujaCategory @relation(fields: [categoryId], references: [id])
+  categoryId     Int
+  date_of_create DateTime     @default(now())
+  packages       Package[]    @relation("PujaServicePackages")
 }
 
 model PujaCategory {
   id        Int          @id @default(autoincrement())
   name      String       @unique
-  services  PujaService[] 
+  services  PujaService[]
+}
+
+model Package {
+  id             Int          @id @default(autoincrement())
+  location       String
+  language       String
+  type           String
+  price          Float
+  description    String       @db.VarChar(10000)
+  pujaService    PujaService  @relation(fields: [pujaServiceId], references: [id], name: "PujaServicePackages")
+  pujaServiceId  Int
 }
 
 model PujaBooking {
@@ -63,7 +75,7 @@ model AstrologyService {
   service_type  String
   service_price Float
   service_desc  String    @db.VarChar(5000)
-  timestamp     DateTime @default(now())
+  timestamp     DateTime  @default(now())
 }
 
 model AstrologyBooking {
@@ -76,5 +88,5 @@ model AstrologyBooking {
   birthTime       DateTime
   gender          String
   questions       String?  // Optional field for questions
-  createdAt       DateTime @default(now())
+  createdAt       DateTime  @default(now())
 }

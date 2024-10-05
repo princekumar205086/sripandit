@@ -132,11 +132,11 @@ export default function Layout(props: Props) {
                       : "text-cream" // Change text color to cream
                   }
                 >
-                  {text === "Dashboard" && <DashboardIcon />}
-                  {text === "Profile" && <AccountCircleIcon />}
-                  {text === "AstrologyService" && <HdrAutoIcon />}
-                  {text === "Users" && <PeopleIcon />}
-                  {text === "PujaService" && <LocalFireDepartmentIcon />}
+                  {text === "Dashboard" && <DashboardIcon className="text-cream" />}
+                  {text === "Profile" && <AccountCircleIcon className="text-cream" />}
+                  {text === "AstrologyService" && <HdrAutoIcon className="text-cream" />}
+                  {text === "Users" && <PeopleIcon className="text-cream" />}
+                  {text === "PujaService" && <LocalFireDepartmentIcon className="text-cream" />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
@@ -161,7 +161,7 @@ export default function Layout(props: Props) {
                   : "text-cream" // Change text color to cream
               }
             >
-              <SettingsIcon />
+              <SettingsIcon className="text-cream" />
             </ListItemIcon>
             <ListItemText primary="Setting" />
             {isCollapse ? <ExpandLessIcon /> : <ExpandMoreIcon />}
@@ -192,9 +192,9 @@ export default function Layout(props: Props) {
                         : "text-cream" // Change text color to cream
                     }
                   >
-                    {text === "Support" && <SupportAgentIcon />}
-                    {text === "Change-Password" && <LockIcon />}
-                    {text === "Contact" && <ContactMailIcon />}
+                    {text === "Support" && <SupportAgentIcon className="text-cream" />}
+                    {text === "Change-Password" && <LockIcon className="text-cream" />}
+                    {text === "Contact" && <ContactMailIcon className="text-cream" />}
                   </ListItemIcon>
                   <ListItemText primary={text} />
                 </ListItemButton>

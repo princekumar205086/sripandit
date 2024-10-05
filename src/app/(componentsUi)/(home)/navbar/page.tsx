@@ -7,7 +7,7 @@ import Image from "next/image";
 
 const menuData = [
   { name: "Home", link: "/" },
-  { name: "Puja Service", link: "/pujaservice" },
+  { name: "All pujas", link: "/pujaservice" },
   { name: "Astrology", link: "/astrology" },
   { name: "Blog", link: "/blog" },
   { name: "Contact", link: "/contactus" },

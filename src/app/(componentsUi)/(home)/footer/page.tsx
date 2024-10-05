@@ -35,11 +35,12 @@ const Footer = () => {
     { name: "Puja Services", link: "/pujaservice" },
     { name: "Astrology Services", link: "/astrology" },
     { name: "Contact Us", link: "/contactus" },
-    { name: "Terms of Service", link: "/terms-of-tervice" },
-    { name: "Privacy Policy", link: "/privacy-policy" },
     { name: "Blog", link: "/blog" },
     { name: "Careers", link: "/career" },
     { name: "Gallery", link: "/gallery" },
+    { name: "Terms of Service", link: "/terms-of-tervice" },
+    { name: "Cancellation/Refund Policy", link: "/cancellation-refund-policy" },
+    { name: "Privacy Policy", link: "/privacy-policy" }
   ];
 
   return (

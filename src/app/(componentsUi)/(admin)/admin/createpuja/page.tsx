@@ -112,7 +112,6 @@ const Page = () => {
               Submit
             </button>
           </form>
-          <ToastContainer />
         </div>
       </Layout>
     </>

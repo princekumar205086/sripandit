@@ -163,7 +163,7 @@ const privacyPolicy = () => {
           id={`section-${item.id}`}
           className="mb-8 p-4 bg-cream rounded-lg shadow-sm"
         >
-          <h2 className="text-2xl font-semibold mb-3">{`${item.id}. ${item.title}`}</h2>
+          <h2 className="text-2xl text-orange-700 font-semibold mb-3 text-center">{`${item.id}. ${item.title}`}</h2>
           <p className="text-orange-600">{item.content}</p>
         </section>
       ))}
