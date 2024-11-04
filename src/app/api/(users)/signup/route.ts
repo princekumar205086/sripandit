@@ -1,4 +1,4 @@
-// pages/api/register.ts
+// api/signup/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcryptjs from 'bcryptjs';

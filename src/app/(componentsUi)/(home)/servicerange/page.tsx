@@ -36,13 +36,10 @@ export default function Servicerange() {
         {data.map((item, index) => (
           <div key={index} className="servicerange-card">
             <div className="relative h-64 w-full">
-              <Image
+              <img
                 className="absolute w-full h-full object-cover"
                 src={item.image}
                 alt={item.title}
-                width={100}
-                height={100}
-                quality={100}
               />
             </div>
             <div className="servicerange-card-body bg-cream">

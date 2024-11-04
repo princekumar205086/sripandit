@@ -97,10 +97,14 @@ export default function SignupForm() {
         toast.error("Signup failed.");
       }
     } catch (error: any) {
-      toast.error("An error occurred." + error.message);
+      if (error.response && error.response.status === 400 && error.response.data.error === "User already exists") {
+        toast.error("Email already exists. Please use a different email.");
+      } else {
+        toast.error("An error occurred. " + error.message);
+      }
     }
   };
-  
+
   const handleChange = (event: any) => {
     setFormState({
       ...formState,

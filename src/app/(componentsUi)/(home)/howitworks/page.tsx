@@ -51,7 +51,7 @@ const HowItWorks = () => {
               alt="howitworks"
               className="object-cover w-full h-full"
               width={400}
-              height={400}
+              height={100}
             />
           </div>
         </div>
@@ -60,13 +60,10 @@ const HowItWorks = () => {
         {data.map((item, index) => (
           <div key={index} className="w-full sm:w-1/2 lg:w-1/4 p-4">
             <div className="flex flex-col items-center justify-center border bg-redOrange shadow-md border-gray-300 rounded-lg p-4">
-              <Image
+              <img
                 src={item.imagesrc}
                 alt={item.title}
                 className="w-full mb-4"
-                width={100}
-                height={80}
-                quality={100}
               />
               <h2 className="text-xl font-semibold text-cream mb-2">
                 {item.title}

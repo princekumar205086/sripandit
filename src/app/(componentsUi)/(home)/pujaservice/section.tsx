@@ -1,4 +1,5 @@
 "use client"
+import Image from 'next/image';
 import React, { useRef, useEffect, useState } from 'react';
 
 interface SectionProps {
@@ -18,13 +19,22 @@ export default function Section({ bgImageUrl, title, description }: SectionProps
     }
   }, [title]);
 
+  // Ensure bgImageUrl starts with a leading slash if it's a relative path
+  const formattedBgImageUrl = bgImageUrl.startsWith('/') ? bgImageUrl : `/${bgImageUrl}`;
+
   return (
     <section 
-      className="relative bg-fixed bg-cover bg-center h-[300px] md:h-[400px] lg:h-[500px] flex justify-center items-center" 
-      style={{ backgroundImage: `url('${bgImageUrl}')` }}
+      className="relative h-[300px] md:h-[400px] lg:h-[500px] flex justify-center items-center"
     >
-      <div className="absolute inset-0 bg-black bg-opacity-70" />
-      <div className="container mx-auto relative z-10 flex flex-col justify-center items-center text-center p-4">
+      <Image 
+        src={formattedBgImageUrl} 
+        alt={title} 
+        layout="fill" 
+        objectFit="cover" 
+        className="z-0"
+      />
+      <div className="absolute inset-0 bg-black bg-opacity-70 z-10" />
+      <div className="container mx-auto relative z-20 flex flex-col justify-center items-center text-center p-4">
         <h2 ref={titleRef} className="text-4xl md:text-5xl font-extrabold text-orangeRed tracking-tight">
           {title}
         </h2>
@@ -43,4 +53,3 @@ export default function Section({ bgImageUrl, title, description }: SectionProps
     </section>
   );
 }
-

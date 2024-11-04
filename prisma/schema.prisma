@@ -25,6 +25,8 @@ model User {
   verifyTokenExpiry         DateTime?
   forgotPasswordToken       String?  @db.VarChar(255)
   forgotPasswordTokenExpiry DateTime?
+  changePasswordToken       String? @db.VarChar(255)
+  chabgePasswordTokenExpiry DateTime?
   role                      Role     @default(USER)
 }
 

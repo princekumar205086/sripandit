@@ -9,125 +9,127 @@ import { url } from "inspector";
 const reviews = [
   {
     id: 1,
-    name: "John Doe",
-    image: "https://randomuser.me/api/portraits/men/1.jpg",
+    name: "Rahul Sharma",
+    image: "https://randomuser.me/api/portraits/men/31.jpg",
     review:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "The puja I booked was conducted beautifully. The pandit explained all the rituals and the process was seamless. Highly recommend this service!",
     rating: 5,
   },
   {
     id: 2,
-    name: "Jane Smith",
-    image: "https://randomuser.me/api/portraits/women/2.jpg",
+    name: "Priya Singh",
+    image: "https://randomuser.me/api/portraits/women/32.jpg",
     review:
-      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "I consulted an astrologer through the platform, and the advice I received was insightful. It was a smooth experience, and the customer support was very helpful.",
     rating: 4,
   },
   {
     id: 3,
-    name: "Alice Johnson",
-    image: "https://randomuser.me/api/portraits/women/3.jpg",
+    name: "Anjali Patel",
+    image: "https://randomuser.me/api/portraits/women/33.jpg",
     review:
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      "The booking process was easy, and the puja was done on time. However, I faced some delays in receiving the prasad.",
     rating: 3,
   },
   {
     id: 4,
-    name: "Bob Williams",
-    image: "https://randomuser.me/api/portraits/men/4.jpg",
+    name: "Vikram Reddy",
+    image: "https://randomuser.me/api/portraits/men/34.jpg",
     review:
-      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "Fantastic experience! The online astrology consultation was detailed, and the astrologer was very knowledgeable. Would definitely use this service again.",
     rating: 5,
   },
   {
     id: 5,
-    name: "Emily Brown",
-    image: "https://randomuser.me/api/portraits/women/5.jpg",
+    name: "Sneha Kapoor",
+    image: "https://randomuser.me/api/portraits/women/35.jpg",
     review:
-      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
+      "I booked a Griha Pravesh puja through the website, and the arrangements were excellent. The pandit was professional and the entire process went smoothly.",
     rating: 4,
   },
   {
     id: 6,
-    name: "Michael Wilson",
-    image: "https://randomuser.me/api/portraits/men/6.jpg",
+    name: "Rohan Gupta",
+    image: "https://randomuser.me/api/portraits/men/36.jpg",
     review:
-      "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
+      "I consulted an astrologer for career guidance. The consultation was thorough, and I found it to be very beneficial. Great service!",
     rating: 5,
   },
   {
     id: 7,
-    name: "Sophia Lee",
-    image: "https://randomuser.me/api/portraits/women/7.jpg",
+    name: "Neha Iyer",
+    image: "https://randomuser.me/api/portraits/women/37.jpg",
     review:
-      "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+      "The puja service was good, but I think the process could be a bit more streamlined, especially when it comes to booking slots.",
     rating: 3,
   },
   {
     id: 8,
-    name: "David Miller",
-    image: "https://randomuser.me/api/portraits/men/8.jpg",
+    name: "Raj Mehta",
+    image: "https://randomuser.me/api/portraits/men/38.jpg",
     review:
-      "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.",
+      "I booked a Navagraha Shanti puja, and the process was hassle-free. The pandit was punctual, and the entire experience was fulfilling.",
     rating: 4,
   },
   {
     id: 9,
-    name: "Olivia Taylor",
-    image: "https://randomuser.me/api/portraits/women/9.jpg",
+    name: "Pooja Nair",
+    image: "https://randomuser.me/api/portraits/women/39.jpg",
     review:
-      "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores.",
+      "Very professional service. I booked an astrology session, and the astrologer’s predictions were accurate. Highly recommended!",
     rating: 5,
   },
   {
     id: 10,
-    name: "William Martinez",
-    image: "https://randomuser.me/api/portraits/men/10.jpg",
+    name: "Arjun Desai",
+    image: "https://randomuser.me/api/portraits/men/40.jpg",
     review:
-      "Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit.",
+      "Great experience booking a Vastu consultation through the platform. The pandit gave valuable insights, and the service was top-notch.",
     rating: 4,
   },
   {
     id: 11,
-    name: "Ava Anderson",
-    image: "https://randomuser.me/api/portraits/women/11.jpg",
+    name: "Meera Chaudhary",
+    image: "https://randomuser.me/api/portraits/women/41.jpg",
     review:
-      "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.",
+      "I had an online astrology consultation and was very impressed with the advice. The platform is user-friendly and easy to navigate.",
     rating: 5,
   },
   {
     id: 12,
-    name: "Daniel Hernandez",
-    image: "https://randomuser.me/api/portraits/men/12.jpg",
+    name: "Karan Jain",
+    image: "https://randomuser.me/api/portraits/men/42.jpg",
     review:
-      "Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.",
+      "The puja service was good, but I felt the communication could be improved. Overall, I’m satisfied with the service.",
     rating: 3,
   },
   {
     id: 13,
-    name: "Isabella Gonzalez",
-    image: "https://randomuser.me/api/portraits/women/13.jpg",
+    name: "Aditi Bhatt",
+    image: "https://randomuser.me/api/portraits/women/43.jpg",
     review:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "I booked a marriage consultation with an astrologer, and the session was very insightful. The process was easy, and I’m happy with the service.",
     rating: 4,
   },
   {
     id: 14,
-    name: "Joseph Perez",
-    image: "https://randomuser.me/api/portraits/men/14.jpg",
+    name: "Aman Verma",
+    image: "https://randomuser.me/api/portraits/men/44.jpg",
     review:
-      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "The online puja was very well organized. The pandit was knowledgeable, and the process was smooth. I’ll definitely use this service again.",
     rating: 5,
   },
   {
     id: 15,
-    name: "Samantha Sanchez",
-    image: "https://randomuser.me/api/portraits/women/15.jpg",
+    name: "Ritika Malhotra",
+    image: "https://randomuser.me/api/portraits/women/45.jpg",
     review:
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      "I booked a health-related puja, and everything went well. The platform is easy to use, and the service was professional.",
     rating: 4,
   },
 ];
+
+
 
 export default function CustomerReviews() {
   const settings = {

@@ -2,7 +2,18 @@ import nodemailer from "nodemailer";
 import bcryptjs from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
-export const sendEmail = async ({ email, emailType, username, city, pujaName, date, time, contactNumber, useremail, location }: any) => {
+export const sendEmail = async ({
+  email,
+  emailType,
+  username,
+  city,
+  pujaName,
+  date,
+  time,
+  contactNumber,
+  useremail,
+  location,
+}: any) => {
   try {
     // create a hashed token
     const hashedToken = await bcryptjs.hash(username.toString(), 10);
@@ -42,7 +53,18 @@ export const sendEmail = async ({ email, emailType, username, city, pujaName, da
         },
       });
       mailOptions.subject = "Password Reset";
-      mailOptions.text = `Hello ${username},\n\nPlease reset your password by clicking on the following link:\n\nhttp://your-website.com/reset?token=${hashedToken}\n\nThank You!`;
+      mailOptions.text = `Hello ${username},\n\nPlease reset your password by clicking on the following link:\n\nhttps://www.okpuja.com/reset?token=${hashedToken}\n\nThank You!`;
+      await transporter.sendMail(mailOptions);
+    } else if (emailType === "CHANGE") {
+      await prisma.user.update({
+        where: { email },
+        data: {
+          forgotPasswordToken: hashedToken,
+          forgotPasswordTokenExpiry: new Date(Date.now() + 3600000),
+        },
+      });
+      mailOptions.subject = "Change Password";
+      mailOptions.text = `Hello ${username},\n\nYour password has been changed successfully.\n\nThank You!`;
       await transporter.sendMail(mailOptions);
     } else if (emailType === "BOOKING") {
       mailOptions.subject = "New Puja Booking";
