@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
-import { url } from "inspector";
+
 
 const reviews = [
   {
@@ -128,7 +128,6 @@ const reviews = [
     rating: 4,
   },
 ];
-
 
 
 export default function CustomerReviews() {
