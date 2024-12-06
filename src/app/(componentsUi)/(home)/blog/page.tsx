@@ -6,7 +6,7 @@ export default function Blog() {
   return (
     <>
       <Section
-        bgImageUrl="image/cont2.jpeg"
+        bgImageUrl="image/blg.jpeg"
         title="Okpuja Blog"
         description="Read our latest blog posts and stay updated with the latest trends. We cover a wide range of topics including astrology, puja services, and more."
       />

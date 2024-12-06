@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { FaStar, FaShare } from "react-icons/fa";
 import { MdLocationOn, MdLanguage } from "react-icons/md";
+import { useSearchParams, useRouter } from "next/navigation";
+import CryptoJS from "crypto-js";
 
 interface Package {
   type: string;
@@ -25,10 +27,32 @@ interface Faq {
 }
 
 const PujaServicePage: React.FC = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  
+  const encryptedId = searchParams.get("id");
+
+  // Function to decrypt the service ID
+  const decryptId = (encryptedId: string | null) => {
+    if (encryptedId) {
+      try {
+        const bytes = CryptoJS.AES.decrypt(decodeURIComponent(encryptedId), "your-secret-key");
+        return bytes.toString(CryptoJS.enc.Utf8);
+      } catch (error) {
+        return null;
+      }
+    }
+    return null;
+  };
+
+  const pujaId = decryptId(encryptedId); // Get the decrypted ID from the URL
   const [selectedTab, setSelectedTab] = useState<string>("description");
   const [selectedLocation, setSelectedLocation] = useState<string>("Select Location");
   const [selectedLanguage, setSelectedLanguage] = useState<string>("Select Language");
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
+
+  
+
   const [reviews, setReviews] = useState<Review[]>([
     {
       id: 1,
@@ -49,6 +73,7 @@ const PujaServicePage: React.FC = () => {
       comment: "Highly recommended. Will definitely use this service again.",
     },
   ]);
+
   const [faqs, setFaqs] = useState<Faq[]>([
     {
       id: 1,
@@ -69,8 +94,10 @@ const PujaServicePage: React.FC = () => {
 
   const pujaDetails = {
     title: "Ganesh Puja",
-    image: "https://images.unsplash.com/photo-1635016288720-c52507b9a717?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    description: "Ganesh Puja is a Hindu festival celebrating the birth of Lord Ganesha, the elephant-headed deity of wisdom and prosperity.",
+    image:
+      "https://images.unsplash.com/photo-1635016288720-c52507b9a717?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    description:
+      "Ganesh Puja is a Hindu festival celebrating the birth of Lord Ganesha, the elephant-headed deity of wisdom and prosperity.",
     category: "Hindu Rituals",
   };
 
@@ -108,14 +135,6 @@ const PujaServicePage: React.FC = () => {
     setSelectedPackage(pkg);
   };
 
-  const handleAddReview = (newReview: Review) => {
-    setReviews((prev) => [...prev, newReview]);
-  };
-
-  const handleAddFaq = (newFaq: Faq) => {
-    setFaqs((prev) => [...prev, newFaq]);
-  };
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -144,7 +163,7 @@ const PujaServicePage: React.FC = () => {
               value={selectedLocation}
               onChange={(e) => {
                 setSelectedLocation(e.target.value);
-                setSelectedPackage(null); // Reset selected package on location change
+                setSelectedPackage(null);
               }}
               className="appearance-none bg-white border border-gray-300 rounded-md py-2 pl-3 pr-10 text-sm leading-5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
@@ -163,7 +182,7 @@ const PujaServicePage: React.FC = () => {
               value={selectedLanguage}
               onChange={(e) => {
                 setSelectedLanguage(e.target.value);
-                setSelectedPackage(null); // Reset selected package on language change
+                setSelectedPackage(null);
               }}
               className="appearance-none bg-white border border-gray-300 rounded-md py-2 pl-3 pr-10 text-sm leading-5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
@@ -201,70 +220,62 @@ const PujaServicePage: React.FC = () => {
         </div>
         {selectedPackage && (
           <div className="mt-6">
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300">
-              Book Now
+            <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition duration-300">
+              Add to Cart
             </button>
           </div>
         )}
       </div>
 
       <div className="mb-12">
-        <div className="flex border-b mb-6">
-          <button
-            className={`py-2 px-4 font-medium ${selectedTab === "description" ? "border-b-2 border-blue-600" : ""}`}
-            onClick={() => setSelectedTab("description")}
-          >
-            Description
-          </button>
-          <button
-            className={`py-2 px-4 font-medium ${selectedTab === "reviews" ? "border-b-2 border-blue-600" : ""}`}
-            onClick={() => setSelectedTab("reviews")}
-          >
-            Reviews
-          </button>
-          <button
-            className={`py-2 px-4 font-medium ${selectedTab === "faq" ? "border-b-2 border-blue-600" : ""}`}
-            onClick={() => setSelectedTab("faq")}
-          >
-            FAQ
-          </button>
+        <div className="flex space-x-4 text-lg mb-6">
+          {["Description", "Review", "FAQ"].map((tab, index) => (
+            <div
+              key={index}
+              className={`cursor-pointer p-2 font-bold ${
+                selectedTab === tab.toLowerCase()
+                  ? "text-blue-500 border-b-2 border-blue-500"
+                  : "text-gray-500"
+              }`}
+              onClick={() => setSelectedTab(tab.toLowerCase())}
+            >
+              {tab}
+            </div>
+          ))}
         </div>
-        {selectedTab === "description" && (
-          <div className="text-gray-700">
-            <p>{pujaDetails.description}</p>
-          </div>
-        )}
-        {selectedTab === "reviews" && (
-          <div>
-            {reviews.map((review) => (
-              <div key={review.id} className="border-b py-4">
-                <h4 className="font-semibold">{review.user}</h4>
-                <p className="text-sm text-gray-500 mb-1">
-                  <FaStar className="inline text-yellow-500" /> {review.rating} Stars
-                </p>
-                <p>{review.comment}</p>
-              </div>
-            ))}
-            <div className="mt-4">
-              <h5 className="font-semibold">Add a Review</h5>
-              {/* Add review form can be implemented here */}
+        <div>
+          {selectedTab === "description" && (
+            <div>
+              <h3 className="text-2xl font-semibold mb-4">About {pujaDetails.title}</h3>
+              <p className="text-gray-700">{pujaDetails.description}</p>
             </div>
-          </div>
-        )}
-        {selectedTab === "faq" && (
-          <div>
-            {faqs.map((faq) => (
-              <div key={faq.id} className="border-b py-4">
-                <h4 className="font-semibold">{faq.question}</h4>
-                <p>{faq.answer}</p>
-              </div>
-            ))}
-            <div className="mt-4">
-              <h5 className="font-semibold">Add a FAQ</h5>
-              {/* Add FAQ form can be implemented here */}
+          )}
+          {selectedTab === "review" && (
+            <div>
+              <h3 className="text-2xl font-semibold mb-4">Customer Reviews</h3>
+              {reviews.map((review) => (
+                <div key={review.id} className="border-b border-gray-300 py-4">
+                  <div className="flex items-center">
+                    <FaStar className="text-yellow-500" />
+                    <span className="ml-2 text-gray-800 font-semibold">{review.user}</span>
+                  </div>
+                  <p className="text-gray-600">{review.comment}</p>
+                </div>
+              ))}
             </div>
-          </div>
-        )}
+          )}
+          {selectedTab === "faq" && (
+            <div>
+              <h3 className="text-2xl font-semibold mb-4">Frequently Asked Questions</h3>
+              {faqs.map((faq) => (
+                <div key={faq.id} className="mb-4">
+                  <h4 className="text-lg font-semibold">{faq.question}</h4>
+                  <p className="text-gray-600">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

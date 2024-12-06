@@ -148,15 +148,15 @@ const Footer = () => {
           {/* Razorpay Section */}
           <div className="flex flex-col items-center md:items-start mt-6">
             <h6 className="text-sm md:text-md font-bold text-orange-500 mb-2">
-              Payment powered by Razorpay
+              Payment powered by Paytm
             </h6>
-            <Image
+            {/* <Image
               src="/image/razorpay.png"
               alt="Razorpay"
               width={220}
               height={100} // Adjust height to be smaller
               className="mt-2" // Adds spacing between text and image
-            />
+            /> */}
             <hr className="border border-orange-500 w-full mt-2 mb-2" />
             <p className="text-orange-500">Pay using:</p>
             <p className="text-xs text-orange-500">Debit/Credit Card | UPI | Net Banking</p>

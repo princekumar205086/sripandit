@@ -18,7 +18,6 @@ export default function LoginForm() {
   const [errors, setErrors] = useState<Errors>({});
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
