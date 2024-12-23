@@ -1,4 +1,5 @@
 "use client"
+import { auto } from '@popperjs/core';
 import Image from 'next/image';
 import React, { useRef, useEffect, useState } from 'react';
 
@@ -29,9 +30,9 @@ export default function Section({ bgImageUrl, title, description }: SectionProps
       <Image 
         src={formattedBgImageUrl} 
         alt={title} 
-        layout="fill" 
-        objectFit="cover" 
-        className="z-0"
+        fill
+        className="z-0 object-cover"
+        priority
       />
       <div className="absolute inset-0 bg-black bg-opacity-70 z-10" />
       <div className="container mx-auto relative z-20 flex flex-col justify-center items-center text-center p-4">

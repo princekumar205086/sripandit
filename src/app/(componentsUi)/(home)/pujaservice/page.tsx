@@ -137,7 +137,7 @@ const PujaServices = () => {
               className="w-full"
               width="400"
               height="450"
-              loading="lazy"
+              priority
             />
             <div className="px-6 py-4 bg-cream">
               <div className="font-bold text-sm mb-2 text-center text-orangeRed"> {/* Reduced text size */}

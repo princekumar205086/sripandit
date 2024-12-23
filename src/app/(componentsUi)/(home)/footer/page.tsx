@@ -40,7 +40,7 @@ const Footer = () => {
     { name: "Gallery", link: "/gallery" },
     { name: "Terms of Service", link: "/terms-of-tervice" },
     { name: "Cancellation/Refund Policy", link: "/cancellation-refund-policy" },
-    { name: "Privacy Policy", link: "/privacy-policy" }
+    { name: "Privacy Policy", link: "/privacy-policy" },
   ];
 
   return (
@@ -54,6 +54,7 @@ const Footer = () => {
               alt="Logo"
               width={150}
               height={150}
+              style={{ height: "150px", width: "150px" }}
             />
             <p className="text-sm sm:text-base md:text-lg text-orange-500 mt-2">
               Okpuja offers seamless and sacred Puja services, ensuring a
@@ -159,7 +160,9 @@ const Footer = () => {
             /> */}
             <hr className="border border-orange-500 w-full mt-2 mb-2" />
             <p className="text-orange-500">Pay using:</p>
-            <p className="text-xs text-orange-500">Debit/Credit Card | UPI | Net Banking</p>
+            <p className="text-xs text-orange-500">
+              Debit/Credit Card | UPI | Net Banking
+            </p>
           </div>
         </div>
       </div>

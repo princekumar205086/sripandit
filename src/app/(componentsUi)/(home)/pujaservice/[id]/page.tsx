@@ -1,42 +1,23 @@
 "use client";
 import React, { useState } from "react";
-import { FaStar, FaShare } from "react-icons/fa";
-import { MdLocationOn, MdLanguage } from "react-icons/md";
-import { useSearchParams, useRouter } from "next/navigation";
+import { FaMapMarkerAlt, FaLanguage, FaCheckCircle } from "react-icons/fa";
+import { useSearchParams } from "next/navigation";
 import CryptoJS from "crypto-js";
+import Section from "../section";
 
-interface Package {
-  type: string;
-  price: number;
-  description: string;
-  locations: string[];
-  languages: string[];
-}
 
-interface Review {
-  id: number;
-  user: string;
-  rating: number;
-  comment: string;
-}
-
-interface Faq {
-  id: number;
-  question: string;
-  answer: string;
-}
-
-const PujaServicePage: React.FC = () => {
+const SinglePujaService = () => {
   const searchParams = useSearchParams();
-  const router = useRouter();
-  
   const encryptedId = searchParams.get("id");
 
   // Function to decrypt the service ID
   const decryptId = (encryptedId: string | null) => {
     if (encryptedId) {
       try {
-        const bytes = CryptoJS.AES.decrypt(decodeURIComponent(encryptedId), "your-secret-key");
+        const bytes = CryptoJS.AES.decrypt(
+          decodeURIComponent(encryptedId),
+          "your-secret-key"
+        );
         return bytes.toString(CryptoJS.enc.Utf8);
       } catch (error) {
         return null;
@@ -44,242 +25,246 @@ const PujaServicePage: React.FC = () => {
     }
     return null;
   };
-
-  const pujaId = decryptId(encryptedId); // Get the decrypted ID from the URL
+  const pujaId = decryptId(encryptedId);
   console.log(pujaId);
-  const [selectedTab, setSelectedTab] = useState<string>("description");
-  const [selectedLocation, setSelectedLocation] = useState<string>("Select Location");
-  const [selectedLanguage, setSelectedLanguage] = useState<string>("Select Language");
-  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
-
   
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [selectedLanguage, setSelectedLanguage] = useState("");
+  const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
 
-  const [reviews, setReviews] = useState<Review[]>([
-    {
-      id: 1,
-      user: "Rahul S.",
-      rating: 5,
-      comment: "Excellent service! The puja was conducted beautifully.",
-    },
-    {
-      id: 2,
-      user: "Priya M.",
-      rating: 4,
-      comment: "Great experience overall. Pandit ji was very knowledgeable.",
-    },
-    {
-      id: 3,
-      user: "Amit K.",
-      rating: 5,
-      comment: "Highly recommended. Will definitely use this service again.",
-    },
-  ]);
+  const locations = ["Mumbai", "Delhi", "Bangalore", "Varanasi", "Pune"];
+  const languages = ["Sanskrit", "Hindi", "English", "Tamil", "Telugu"];
 
-  const [faqs, setFaqs] = useState<Faq[]>([
-    {
-      id: 1,
-      question: "What items do I need to arrange for the puja?",
-      answer: "All necessary items are included in the package. You don't need to arrange anything separately.",
-    },
-    {
-      id: 2,
-      question: "How long does the puja ceremony last?",
-      answer: "The duration varies based on the package, but it typically lasts between 1 to 3 hours.",
-    },
-    {
-      id: 3,
-      question: "Can I customize the puja according to my preferences?",
-      answer: "Yes, we offer customization options. Please contact our support team for specific requirements.",
-    },
-  ]);
-
-  const pujaDetails = {
-    title: "Ganesh Puja",
-    image:
-      "https://images.unsplash.com/photo-1635016288720-c52507b9a717?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    description:
-      "Ganesh Puja is a Hindu festival celebrating the birth of Lord Ganesha, the elephant-headed deity of wisdom and prosperity.",
-    category: "Hindu Rituals",
+  // Package data with location and language-specific prices
+  type Package = {
+    id: number;
+    name: string;
+    price: number;
+    features: string[];
   };
 
-  const packages: Package[] = [
-    {
-      type: "Basic",
-      price: 999,
-      description: "Essential puja items and simple ceremony",
-      locations: ["Mumbai", "Delhi"],
-      languages: ["Hindi", "English"],
-    },
-    {
-      type: "Standard",
-      price: 1999,
-      description: "Complete puja items, ceremony, and prasad",
-      locations: ["Mumbai", "Delhi", "Bangalore"],
-      languages: ["Hindi", "English", "Marathi"],
-    },
-    {
-      type: "Premium",
-      price: 3999,
-      description: "Luxurious puja items, elaborate ceremony, prasad, and personalized consultation",
-      locations: ["Mumbai", "Delhi", "Bangalore", "Kolkata"],
-      languages: ["Hindi", "English", "Marathi", "Bengali"],
-    },
-  ];
-
-  const filteredPackages = packages.filter(
-    (pkg) =>
-      (pkg.locations.includes(selectedLocation) && selectedLocation !== "Select Location") &&
-      (pkg.languages.includes(selectedLanguage) && selectedLanguage !== "Select Language")
-  );
-
-  const handlePackageSelection = (pkg: Package) => {
-    setSelectedPackage(pkg);
+  type PackageData = {
+    [location: string]: {
+      [language: string]: Package[];
+    };
   };
+
+  const packageData: PackageData = {
+    Mumbai: {
+      Sanskrit: [
+        {
+          id: 1,
+          name: "Standard Package",
+          price: 2999,
+          features: [
+            "1 Expert Pandit",
+            "2 Hours Duration",
+            "Basic Puja Samagri",
+            "Prasad",
+          ],
+        },
+        {
+          id: 2,
+          name: "Premium Package",
+          price: 4999,
+          features: [
+            "2 Expert Pandits",
+            "3 Hours Duration",
+            "Premium Puja Samagri",
+            "Special Prasad",
+            "Certificate",
+          ],
+        },
+      ],
+      Hindi: [
+        {
+          id: 3,
+          name: "Deluxe Package",
+          price: 3999,
+          features: [
+            "2 Expert Pandits",
+            "4 Hours Duration",
+            "Deluxe Puja Samagri",
+            "Special Prasad",
+            "Certificate",
+          ],
+        },
+      ],
+    },
+    Delhi: {
+      English: [
+        {
+          id: 4,
+          name: "Standard Package",
+          price: 3499,
+          features: [
+            "1 Expert Pandit",
+            "2 Hours Duration",
+            "Basic Puja Samagri",
+            "Prasad",
+          ],
+        },
+      ],
+    },
+    // Add similar data for other locations and languages
+  };
+
+  const filteredPackages =
+    selectedLocation && selectedLanguage
+      ? packageData[selectedLocation]?.[selectedLanguage] || []
+      : [];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <div>
-          <img
-            src={pujaDetails.image}
-            alt={pujaDetails.title}
-            className="w-full h-96 object-cover rounded-lg shadow-lg"
-          />
-        </div>
-        <div>
-          <h1 className="text-4xl font-bold mb-4">{pujaDetails.title}</h1>
-          <p className="text-gray-600 mb-4">{pujaDetails.description}</p>
-          <p className="text-sm text-gray-500 mb-6">Category: {pujaDetails.category}</p>
-          <button className="bg-gray-200 text-gray-800 px-6 py-2 rounded-full hover:bg-gray-300 transition duration-300">
-            <FaShare className="inline mr-2" /> Share
-          </button>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-orange-100">
+      {/* Header Section */}
+      <Section
+        bgImageUrl="/image/singlepuja.jpeg"
+        title="Satyanarayan Puja"
+        description="Experience divine blessings through our sacred Satyanarayan Puja, performed with utmost devotion and authentic rituals"
+      />
 
-      <div className="mb-12">
-        <h2 className="text-2xl font-semibold mb-6">Select Your Package</h2>
-        <div className="flex flex-wrap gap-4 mb-6">
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-8">
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="rounded-lg overflow-hidden shadow-xl">
+            <img
+              src="/image/astrology.jpeg"
+              alt="Puja Setup"
+              className="w-full h-[400px] object-cover"
+            />
+          </div>
+          <div className="flex flex-col justify-center">
+            <h2 className="text-3xl font-bold text-orange-800 mb-4">
+              Satyanarayan Puja
+            </h2>
+            <p className="text-gray-700 mb-6">
+              Satyanarayan Puja is a sacred ritual dedicated to Lord Vishnu,
+              bringing prosperity, success, and spiritual enlightenment. This
+              divine ceremony is known for fulfilling wishes and bringing peace
+              to households.
+            </p>
+          </div>
+        </div>
+        {/* informational section */}
+        <div className="w-full grid grid-cols-1 gap-8 mb-12">
+          <div className="flex flex-col justify-center shadow-lg p-6 bg-white rounded-lg">
+            <h2 className="text-3xl font-bold text-orange-800 mb-4 text-center">
+              Please select your location and language to view available
+              packages.
+            </h2>
+            <p className="text-gray-700 mb-6 text-center">
+              To view the available packages for Satyanarayan Puja, kindly
+              choose your preferred location and language. Select the package
+              that best meets your requirements and add it to your cart to book
+              the puja. Prices may vary based on location and language.
+            </p>
+          </div>
+        </div>
+
+        {/* Dropdown Section */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
           <div className="relative">
+            <label className="block text-gray-700 mb-2 font-semibold">
+              <FaMapMarkerAlt className="inline mr-2" /> Select Location
+            </label>
             <select
               value={selectedLocation}
-              onChange={(e) => {
-                setSelectedLocation(e.target.value);
-                setSelectedPackage(null);
-              }}
-              className="appearance-none bg-white border border-gray-300 rounded-md py-2 pl-3 pr-10 text-sm leading-5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="w-full p-3 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
             >
-              <option value="Select Location">Select Location</option>
-              <option value="Mumbai">Mumbai</option>
-              <option value="Delhi">Delhi</option>
-              <option value="Bangalore">Bangalore</option>
-              <option value="Kolkata">Kolkata</option>
+              <option value="">Choose a location</option>
+              {locations.map((location) => (
+                <option key={location} value={location}>
+                  {location}
+                </option>
+              ))}
             </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <MdLocationOn className="h-5 w-5" />
-            </div>
           </div>
+
           <div className="relative">
+            <label className="block text-gray-700 mb-2 font-semibold">
+              <FaLanguage className="inline mr-2" /> Select Language
+            </label>
             <select
               value={selectedLanguage}
-              onChange={(e) => {
-                setSelectedLanguage(e.target.value);
-                setSelectedPackage(null);
-              }}
-              className="appearance-none bg-white border border-gray-300 rounded-md py-2 pl-3 pr-10 text-sm leading-5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              onChange={(e) => setSelectedLanguage(e.target.value)}
+              className="w-full p-3 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
             >
-              <option value="Select Language">Select Language</option>
-              <option value="Hindi">Hindi</option>
-              <option value="English">English</option>
-              <option value="Marathi">Marathi</option>
-              <option value="Bengali">Bengali</option>
+              <option value="">Choose a language</option>
+              {languages.map((language) => (
+                <option key={language} value={language}>
+                  {language}
+                </option>
+              ))}
             </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <MdLanguage className="h-5 w-5" />
-            </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {filteredPackages.map((pkg, index) => (
-            <div
-              key={index}
-              className="border rounded-lg p-6 shadow-md hover:shadow-lg transition duration-300"
-            >
-              <h3 className="text-xl font-semibold mb-2">{pkg.type} Package</h3>
-              <p className="text-2xl font-bold mb-4">₹{pkg.price}</p>
-              <p className="text-gray-600 mb-4">{pkg.description}</p>
-              <label className="flex items-center mb-4">
-                <input
-                  type="radio"
-                  name="package"
-                  className="mr-2"
-                  onChange={() => handlePackageSelection(pkg)}
-                />
-                Select this package
-              </label>
-            </div>
-          ))}
-        </div>
-        {selectedPackage && (
-          <div className="mt-6">
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition duration-300">
-              Add to Cart
-            </button>
+
+        {/* Package Options */}
+        {filteredPackages.length > 0 ? (
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            {filteredPackages.map((pkg) => (
+              <div
+                key={pkg.id}
+                className={`rounded-lg p-6 shadow-lg transition-transform duration-300 hover:scale-105 ${
+                  selectedPackage === pkg.id
+                    ? "bg-orange-100 border-2 border-orange-500"
+                    : "bg-white"
+                }`}
+              >
+                <div className="flex items-center mb-4">
+                  <input
+                    type="radio"
+                    name="package"
+                    checked={selectedPackage === pkg.id}
+                    onChange={() => setSelectedPackage(pkg.id)}
+                    className="w-4 h-4 text-orange-600"
+                  />
+                  <h3 className="text-xl font-bold text-orange-800 ml-2">
+                    {pkg.name}
+                  </h3>
+                </div>
+                <div className="mb-4">
+                  <p className="text-3xl font-bold text-orange-600">
+                    ₹{pkg.price}
+                  </p>
+                </div>
+                <ul className="space-y-2">
+                  {pkg.features.map((feature, index) => (
+                    <li key={index} className="flex items-center text-gray-700">
+                      <FaCheckCircle className="text-orange-500 mr-2" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center text-gray-600">
+            <p>
+              No packages available for the selected location and language.
+              Please try different options.
+            </p>
           </div>
         )}
-      </div>
 
-      <div className="mb-12">
-        <div className="flex space-x-4 text-lg mb-6">
-          {["Description", "Review", "FAQ"].map((tab, index) => (
-            <div
-              key={index}
-              className={`cursor-pointer p-2 font-bold ${
-                selectedTab === tab.toLowerCase()
-                  ? "text-blue-500 border-b-2 border-blue-500"
-                  : "text-gray-500"
-              }`}
-              onClick={() => setSelectedTab(tab.toLowerCase())}
-            >
-              {tab}
-            </div>
-          ))}
+        {/* Footer Section */}
+        <div className="text-center">
+          <button
+            disabled={!selectedPackage}
+            className={`px-8 py-4 rounded-lg text-xl font-bold transition-all duration-300 ${
+              selectedPackage
+                ? "bg-orange-600 text-white hover:bg-orange-700"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+            }`}
+          >
+            Add to Cart
+          </button>
         </div>
-        <div>
-          {selectedTab === "description" && (
-            <div>
-              <h3 className="text-2xl font-semibold mb-4">About {pujaDetails.title}</h3>
-              <p className="text-gray-700">{pujaDetails.description}</p>
-            </div>
-          )}
-          {selectedTab === "review" && (
-            <div>
-              <h3 className="text-2xl font-semibold mb-4">Customer Reviews</h3>
-              {reviews.map((review) => (
-                <div key={review.id} className="border-b border-gray-300 py-4">
-                  <div className="flex items-center">
-                    <FaStar className="text-yellow-500" />
-                    <span className="ml-2 text-gray-800 font-semibold">{review.user}</span>
-                  </div>
-                  <p className="text-gray-600">{review.comment}</p>
-                </div>
-              ))}
-            </div>
-          )}
-          {selectedTab === "faq" && (
-            <div>
-              <h3 className="text-2xl font-semibold mb-4">Frequently Asked Questions</h3>
-              {faqs.map((faq) => (
-                <div key={faq.id} className="mb-4">
-                  <h4 className="text-lg font-semibold">{faq.question}</h4>
-                  <p className="text-gray-600">{faq.answer}</p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+      </main>
     </div>
   );
 };
 
-export default PujaServicePage;
+export default SinglePujaService;

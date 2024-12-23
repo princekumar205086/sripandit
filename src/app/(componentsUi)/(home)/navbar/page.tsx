@@ -48,7 +48,6 @@ const Navbar = () => {
                   <Image
                     alt="logo"
                     src="/image/okpuja logo.png"
-                    layout="responsive"
                     width={220}
                     height={120}
                     className="logo-image"
