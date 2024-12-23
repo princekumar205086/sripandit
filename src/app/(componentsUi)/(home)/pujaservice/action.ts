@@ -59,19 +59,10 @@ export async function getPujaCategory() {
 //fetching pujaDetails
 export const fetchPujaServiceDetails = async (id: number) => {
   try {
-    const response = await axios.get(`http://localhost:3000/api/pujaservice/${id}`);
+    const response = await axios.get(`${process.env.BASE_URL}/api/pujaservice/${id}`);
     return response.data;
   } catch (error: any) {
     return handleAxiosError(error);
   }
 };
 
-// Fetch packages for a specific puja
-export const fetchPackages = async (pujaId: number) => {
-  try {
-    const response = await axios.get(`http://localhost:3000/api/packages?pujaId=${pujaId}`);
-    return response.data;
-  } catch (error: any) {
-    return handleAxiosError(error) || [];
-  }
-};
