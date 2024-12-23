@@ -13,6 +13,7 @@ export async function GET(request: NextRequest, context: { params: Params }) {
       const service = await prisma.pujaService.findUnique({
         where: { id: Number(id) },include: {
           category: true,
+          packages: true,
         },
       });
   

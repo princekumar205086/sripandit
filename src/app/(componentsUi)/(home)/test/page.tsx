@@ -1,9 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import { FaMapMarkerAlt, FaLanguage, FaCheckCircle } from "react-icons/fa";
-import Section from "../pujaservice/section";
 import { useSearchParams } from "next/navigation";
 import CryptoJS from "crypto-js";
+import Section from "../pujaservice/section";
+import { fetchPujaServiceDetails } from "../pujaservice/action";
 
 
 const SinglePujaService = () => {
@@ -129,6 +130,7 @@ const SinglePujaService = () => {
           <div className="rounded-lg overflow-hidden shadow-xl">
             <img
               src="/image/astrology.jpeg"
+              // image
               alt="Puja Setup"
               className="w-full h-[400px] object-cover"
             />
@@ -136,12 +138,16 @@ const SinglePujaService = () => {
           <div className="flex flex-col justify-center">
             <h2 className="text-3xl font-bold text-orange-800 mb-4">
               Satyanarayan Puja
+              {/* title */}
             </h2>
+            <p>category name</p>
+            {/* category name */}
             <p className="text-gray-700 mb-6">
               Satyanarayan Puja is a sacred ritual dedicated to Lord Vishnu,
               bringing prosperity, success, and spiritual enlightenment. This
               divine ceremony is known for fulfilling wishes and bringing peace
               to households.
+              {/* descrption */}
             </p>
           </div>
         </div>
