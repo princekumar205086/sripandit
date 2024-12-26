@@ -36,7 +36,7 @@ export default function RootLayout({
         {/* Additional content that is not tied to loading */}
         <SpeedInsights />
         <Link
-          href="https://wa.me/9471661636"
+          href="https://wa.me/918051555505"
           target="_blank"
           rel="noopener noreferrer"
           style={{

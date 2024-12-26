@@ -70,9 +70,15 @@ const Navbar = () => {
 
             {/* Social Media Icons */}
             <div className="hidden md:flex w-3/12 md:w-2/12 justify-end space-x-4 items-center">
-              <FaWhatsappSquare className="text-green-500 text-2xl lg:text-3xl cursor-pointer hover:text-green-600 transition-transform duration-300 transform hover:scale-110" />
-              <FaPhoneSquare className="text-purple-500 text-2xl lg:text-3xl cursor-pointer hover:text-purple-600 transition-transform duration-300 transform hover:scale-110" />
-              <FaUserCircle className="text-blue-800 text-2xl lg:text-3xl cursor-pointer hover:text-blue-600 transition-transform duration-300 transform hover:scale-110" />
+              <Link href="https://wa.me/918051555505">
+                <FaWhatsappSquare className="text-green-500 text-2xl lg:text-3xl cursor-pointer hover:text-green-600 transition-transform duration-300 transform hover:scale-110" />
+              </Link>
+              <Link href="tel:+918051555505">
+                <FaPhoneSquare className="text-blue-800 text-2xl lg:text-3xl cursor-pointer hover:text-blue-600 transition-transform duration-300 transform hover:scale-110" />
+              </Link>
+              <Link href="/login">
+                <FaUserCircle className="text-purple-500 text-2xl lg:text-3xl cursor-pointer hover:text-purple-600 transition-transform duration-300 transform hover:scale-110" />
+              </Link>
             </div>
 
             {/* Menu Button for Mobile */}

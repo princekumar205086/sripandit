@@ -4,6 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import CryptoJS from "crypto-js";
 import Section from "../section";
 import { fetchPujaServiceDetails } from "../action";
+import "../pujaservice.css";
 
 const SinglePujaService = () => {
   const searchParams = useSearchParams();
@@ -50,10 +51,14 @@ const SinglePujaService = () => {
         // Extract unique locations and languages
         const packages = data?.packages || [];
         const locations = Array.from(
-          new Set<string>(packages.map((pkg: any) => pkg.location).filter(Boolean)) // Filter out undefined/null
+          new Set<string>(
+            packages.map((pkg: any) => pkg.location).filter(Boolean)
+          ) // Filter out undefined/null
         );
         const languages = Array.from(
-          new Set<string>(packages.map((pkg: any) => pkg.language).filter(Boolean)) // Filter out undefined/null
+          new Set<string>(
+            packages.map((pkg: any) => pkg.language).filter(Boolean)
+          ) // Filter out undefined/null
         );
 
         if (locations.length === 0 || languages.length === 0) {
@@ -104,7 +109,13 @@ const SinglePujaService = () => {
     setSelectedPackage(pkg);
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="spinner-container">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
   if (error) return <div>Error: {error}</div>;
 
   const { title, img, desc, category } = pujaDetails || {};
@@ -112,26 +123,37 @@ const SinglePujaService = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-orange-100">
       <Section
-        bgImageUrl='/image/singlepuja.jpeg'
-        title={typeof title === 'string' ? title : 'Default Title'}
-        description={`Experience divine blessings through our sacred ${typeof title === 'string' ? title : 'Default Title'}, performed with utmost devotion and authentic rituals`}
+        bgImageUrl="/image/singlepuja.jpeg"
+        title={typeof title === "string" ? title : "Default Title"}
+        description={`Experience divine blessings through our sacred ${
+          typeof title === "string" ? title : "Default Title"
+        }, performed with utmost devotion and authentic rituals`}
       />
 
       <main className="container mx-auto px-4 py-8">
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <div className="rounded-lg overflow-hidden shadow-xl">
             <img
-              src={typeof img === 'string' ? img : '/default-image.jpg'}
-              alt={typeof title === 'string' ? title : 'Default Title'}
+              src={typeof img === "string" ? img : "/default-image.jpg"}
+              alt={typeof title === "string" ? title : "Default Title"}
               className="w-full h-[400px] object-cover"
             />
           </div>
           <div className="flex flex-col justify-center">
             <h2 className="text-3xl font-bold text-orange-800 mb-4">
-              {typeof title === 'string' ? title : 'Default Title'}
+              {typeof title === "string" ? title : "Default Title"}
             </h2>
-            <p className="text-xs">{typeof category.name === 'string' ? category.name : 'Default Category'}</p>
-            <p className="text-gray-700 mb-6" dangerouslySetInnerHTML={{ __html: typeof desc === 'string' ? desc : 'Default Description' }}></p>
+            <p className="text-xs">
+              {typeof category.name === "string"
+                ? category.name
+                : "Default Category"}
+            </p>
+            <p
+              className="text-gray-700 mb-6"
+              dangerouslySetInnerHTML={{
+                __html: typeof desc === "string" ? desc : "Default Description",
+              }}
+            ></p>
           </div>
         </div>
 
@@ -143,7 +165,8 @@ const SinglePujaService = () => {
               packages.
             </h2>
             <p className="text-gray-700 mb-6 text-center">
-              To view the available packages for {typeof title === 'string' ? title : 'Default Title'}, kindly
+              To view the available packages for{" "}
+              {typeof title === "string" ? title : "Default Title"}, kindly
               choose your preferred location and language. Select the package
               that best meets your requirements and add it to your cart to book
               the puja. Prices may vary based on location and language.

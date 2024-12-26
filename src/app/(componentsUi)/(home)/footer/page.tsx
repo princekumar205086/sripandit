@@ -127,7 +127,7 @@ const Footer = () => {
               <FaFacebook />
             </Link>
             <Link
-              href="https://wa.me/919471661636"
+              href="https://wa.me/918051555505"
               className="mr-4 text-3xl text-orange-500 hover:text-orange-600"
             >
               <FaWhatsapp />

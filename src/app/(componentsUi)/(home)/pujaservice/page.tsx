@@ -8,6 +8,7 @@ import { getPujaService, getPujaCategory } from "./action";
 import Section from "./section";
 import slugify from "slugify";
 import CryptoJS from "crypto-js";
+import "./pujaservice.css";
 
 const PujaServices = () => {
   interface Service {
@@ -117,7 +118,9 @@ const PujaServices = () => {
     searchServices();
   }, [searchValue, selectedCategory, searchServices]);
 
-  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setSelectedCategory(event.target.value);
   };
 
@@ -140,10 +143,14 @@ const PujaServices = () => {
               priority
             />
             <div className="px-6 py-4 bg-cream">
-              <div className="font-bold text-sm mb-2 text-center text-orangeRed"> {/* Reduced text size */}
+              <div className="font-bold text-sm mb-2 text-center text-orangeRed">
+                {" "}
+                {/* Reduced text size */}
                 {service.title}
               </div>
-              <p className="text-orange-500 text-xs text-center"> {/* Reduced text size */}
+              <p className="text-orange-500 text-xs text-center">
+                {" "}
+                {/* Reduced text size */}
                 {service.category.name}
               </p>
             </div>
@@ -154,7 +161,11 @@ const PujaServices = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="spinner-container">
+        <div className="spinner"></div>
+      </div>
+    );
   }
 
   return (

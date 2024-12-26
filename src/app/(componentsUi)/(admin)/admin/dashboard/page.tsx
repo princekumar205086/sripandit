@@ -53,7 +53,7 @@ export default function AdminDashboard() {
       if (!isAuthenticated) {
         router.push('/login'); // Redirect to login if not authenticated
       } else if (role !== 'ADMIN') {
-        router.push('/unauthorized'); // Redirect to unauthorized page if role is not ADMIN
+        router.push('/login'); // Redirect to unauthorized page if role is not ADMIN
       }
     }
   }, [isAuthenticated, role, loading, router]);
@@ -98,31 +98,6 @@ export default function AdminDashboard() {
   return (
     <Layout>
       <div className="container bg-gradient-to-r from-blue-50 to-white min-h-screen p-8">
-        <header className="flex justify-between items-center mb-8">
-          <div className="flex items-center">
-            <img src="https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NjM2MDR8MHwxfHNlYXJjaHwxfHxsb3R1cyUyMGxvZ298ZW58MHx8fHwxNjkwMzk5MzA1fDA&ixlib=rb-4.0.3&q=80&w=50" alt="Logo" className="w-10 h-10 mr-4" />
-            <h1 className="text-2xl font-bold text-blue-800">Spiritual Dashboard</h1>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            </div>
-            <FiBell className="text-2xl text-gray-600 cursor-pointer" />
-            <FiSettings className="text-2xl text-gray-600 cursor-pointer" />
-            <div className="flex items-center cursor-pointer">
-              <FiUser className="text-2xl text-gray-600 mr-2" />
-              <FiChevronDown className="text-gray-600" />
-            </div>
-          </div>
-        </header>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <div className="flex items-center justify-between mb-4">
@@ -197,16 +172,6 @@ export default function AdminDashboard() {
             ))}
           </div>
         </div>
-
-        <footer className="text-center text-gray-500 text-sm">
-          <p>© 2023 Spiritual Dashboard. All rights reserved.</p>
-          <div className="mt-2">
-            <a href="#" className="text-blue-500 hover:underline mx-2">Support</a>
-            <a href="#" className="text-blue-500 hover:underline mx-2">FAQs</a>
-            <a href="#" className="text-blue-500 hover:underline mx-2">Terms of Service</a>
-            <a href="#" className="text-blue-500 hover:underline mx-2">Privacy Policy</a>
-          </div>
-        </footer>
       </div>
     </Layout>
   );
