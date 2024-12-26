@@ -22,6 +22,15 @@
     },
     "typeRoots": ["./node_modules/@types"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "typings.d.ts", "seed.ts", "src/app/(componentsUi)/(home)/star/page.js", "src/app/(componentsUi)/(home)/customerreview/page.jsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "typings.d.ts",
+    "seed.ts",
+    "src/app/(componentsUi)/(home)/star/page.js",
+    "src/app/(componentsUi)/(home)/customerreview/page.jsx"
+  ],
   "exclude": ["node_modules"]
 }

@@ -70,13 +70,14 @@ const FeaturedPujas = ({}: any) => {
       },
     ],
   };
+  const Slide = Slider as any;
   return (
     <>
       <div className="row m-0 p-2 bg-redOrange">
         <h2 className="text-center text-3xl font-semibold text-white">Featured Pujas</h2>
         <p className="text-center text-lg text-white">Here are some of the most popular Pujas and Homas booked on our portal</p>
       </div>
-      <Slider {...settings} className="m-0 p-0 row overflow-hidden">
+      <Slide {...settings} className="m-0 p-0 row overflow-hidden">
         {pujas.map((puja, index) => (
           <div className="featurespuja-card m-0 p-0" key={index}>
             <Image
@@ -93,7 +94,7 @@ const FeaturedPujas = ({}: any) => {
             </div>
           </div>
         ))}
-      </Slider>
+      </Slide>
       <div className="row bg-redOrange p-1">
         <Link href="/pujaservice" className="card-btn bg-cream text-lg text-black px-4 text-center block mx-auto rounded-lg">
           Explore all our puja services
