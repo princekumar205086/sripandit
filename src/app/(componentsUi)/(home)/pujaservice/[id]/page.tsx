@@ -257,6 +257,24 @@ const SinglePujaService = () => {
         ) : (
           <div className="text-center text-gray-600">
             No packages available for the selected location and language.
+            default package will be Rs. 10000/-.
+            <div
+              className={`rounded-lg p-6 shadow-lg cursor-pointer transition-colors duration-300 ${
+                selectedPackage?.id === 0 ? "bg-orange-200" : "bg-white"
+              }`}
+              onClick={() => handlePackageSelection(null)}
+            >
+              <label
+                htmlFor={`pkg-0`}
+                className="text-xl font-bold text-orange-800"
+              >
+                Default Package
+              </label>
+              <p className="text-orange-600 text-lg">₹10000</p>
+              <p className="text-orange-600 text-lg">
+                This is the default package for the selected puja service. Please select a different location and language to view available packages.
+              </p>
+            </div>
           </div>
         )}
       </main>
