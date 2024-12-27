@@ -39,7 +39,7 @@ const CancellationRefundPolicy = () => {
       id: 3,
       title: "Refund Policy",
       content:
-        "Refunds will be processed within 7-10 business days after the cancellation is confirmed. The refund amount will be credited to the original payment method used during booking.",
+        "Refunds will be processed within 7-10 business days after the cancellation is confirmed. The refund amount will be credited to the original payment method used during booking, within 7-10 business days.",
     },
     {
       id: 4,

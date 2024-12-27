@@ -130,7 +130,7 @@ const TermsOfService = () => {
     <Section
         bgImageUrl="image/term.jpeg"
         title="Terms of Service"
-        description="Welcome to OKPUJA. These terms and conditions outline the rules and regulations for the use of our Website. By accessing this website we assume you accept these terms and conditions."
+        description="Welcome to OKPUJA by Suraj Kumar Jha. These terms and conditions outline the rules and regulations for the use of our Website. By accessing this website we assume you accept these terms and conditions."
       />
       <div className="max-w-full mx-auto p-4 bg-redOrange shadow-lg rounded-lg text-orangeRed">
       <div className="mb-6 flex items-center">
