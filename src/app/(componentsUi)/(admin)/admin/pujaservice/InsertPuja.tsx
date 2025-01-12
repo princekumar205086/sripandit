@@ -1,10 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { FaPlus, FaTrash } from "react-icons/fa";
-import Layout from "../../layout";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css"; // Quill styles
-import { addPujaService, fetchCategories } from "./action";
+import { addPujaService, getPujaCategory } from "./action";
 import { ToastContainer, toast } from "react-toastify"; // Import ToastContainer and toast
 import "react-toastify/dist/ReactToastify.css"; // Import CSS for Toastify
 
@@ -12,6 +11,12 @@ import "react-toastify/dist/ReactToastify.css"; // Import CSS for Toastify
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const PujaForm: React.FC = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   interface PujaFormData {
     title: string;
     category: string;
@@ -41,7 +46,9 @@ const PujaForm: React.FC = () => {
     packages: [],
   });
 
-  const [errors, setErrors] = useState<{ [key: string]: string | undefined }>({});
+  const [errors, setErrors] = useState<{ [key: string]: string | undefined }>(
+    {}
+  );
   const [categories, setCategories] = useState<Category[]>([]);
 
   const languages = [
@@ -60,7 +67,7 @@ const PujaForm: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const categoriesData = await fetchCategories();
+        const categoriesData = await getPujaCategory();
         setCategories(categoriesData);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -70,7 +77,9 @@ const PujaForm: React.FC = () => {
     fetchData();
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -102,7 +111,11 @@ const PujaForm: React.FC = () => {
     });
   };
 
-  const handlePackageChange = (index: number, field: string, value: string | number) => {
+  const handlePackageChange = (
+    index: number,
+    field: string,
+    value: string | number
+  ) => {
     const updatedPackages = formData.packages.map((pkg, i) =>
       i === index ? { ...pkg, [field]: value } : pkg
     );
@@ -125,7 +138,11 @@ const PujaForm: React.FC = () => {
     setErrors(newErrors);
   };
 
-  const validatePackage = (index: number, field: string, value: string | number) => {
+  const validatePackage = (
+    index: number,
+    field: string,
+    value: string | number
+  ) => {
     let newErrors = { ...errors };
     if (field === "price" && (isNaN(Number(value)) || Number(value) <= 0)) {
       newErrors[`package_${index}_price`] = "Price must be a positive number";
@@ -182,8 +199,12 @@ const PujaForm: React.FC = () => {
     }
   };
 
+  if (!isClient) {
+    return null;
+  }
+
   return (
-    <Layout>
+    <>
       <ToastContainer /> {/* Include ToastContainer in your component */}
       <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold mb-6 text-center text-indigo-600">
@@ -247,7 +268,9 @@ const PujaForm: React.FC = () => {
             <ReactQuill
               theme="snow"
               value={formData.description}
-              onChange={(value) => setFormData({ ...formData, description: value })}
+              onChange={(value) =>
+                setFormData({ ...formData, description: value })
+              }
               className="mt-1 border-2 border-gray-300 rounded-md"
             />
           </div>
@@ -280,7 +303,10 @@ const PujaForm: React.FC = () => {
                     onChange={() => handleLanguageChange(lang)}
                     className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                   />
-                  <label htmlFor={lang} className="ml-2 block text-sm text-gray-700">
+                  <label
+                    htmlFor={lang}
+                    className="ml-2 block text-sm text-gray-700"
+                  >
                     {lang}
                   </label>
                 </div>
@@ -304,7 +330,9 @@ const PujaForm: React.FC = () => {
                       type="text"
                       id={`location_${index}`}
                       value={pkg.location}
-                      onChange={(e) => handlePackageChange(index, "location", e.target.value)}
+                      onChange={(e) =>
+                        handlePackageChange(index, "location", e.target.value)
+                      }
                       className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                       required
                     />
@@ -320,7 +348,9 @@ const PujaForm: React.FC = () => {
                     <select
                       id={`language_${index}`}
                       value={pkg.language}
-                      onChange={(e) => handlePackageChange(index, "language", e.target.value)}
+                      onChange={(e) =>
+                        handlePackageChange(index, "language", e.target.value)
+                      }
                       className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                       required
                     >
@@ -343,7 +373,9 @@ const PujaForm: React.FC = () => {
                     <select
                       id={`type_${index}`}
                       value={pkg.type}
-                      onChange={(e) => handlePackageChange(index, "type", e.target.value)}
+                      onChange={(e) =>
+                        handlePackageChange(index, "type", e.target.value)
+                      }
                       className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                       required
                     >
@@ -367,7 +399,13 @@ const PujaForm: React.FC = () => {
                       type="number"
                       id={`price_${index}`}
                       value={pkg.price}
-                      onChange={(e) => handlePackageChange(index, "price", Number(e.target.value))}
+                      onChange={(e) =>
+                        handlePackageChange(
+                          index,
+                          "price",
+                          Number(e.target.value)
+                        )
+                      }
                       className="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                       required
                     />
@@ -389,7 +427,9 @@ const PujaForm: React.FC = () => {
                   <ReactQuill
                     theme="snow"
                     value={pkg.description}
-                    onChange={(value) => handlePackageChange(index, "description", value)}
+                    onChange={(value) =>
+                      handlePackageChange(index, "description", value)
+                    }
                     className="mt-1 border-2 border-gray-300 rounded-md"
                   />
                 </div>
@@ -422,7 +462,7 @@ const PujaForm: React.FC = () => {
           </button>
         </form>
       </div>
-    </Layout>
+    </>
   );
 };
 
