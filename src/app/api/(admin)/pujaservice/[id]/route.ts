@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import fs from "fs/promises";
 
-
 interface Params {
   id: number;
 }
@@ -22,17 +21,16 @@ export async function GET(request: NextRequest, context: { params: Params }) {
     });
 
     if (!service) {
-      return NextResponse.json({ success: false, error: "Service not found" });
+      throw new Error("Service not found");
     }
 
-    return NextResponse.json({ success: true, data: service });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ success: false, error: (error as Error).message });
+    return NextResponse.json(service);
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
 
-// update puja service
+//update puja service
 
 export async function PUT(request: NextRequest, context: { params: Params }) {
   try {

@@ -144,7 +144,7 @@ const SinglePujaService = () => {
               {typeof title === "string" ? title : "Default Title"}
             </h2>
             <p className="text-xs">
-              {typeof category.name === "string"
+              {category && typeof category.name === "string"
                 ? category.name
                 : "Default Category"}
             </p>
@@ -272,7 +272,9 @@ const SinglePujaService = () => {
               </label>
               <p className="text-orange-600 text-lg">₹10000</p>
               <p className="text-orange-600 text-lg">
-                This is the default package for the selected puja service. Please select a different location and language to view available packages.
+                This is the default package for the selected puja service.
+                Please select a different location and language to view
+                available packages.
               </p>
             </div>
           </div>

@@ -144,7 +144,7 @@ const PujaForm: React.FC = () => {
     value: string | number
   ) => {
     let newErrors = { ...errors };
-    if (field === "price" && (isNaN(Number(value)) || Number(value) <= 0)) {
+    if (field === "price" && (isNaN(Number(value)))) {
       newErrors[`package_${index}_price`] = "Price must be a positive number";
     } else {
       delete newErrors[`package_${index}_price`];
