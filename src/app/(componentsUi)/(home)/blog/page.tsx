@@ -3,7 +3,8 @@ import React from "react";
 import Section from "../pujaservice/section";
 import Image from "next/image";
 import Link from "next/link";
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import { FaClock, FaUser, FaEye, FaComments, FaThumbsUp } from "react-icons/fa";
+import { TiArrowRight } from "react-icons/ti";
 
 export default function Blog() {
   const postData = [
@@ -14,7 +15,8 @@ export default function Blog() {
       author: "Saurav",
       views: 125,
       comments: 8,
-      description: "Satyanarayan Puja is performed to appease Lord Vishnu or Narayana, the preserver of this whole creation.",
+      description:
+        "Satyanarayan Puja is performed to appease Lord Vishnu or Narayana, the preserver of this whole creation.",
     },
     {
       image: "/image/ganpati.png", // Corrected path
@@ -23,7 +25,8 @@ export default function Blog() {
       author: "Amit",
       views: 150,
       comments: 12,
-      description: "Celebrate Ganesh Chaturthi with the most auspicious rituals and blessings from Lord Ganesha.",
+      description:
+        "Celebrate Ganesh Chaturthi with the most auspicious rituals and blessings from Lord Ganesha.",
     },
     {
       image: "/image/shivratri.png", // Corrected path
@@ -32,7 +35,8 @@ export default function Blog() {
       author: "Priya",
       views: 200,
       comments: 25,
-      description: "Perform Laxmi Puja for wealth and prosperity during the festival of Diwali.",
+      description:
+        "Perform Laxmi Puja for wealth and prosperity during the festival of Diwali.",
     },
     {
       image: "/image/hawan.jpeg", // Corrected path
@@ -41,7 +45,8 @@ export default function Blog() {
       author: "Rajesh",
       views: 95,
       comments: 5,
-      description: "Kumari Puja is a special ritual dedicated to the worship of young girls in Nepal and India.",
+      description:
+        "Kumari Puja is a special ritual dedicated to the worship of young girls in Nepal and India.",
     },
     {
       image: "/image/select puja.jpeg", // Corrected path
@@ -50,7 +55,8 @@ export default function Blog() {
       author: "Anita",
       views: 300,
       comments: 45,
-      description: "Maha Shivaratri is one of the most significant Hindu festivals dedicated to Lord Shiva.",
+      description:
+        "Maha Shivaratri is one of the most significant Hindu festivals dedicated to Lord Shiva.",
     },
     {
       image: "/image/book pandit jee.jpeg", // Corrected path
@@ -59,7 +65,8 @@ export default function Blog() {
       author: "Vikram",
       views: 180,
       comments: 10,
-      description: "Learn everything about different types of puja services available for every occasion.",
+      description:
+        "Learn everything about different types of puja services available for every occasion.",
     },
   ];
 
@@ -92,7 +99,10 @@ export default function Blog() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {postData.map((post, index) => (
-            <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div
+              key={index}
+              className="bg-white shadow-lg rounded-lg overflow-hidden"
+            >
               <div className="relative">
                 <Link href="#">
                   <Image
@@ -111,18 +121,29 @@ export default function Blog() {
                   </Link>
                 </h2>
                 <ul className="flex items-center text-sm text-gray-500 space-x-4 mb-5">
-                  <li><i className="fa fa-clock"></i> {post.date}</li>
-                  <li><i className="fa fa-user"></i> {post.author}</li>
+                  <li>
+                    <FaClock /> {post.date}
+                  </li>
+                  <li>
+                    <FaUser /> {post.author}
+                  </li>
                 </ul>
                 <ul className="flex items-center text-sm text-gray-500 space-x-4 mb-5">
-                  <li><i className="fa fa-eye"></i> {post.views}</li>
-                  <li><i className="fa fa-comments"></i> {post.comments}</li>
+                  <li>
+                    <FaEye /> {post.views}
+                  </li>
+                  <li>
+                    <FaComments /> {post.comments}
+                  </li>
                 </ul>
                 <p className="text-sm text-gray-700 mb-5">{post.description}</p>
-                <Link href="#" className="text-orange-500 hover:underline text-sm">
-                  Read more <i className="ti-more-alt"></i>
+                <Link
+                  href="#"
+                  className="text-orange-500 hover:underline text-sm"
+                >
+                  Read more <TiArrowRight />
                 </Link>
-              </div>         
+              </div>
             </div>
           ))}
         </div>
@@ -130,16 +151,28 @@ export default function Blog() {
         {/* Pagination */}
         <div className="mt-8 flex justify-center">
           <nav className="inline-flex rounded-md shadow-md">
-            <Link href="#" className="px-4 py-2 bg-white border border-gray-300 rounded-l-md text-orange-500 hover:bg-orange-500 hover:text-white transition">
+            <Link
+              href="#"
+              className="px-4 py-2 bg-white border border-gray-300 rounded-l-md text-orange-500 hover:bg-orange-500 hover:text-white transition"
+            >
               Previous
             </Link>
-            <Link href="#" className="px-4 py-2 bg-white border border-gray-300 text-orange-500 hover:bg-orange-500 hover:text-white transition">
+            <Link
+              href="#"
+              className="px-4 py-2 bg-white border border-gray-300 text-orange-500 hover:bg-orange-500 hover:text-white transition"
+            >
               1
             </Link>
-            <Link href="#" className="px-4 py-2 bg-white border border-gray-300 text-orange-500 hover:bg-orange-500 hover:text-white transition">
+            <Link
+              href="#"
+              className="px-4 py-2 bg-white border border-gray-300 text-orange-500 hover:bg-orange-500 hover:text-white transition"
+            >
               2
             </Link>
-            <Link href="#" className="px-4 py-2 bg-white border border-gray-300 rounded-r-md text-orange-500 hover:bg-orange-500 hover:text-white transition">
+            <Link
+              href="#"
+              className="px-4 py-2 bg-white border border-gray-300 rounded-r-md text-orange-500 hover:bg-orange-500 hover:text-white transition"
+            >
               Next
             </Link>
           </nav>
@@ -147,16 +180,19 @@ export default function Blog() {
 
         {/* Most Popular Posts */}
         <div className="mt-12">
-          <h4 className="text-2xl font-semibold text-gray-800 mb-8"><i className="fa fa-thumbs-up"></i> Most Popular Posts</h4>
+        <h4 className="text-2xl font-semibold text-gray-800 mb-8"><FaThumbsUp /> Most Popular Posts</h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {popularPosts.map((post, index) => (
-              <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
+              <div
+                key={index}
+                className="bg-white shadow-lg rounded-lg overflow-hidden"
+              >
                 <Link href="#">
                   <Image
                     className="w-full h-46 object-cover"
                     src={post.image}
                     alt={`Popular Post ${index + 1}`}
-                    width={300} 
+                    width={300}
                     height={200}
                   />
                 </Link>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Section from '../pujaservice/section';
+import Section from '../../(home)/pujaservice/section';
 
 export default function page() {
     return (
@@ -63,7 +63,7 @@ export default function page() {
                             id="meta_description"
                             name="meta_description"
                             placeholder="Enter Meta Description"
-                            rows="4"
+                            rows={4}
                             className="mt-1 p-3 w-full border border-gray-300 rounded-lg"
                         />
                     </div>
