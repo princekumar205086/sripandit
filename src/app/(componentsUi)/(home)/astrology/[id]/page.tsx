@@ -37,9 +37,11 @@ const SingleAstroService = ({ params }: any) => {
     service_price: String;
     service_desc: String;
   }
-  
-  const [astroService, setAstroService] = useState<AstrologyService | null>(null);
-  
+
+  const [astroService, setAstroService] = useState<AstrologyService | null>(
+    null
+  );
+
   useEffect(() => {
     if (!id) {
       router.replace("/not-found");
@@ -56,8 +58,13 @@ const SingleAstroService = ({ params }: any) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -72,36 +79,51 @@ const SingleAstroService = ({ params }: any) => {
             <div className="grid grid-cols-1 md:grid-cols-10 gap-8">
               <div className="col-span-10 md:col-span-6">
                 <div className="bg-white p-4 rounded-lg shadow-md">
-                  <p className="text-center md:text-left text-lg"> {/* Changed to lg */}
+                  <p className="text-center md:text-left text-lg text-gray-500">
+                    {" "}
+                    {/* Changed to lg */}
                     ASTROLOGY SERVICES / {astroService?.service_title}
                   </p>
-                  <div className="card mt-8">
+                  <div className="card  mt-2">
                     <div className="card-header p-4">
-                      <h2 className="text-3xl font-bold text-black text-left"> {/* Changed to 3xl */}
+                      <h2 className="text-3xl font-bold text-black text-left">
+                        {" "}
+                        {/* Changed to 3xl */}
                         {astroService?.service_title}
                       </h2>
                     </div>
                     <div className="col-span-10 md:col-span-6">
                       <div className="bg-white p-4 rounded-lg shadow-md">
-                        <div className="service-type-button flex p-2">
-                          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
-                            <h2 className="text-lg md:text-xl lg:text-2xl font-semibold"> {/* Changed to lg and adjusted sizes */}
+                        <div className="service-type-button flex">
+                          <button className="bg-orange-700  text-[#EEEEEE] font-bold py-2 px-2 rounded-lg ">
+                            <h2 className="text-sm md:text-lg lg:text-xl font-semibold">
                               Service delivered on {astroService?.service_type}
                             </h2>
                           </button>
                         </div>
                         <div className="service-price p-2">
-                          <h2 className="text-xl font-semibold text-black text-left"> {/* Changed to xl */}
+                          <h2 className="text-xl font-semibold text-gray-500 text-left">
+                            {" "}
+                            {/* Changed to xl */}
                             Price: &#8377; {astroService?.service_price}
                           </h2>
                         </div>
-                        <div className="service-book-button">
-                          <button onClick={openModal} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
+                        <div className="service-book-button mb-4">
+                          <button
+                            onClick={handleOpenModal}
+                            className="bg-orange-600 hover:bg-orange-700 text-[#EEEEEE] font-bold py-2 px-2 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
+                          >
                             Book Now
                           </button>
-                          <AstrologyBookingModal isOpen={isModalOpen} onClose={closeModal} />
+
+                          <AstrologyBookingModal
+                            isOpen={isModalOpen}
+                            onClose={handleCloseModal}
+                          />
                         </div>
-                        <div className="text-lg" 
+                        <hr />
+                        <div
+                          className="text-md text-gray-700 mt-2"
                           dangerouslySetInnerHTML={{
                             __html: astroService?.service_desc || "",
                           }}
@@ -122,7 +144,9 @@ const SingleAstroService = ({ params }: any) => {
                     width="500"
                     height="500"
                   />
-                  <h2 className="text-lg font-semibold mt-4 text-center text-black"> {/* Changed to lg */}
+                  <h2 className="text-lg font-semibold mt-4 text-center text-black">
+                    {" "}
+                    {/* Changed to lg */}
                     {astroService?.service_title}
                   </h2>
                 </div>
