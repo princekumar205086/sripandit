@@ -13,6 +13,11 @@ enum Role {
   ADMIN
 }
 
+enum Status {
+  TRUE
+  FALSE
+}
+
 model User {
   id                        Int      @id @default(autoincrement())
   username                  String
@@ -25,9 +30,16 @@ model User {
   verifyTokenExpiry         DateTime?
   forgotPasswordToken       String?  @db.VarChar(255)
   forgotPasswordTokenExpiry DateTime?
-  changePasswordToken       String? @db.VarChar(255)
+  changePasswordToken       String?  @db.VarChar(255)
   chabgePasswordTokenExpiry DateTime?
   role                      Role     @default(USER)
+  blogCategories            BlogCategory[]   @relation("UserBlogCategories")
+  blogPosts                 BlogPost[]       @relation("UserBlogPosts")
+  blogComments              BlogComments[]   @relation("UserBlogComments")
+  blogLikes                 BlogLikes[]      @relation("UserBlogLikes")
+  blogViews                 BlogView[]       @relation("UserBlogViews")
+
+  @@unique([id, role], map: "unique_admin")
 }
 
 model PujaService {
@@ -91,4 +103,91 @@ model AstrologyBooking {
   gender          String
   questions       String?  // Optional field for questions
   createdAt       DateTime  @default(now())
+}
+
+model BlogCategory {
+  id                 Int              @id @default(autoincrement())
+  user               User             @relation(fields: [user_id], references: [id], name: "UserBlogCategories")
+  user_id            Int
+  category_name      String
+  category_slug      String           @unique
+  meta_title         String
+  meta_keyword       String
+  meta_description   String
+  publication_status Status           @default(FALSE)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @default(now())
+  blogPosts          BlogPost[]       @relation("CategoryBlogPosts")
+}
+
+model BlogPost {
+  id                 Int              @id @default(autoincrement())
+  user               User             @relation(fields: [user_id], references: [id], name: "UserBlogPosts")
+  user_id            Int
+  category           BlogCategory     @relation(fields: [category_id], references: [id], name: "CategoryBlogPosts")
+  category_id        Int
+  post_title         String
+  post_slug          String           @unique
+  post_description   String
+  featured_image     String
+  youtube_url        String?
+  publication_status Status           @default(FALSE)
+  is_featured        Boolean          @default(false)
+  view_count         Int              @default(0)
+  meta_title         String
+  meta_keyword       String
+  meta_description   String
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @default(now())
+  blogTags           BlogPost_tag[]   @relation("PostBlogTags")
+  blogComments       BlogComments[]   @relation("PostBlogComments")
+  blogLikes          BlogLikes[]      @relation("PostBlogLikes")
+  blogViews          BlogView[]       @relation("PostBlogViews")
+}
+
+model BlogTag {
+  id                 Int              @id @default(autoincrement())
+  tag_name           String           @unique
+  publication_status Status           @default(FALSE)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @default(now())
+  blogPosts          BlogPost_tag[]   @relation("TagBlogPosts")
+}
+
+model BlogPost_tag {
+  id       Int      @id @default(autoincrement())
+  post     BlogPost @relation(fields: [post_id], references: [id], name: "PostBlogTags")
+  post_id  Int
+  tag      BlogTag  @relation(fields: [tag_id], references: [id], name: "TagBlogPosts")
+  tag_id   Int
+}
+
+model BlogComments {
+  id           Int       @id @default(autoincrement())
+  post         BlogPost  @relation(fields: [post_id], references: [id], name: "PostBlogComments")
+  post_id      Int
+  user         User      @relation(fields: [user_id], references: [id], name: "UserBlogComments")
+  user_id      Int
+  comment_text String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now())
+}
+
+model BlogLikes {
+  id        Int       @id @default(autoincrement())
+  post      BlogPost  @relation(fields: [post_id], references: [id], name: "PostBlogLikes")
+  post_id   Int
+  user      User      @relation(fields: [user_id], references: [id], name: "UserBlogLikes")
+  user_id   Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+}
+
+model BlogView {
+  id        Int       @id @default(autoincrement())
+  post      BlogPost  @relation(fields: [post_id], references: [id], name: "PostBlogViews")
+  post_id   Int
+  user      User      @relation(fields: [user_id], references: [id], name: "UserBlogViews")
+  user_id   Int
+  createdAt DateTime  @default(now())
 }

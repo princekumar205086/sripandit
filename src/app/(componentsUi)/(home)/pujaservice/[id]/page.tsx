@@ -5,10 +5,13 @@ import CryptoJS from "crypto-js";
 import Section from "../section";
 import { fetchPujaServiceDetails } from "../action";
 import "../pujaservice.css";
+import cartAuth from "@/app/helper/cartAuth";
+import { toast } from "react-toastify";
 
 const SinglePujaService = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const isUser = cartAuth(); // Check auth status once at the top of the component
 
   const encryptedId = searchParams.get("id");
   const decryptId = (encryptedId: string | null) => {
@@ -107,6 +110,15 @@ const SinglePujaService = () => {
 
   const handlePackageSelection = (pkg: any) => {
     setSelectedPackage(pkg);
+  };
+
+  const handleAddToCart = () => {
+    if (!isUser) {
+      router.push("/login"); // Redirect to login only when clicking the button
+    } else {
+      // Add package to cart logic here
+      toast.success("Package added to cart successfully");
+    }
   };
 
   if (loading) {
@@ -290,6 +302,7 @@ const SinglePujaService = () => {
               ? "bg-orange-600 text-white hover:bg-orange-700"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"
           }`}
+          onClick={handleAddToCart}
         >
           Add to Cart
         </button>
