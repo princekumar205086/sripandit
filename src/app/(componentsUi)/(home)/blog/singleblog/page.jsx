@@ -92,11 +92,11 @@ const FAQ = () => {
             question: "What are the benefits of Rudrabhishek Puja?",
             answer:
                 "The puja purifies the mind, body, and soul, removes karmic imbalances, and brings peace, harmony, and prosperity to one's life.dy, and soul, removes karmic imbalances, and brings peace, harmony, and prosperity to one's life.dy, and soul, removes karmic imbalances, and brings peace, harmony, and prosperity to one's life.",
-        },{
+        }, {
             question: "Who is Lord Satyanarayana?",
             answer:
                 "The puja purifies the mind, body, and soul, removes karmic imbalances, and brings peace, harmony, and prosperity to one's life.dy, and soul, removes karmic imbalances, and brings peace, harmony, and prosperity to one's life.dy, and soul, removes karmic imbalances, and brings peace, harmony, and prosperity to one's life.",
-        },{
+        }, {
             question: "What are the benefits of Rudrabhishek Puja?",
             answer:
                 "The puja purifies the mind, body, and soul, removes karmic imbalances, and brings peace, harmony, and prosperity to one's life.dy, and soul, removes karmic imbalances, and brings peace, harmony, and prosperity to one's life.dy, and soul, removes karmic imbalances, and brings peace, harmony, and prosperity to one's life.",
@@ -161,7 +161,7 @@ const CommentSection = () => {
     return (
         <div className="my-8">
             <h2 className="text-3xl font-semibold text-orange-500 text-center sm:text-left mb-4">
-                Share Your Thoughts
+               Comments
             </h2>
             <form onSubmit={handleCommentSubmit} className="mb-4">
                 <textarea
