@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
+import slugify from 'slugify';
 
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { user_id, category_name, category_slug, meta_title, meta_keyword, meta_description, publication_status } = reqBody;
+    const { user_id, category_name, meta_title, meta_keyword, meta_description, publication_status } = reqBody;
 
     // Check if user is an admin
     const user = await prisma.user.findUnique({
@@ -32,6 +33,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Insert new category
+    const category_slug = slugify(category_name, { lower: true });
     const newCategory = await prisma.blogCategory.create({
       data: {
         user_id,
