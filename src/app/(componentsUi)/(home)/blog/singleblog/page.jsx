@@ -25,6 +25,8 @@ const App = () => {
             <Significance />
             <FAQ />
             <CallToAction />
+            <CommentSection />
+
         </div>
     );
 };
@@ -140,4 +142,56 @@ const CallToAction = () => (
     </div>
 );
 
+const CommentSection = () => {
+    const [comment, setComment] = useState("");
+    const [commentsList, setCommentsList] = useState([]);
+
+    const handleCommentChange = (e) => {
+        setComment(e.target.value);
+    };
+
+    const handleCommentSubmit = (e) => {
+        e.preventDefault();
+        if (comment.trim()) {
+            setCommentsList([...commentsList, comment]);
+            setComment("");
+        }
+    };
+
+    return (
+        <div className="my-8">
+            <h2 className="text-3xl font-semibold text-orange-500 text-center sm:text-left mb-4">
+                Share Your Thoughts
+            </h2>
+            <form onSubmit={handleCommentSubmit} className="mb-4">
+                <textarea
+                    value={comment}
+                    onChange={handleCommentChange}
+                    rows="4"
+                    className="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    placeholder="Write your comment here..."
+                />
+                <button
+                    type="submit"
+                    className="mt-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md"
+                >
+                    Post Comment
+                </button>
+            </form>
+
+            {commentsList.length > 0 && (
+                <div>
+                    <h3 className="text-2xl font-semibold text-orange-500">Comments</h3>
+                    <div className="mt-4 space-y-4">
+                        {commentsList.map((comment, index) => (
+                            <div key={index} className="p-4 bg-gray-100 rounded-lg">
+                                <p className="text-gray-700">{comment}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
 export default App;
