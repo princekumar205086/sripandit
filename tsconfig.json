@@ -31,6 +31,6 @@
     "seed.ts",
     "src/app/(componentsUi)/(home)/star/page.js",
     "src/app/(componentsUi)/(home)/customerreview/page.jsx"
-  ],
+, "src/app/(componentsUi)/(home)/blog/[slug]/page.tsx"  ],
   "exclude": ["node_modules"]
 }
