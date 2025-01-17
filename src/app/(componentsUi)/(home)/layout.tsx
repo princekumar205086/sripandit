@@ -8,7 +8,8 @@ import ToastProvider from "@/lib/ToastProvider";
 import "@/app/globals.css";
 import LoaderWrapper from "./LoaderWrapper";
 import { FaWhatsapp } from "react-icons/fa";
-import 'react-toastify/ReactToastify.min.css';
+import "react-toastify/ReactToastify.min.css";
+import { CartProvider } from "@/app/context/CartContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,13 +27,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {/* Ensure the entire layout is wrapped inside LoaderWrapper */}
-        <LoaderWrapper>
-          {/* Navbar, children, and Footer are hidden until the LoaderWrapper finishes loading */}
-          <Navbar />
-          <ToastProvider>{children}</ToastProvider>
-          <Footer />
-        </LoaderWrapper>
-
+        <CartProvider>
+          <LoaderWrapper>
+            {/* Navbar, children, and Footer are hidden until the LoaderWrapper finishes loading */}
+            <Navbar />
+            <ToastProvider>{children}</ToastProvider>
+            <Footer />
+          </LoaderWrapper>
+        </CartProvider>
         {/* Additional content that is not tied to loading */}
         <SpeedInsights />
         <Link
