@@ -7,6 +7,7 @@ import { fetchPujaServiceDetails } from "../action";
 import "../pujaservice.css";
 import cartAuth from "@/app/helper/cartAuth";
 import { toast } from "react-toastify";
+import { useCart } from "@/app/context/CartContext";
 
 const SinglePujaService = () => {
   const searchParams = useSearchParams();
@@ -112,12 +113,14 @@ const SinglePujaService = () => {
     setSelectedPackage(pkg);
   };
 
-  const handleAddToCart = () => {
-    if (!isUser) {
-      router.push("/login"); // Redirect to login only when clicking the button
-    } else {
-      // Add package to cart logic here
+  const { addToCart } = useCart();
+
+  const handleAddToCart = (selectedPackage: any) => {
+    if (selectedPackage) {
+      addToCart(selectedPackage);
       toast.success("Package added to cart successfully");
+    } else {
+      toast.error("Please select a package to add to the cart.");
     }
   };
 
