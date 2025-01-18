@@ -115,13 +115,23 @@ const SinglePujaService = () => {
 
   const { addToCart } = useCart();
 
-  const handleAddToCart = (selectedPackage: any) => {
-    if (selectedPackage) {
-      addToCart(selectedPackage);
-      toast.success("Package added to cart successfully");
-    } else {
+  const handleAddToCart = () => {
+    if (!selectedPackage) {
       toast.error("Please select a package to add to the cart.");
+      return;
     }
+
+    const itemToAdd = {
+      id: selectedPackage.id,
+      name: title || "Default Title",
+      image: img || "/default-image.jpg",
+      package: selectedPackage.name,
+      location: selectedPackage.location,
+      language: selectedPackage.language,
+      price: selectedPackage.price,
+    };
+
+    addToCart(itemToAdd);
   };
 
   if (loading) {
