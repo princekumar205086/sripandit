@@ -21,6 +21,16 @@ export const fetchCategories = async () => {
     return response.data; // Return the categories from the response data
   } catch (error: any) {
     console.error("Error fetching categories:", error);
-    throw error; // Re-throw the error to be caught in the component
+    throw error; 
+  }
+};
+
+export const fetchBlogPost = async (id: string) => {
+  try {
+    const response = await axios.get(`/api/blogpost/${id}`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error fetching blog post:", error);
+    return null;
   }
 };

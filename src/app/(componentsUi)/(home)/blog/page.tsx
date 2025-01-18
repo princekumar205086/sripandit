@@ -1,4 +1,5 @@
 "use client";
+import CryptoJS from "crypto-js";
 import React, { useEffect, useState } from "react";
 import Section from "../pujaservice/section";
 import Image from "next/image";
@@ -6,9 +7,10 @@ import Link from "next/link";
 import { FaClock, FaUser, FaEye, FaComments } from "react-icons/fa";
 import { TiArrowRight } from "react-icons/ti";
 import { fetchblogdata, fetchCategories } from "./action";
-import { useRouter } from "next/navigation";
+import slugify from "slugify";
 
 interface BlogPost {
+  id: number;
   post_slug: string;
   post_title: string;
   featured_image: string;
@@ -33,6 +35,11 @@ export default function Blog() {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+  const encryptId = (id: number) => {
+    const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY || "default-secret-key";
+    return encodeURIComponent(CryptoJS.AES.encrypt(id.toString(), secretKey).toString());
+  };
 
   useEffect(() => {
     const getBlogData = async () => {
@@ -148,7 +155,9 @@ export default function Blog() {
             {filteredPosts.map((post: BlogPost, index: number) => (
               <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div className="relative">
-                  <Link href={`/blog/${post.post_slug}`}>
+                  <Link href={`/blog/${slugify(post.post_title)}?id=${encodeURIComponent(
+                              encryptId(post.id)
+                            )}`}>
                     <Image
                       className="w-full h-56 object-cover"
                       src={post.featured_image}
@@ -160,7 +169,7 @@ export default function Blog() {
                 </div>
                 <div className="p-6">
                   <h2 className="text-xl font-semibold mb-3 text-orange-500">
-                    <Link href={`/blog/${post.post_slug}`} className="text-orange-500 hover:underline">
+                    <Link href={`/blog/${encryptId(post.id)}`} className="text-orange-500 hover:underline">
                       {post.post_title}
                     </Link>
                   </h2>
@@ -181,7 +190,7 @@ export default function Blog() {
                     </li>
                   </ul>
                   <p className="text-sm text-gray-700 mb-5">{post.post_description}</p>
-                  <Link href={`/blog/${post.post_slug}`} className="text-orange-500 hover:underline text-sm">
+                  <Link href={`/blog/${encryptId(post.id)}`} className="text-orange-500 hover:underline text-sm">
                     Read more <TiArrowRight />
                   </Link>
                 </div>
