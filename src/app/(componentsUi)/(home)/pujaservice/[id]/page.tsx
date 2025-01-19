@@ -45,6 +45,7 @@ const SinglePujaService = () => {
 
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // New error state for date/time validation
 
   // Fetch Puja Details
   useEffect(() => {
@@ -111,7 +112,9 @@ const SinglePujaService = () => {
     }
 
     if (!isUser) {
-      router.push("/login?redirect=" + encodeURIComponent(window.location.href));
+      router.push(
+        "/login?redirect=" + encodeURIComponent(window.location.href)
+      );
       return;
     }
 
@@ -132,6 +135,32 @@ const SinglePujaService = () => {
 
     addToCart(itemToAdd);
     toast.success("Package added to cart successfully!");
+  };
+
+  // Date and Time Validation Logic
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const date = e.target.value;
+    const currentDate = new Date().toISOString().split("T")[0];
+    if (date < currentDate) {
+      setErrorMessage("Date cannot be in the past.");
+    } else {
+      setErrorMessage(""); // Clear error message when a valid date is selected
+      setSelectedDate(date);
+    }
+  };
+
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const time = e.target.value;
+    const currentDate = new Date().toISOString().split("T")[0];
+    const currentTime = new Date().toISOString().split("T")[1].slice(0, 5);
+
+    // If the selected date is today, validate the time against the current time
+    if (selectedDate === currentDate && time < currentTime) {
+      setErrorMessage("Time cannot be in the past.");
+    } else {
+      setErrorMessage(""); // Clear error message when a valid time is selected
+      setSelectedTime(time);
+    }
   };
 
   if (loading) {
@@ -166,8 +195,15 @@ const SinglePujaService = () => {
             <h2 className="text-3xl font-bold text-orange-800 mb-4">
               {title || "Default Title"}
             </h2>
-            <p className="text-xs">{category && category.name ? category.name : "Default Category"}</p>
-            <p className="text-gray-700 mb-6" dangerouslySetInnerHTML={{ __html: desc || "Default Description" }}></p>
+            <p className="text-xs">
+              {category && category.name ? category.name : "Default Category"}
+            </p>
+            <p
+              className="text-gray-700 mb-6"
+              dangerouslySetInnerHTML={{
+                __html: desc || "Default Description",
+              }}
+            ></p>
           </div>
         </div>
 
@@ -175,7 +211,9 @@ const SinglePujaService = () => {
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           {/* Location Dropdown */}
           <div className="relative">
-            <label className="block text-gray-700 mb-2 font-semibold">Select Location</label>
+            <label className="block text-gray-700 mb-2 font-semibold">
+              Select Location
+            </label>
             <select
               value={selectedLocation}
               onChange={(e) => setSelectedLocation(e.target.value)}
@@ -184,14 +222,18 @@ const SinglePujaService = () => {
             >
               <option value="">Choose a location</option>
               {availableLocations.map((location) => (
-                <option key={location} value={location}>{location}</option>
+                <option key={location} value={location}>
+                  {location}
+                </option>
               ))}
             </select>
           </div>
 
           {/* Language Dropdown */}
           <div className="relative">
-            <label className="block text-gray-700 mb-2 font-semibold">Select Language</label>
+            <label className="block text-gray-700 mb-2 font-semibold">
+              Select Language
+            </label>
             <select
               value={selectedLanguage}
               onChange={(e) => setSelectedLanguage(e.target.value)}
@@ -200,7 +242,9 @@ const SinglePujaService = () => {
             >
               <option value="">Choose a language</option>
               {availableLanguages.map((language) => (
-                <option key={language} value={language}>{language}</option>
+                <option key={language} value={language}>
+                  {language}
+                </option>
               ))}
             </select>
           </div>
@@ -212,43 +256,61 @@ const SinglePujaService = () => {
             {filteredPackages.map((pkg: any) => (
               <div
                 key={pkg.id}
-                className={`rounded-lg p-6 shadow-lg cursor-pointer transition-colors duration-300 ${selectedPackage?.id === pkg.id ? "bg-orange-200" : "bg-white"}`}
+                className={`rounded-lg p-6 shadow-lg cursor-pointer transition-colors duration-300 ${
+                  selectedPackage?.id === pkg.id ? "bg-orange-200" : "bg-white"
+                }`}
                 onClick={() => handlePackageSelection(pkg)}
               >
-                <label htmlFor={`pkg-${pkg.id}`} className="text-xl font-bold text-orange-800">{pkg.name}</label>
+                <label
+                  htmlFor={`pkg-${pkg.id}`}
+                  className="text-xl font-bold text-orange-800"
+                >
+                  {pkg.name}
+                </label>
                 <p className="text-orange-600 text-lg">₹{pkg.price}</p>
-                <p className="text-orange-600 text-lg" dangerouslySetInnerHTML={{ __html: pkg.description }}></p>
+                <p
+                  className="text-orange-600 text-lg"
+                  dangerouslySetInnerHTML={{ __html: pkg.description }}
+                ></p>
               </div>
             ))}
           </div>
         ) : (
-          <div className="text-center text-gray-600">No packages available for the selected location and language.</div>
+          <div className="text-center text-gray-600">
+            No packages available for the selected location and language.
+          </div>
         )}
 
         {/* Date and Time Selection */}
         {selectedPackage && (
-          <div className="mt-8">
-            <label className="block mb-2">Select Puja Date</label>
-            <input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              min={new Date().toISOString().split("T")[0]} // Ensure future dates
-              className="w-full p-3"
-            />
-
-            <label className="block mt-4 mb-2">Select Puja Time</label>
-            <input
-              type="time"
-              value={selectedTime}
-              onChange={(e) => setSelectedTime(e.target.value)}
-              className="w-full p-3"
-            />
+          <div className="mt-8 flex space-x-4">
+            <div className="w-1/2">
+              <label className="block mb-2">Select Puja Date</label>
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={handleDateChange}
+                min={new Date().toISOString().split("T")[0]} // Ensure future dates
+                className="w-full p-3"
+              />
+            </div>
+            <div className="w-1/2">
+              <label className="block mb-2">Select Puja Time</label>
+              <input
+                type="time"
+                value={selectedTime}
+                onChange={handleTimeChange}
+                className="w-full p-3"
+              />
+            </div>
           </div>
         )}
 
+        {/* Error Message */}
+        {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
+
         {/* Add to Cart Button */}
-        <div className="text-center">
+        <div className="text-center mt-4">
           <button
             disabled={!selectedPackage || !selectedDate || !selectedTime}
             className={`px-8 py-4 rounded-lg text-xl font-bold transition-all duration-300 ${
