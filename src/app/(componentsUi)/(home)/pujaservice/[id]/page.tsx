@@ -5,10 +5,14 @@ import CryptoJS from "crypto-js";
 import Section from "../section";
 import { fetchPujaServiceDetails } from "../action";
 import "../pujaservice.css";
+import cartAuth from "@/app/helper/cartAuth";
+import { toast } from "react-toastify";
+import { useCart } from "@/app/context/CartContext";
 
 const SinglePujaService = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const isUser = cartAuth(); // Check auth status once at the top of the component
 
   const encryptedId = searchParams.get("id");
   const decryptId = (encryptedId: string | null) => {
@@ -107,6 +111,27 @@ const SinglePujaService = () => {
 
   const handlePackageSelection = (pkg: any) => {
     setSelectedPackage(pkg);
+  };
+
+  const { addToCart } = useCart();
+
+  const handleAddToCart = () => {
+    if (!selectedPackage) {
+      toast.error("Please select a package to add to the cart.");
+      return;
+    }
+
+    const itemToAdd = {
+      id: selectedPackage.id,
+      name: title || "Default Title",
+      image: img || "/default-image.jpg",
+      package: selectedPackage.name,
+      location: selectedPackage.location,
+      language: selectedPackage.language,
+      price: selectedPackage.price,
+    };
+
+    addToCart(itemToAdd);
   };
 
   if (loading) {
@@ -290,6 +315,7 @@ const SinglePujaService = () => {
               ? "bg-orange-600 text-white hover:bg-orange-700"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"
           }`}
+          onClick={handleAddToCart}
         >
           Add to Cart
         </button>
