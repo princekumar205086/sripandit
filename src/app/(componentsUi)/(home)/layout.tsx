@@ -27,14 +27,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {/* Ensure the entire layout is wrapped inside LoaderWrapper */}
-        <CartProvider>
-          <LoaderWrapper>
-            {/* Navbar, children, and Footer are hidden until the LoaderWrapper finishes loading */}
+        <LoaderWrapper>
+          {/* Navbar, children, and Footer are hidden until the LoaderWrapper finishes loading */}
+          <CartProvider>
             <Navbar />
             <ToastProvider>{children}</ToastProvider>
-            <Footer />
-          </LoaderWrapper>
-        </CartProvider>
+          </CartProvider>
+          <Footer />
+        </LoaderWrapper>
+
         {/* Additional content that is not tied to loading */}
         <SpeedInsights />
         <Link

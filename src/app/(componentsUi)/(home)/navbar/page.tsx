@@ -1,9 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { FaWhatsappSquare, FaPhoneSquare, FaUserCircle } from "react-icons/fa";
+import { FaWhatsappSquare, FaUserCircle, FaCartPlus } from "react-icons/fa";
 import { RiMenu3Line, RiCloseLine } from "react-icons/ri";
 import Link from "next/link";
 import Image from "next/image";
+import { useCart } from "@/app/context/CartContext";
 
 const menuData = [
   { name: "Home", link: "/" },
@@ -17,6 +18,9 @@ const menuData = [
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { cartItems } = useCart();
+  //const [cartCount, setCartCount] = useState(1); // Simulating the cart count
+  const cartCount = cartItems.length;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -70,11 +74,17 @@ const Navbar = () => {
 
             {/* Social Media Icons */}
             <div className="hidden md:flex w-3/12 md:w-2/12 justify-end space-x-4 items-center">
-              <Link href="https://wa.me/918051555505">
+              <Link href="#">
                 <FaWhatsappSquare className="text-green-500 text-2xl lg:text-3xl cursor-pointer hover:text-green-600 transition-transform duration-300 transform hover:scale-110" />
               </Link>
-              <Link href="tel:+918051555505">
-                <FaPhoneSquare className="text-blue-800 text-2xl lg:text-3xl cursor-pointer hover:text-blue-600 transition-transform duration-300 transform hover:scale-110" />
+              <Link href="/cart" className="relative">
+                <FaCartPlus className="text-blue-800 text-2xl lg:text-3xl cursor-pointer hover:text-blue-600 transition-transform duration-300 transform hover:scale-110" />
+                {/* Cart Count Badge */}
+                {cartCount > 0 && (
+                  <span className="absolute top-0 right-0 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
               </Link>
               <Link href="/login">
                 <FaUserCircle className="text-purple-500 text-2xl lg:text-3xl cursor-pointer hover:text-purple-600 transition-transform duration-300 transform hover:scale-110" />
@@ -93,6 +103,16 @@ const Navbar = () => {
                   <RiMenu3Line className="h-6 w-6" />
                 )}
               </button>
+              {/* Mobile Cart Icon */}
+              <Link href="/cart" className="relative ml-4">
+                <FaCartPlus className="text-blue-800 text-3xl cursor-pointer hover:text-blue-600 transition-transform duration-300 transform hover:scale-110" />
+                {/* Cart Count Badge for Mobile */}
+                {cartCount > 0 && (
+                  <span className="absolute top-0 right-0 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
             </div>
           </div>
         </div>

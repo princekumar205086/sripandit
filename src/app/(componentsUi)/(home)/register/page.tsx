@@ -24,7 +24,7 @@ export default function SignupForm() {
     confirmPassword: "",
   });
 
-  useEffect(() => {}, [errors]);
+  useEffect(() => { }, [errors]);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -113,34 +113,47 @@ export default function SignupForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-6 sm:py-12 relative mt-12">
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-opacity-40"
-        style={{
-          backgroundImage: 'url("/image/astro.jpg")',
-          filter: "blur(50px)",
-        }}
-      ></div>
-      <div className="bg-cream bg-opacity-70 rounded-lg shadow-sm overflow-hidden max-w-md w-full relative z-10 mx-4 sm:mx-0">
-        <div className="px-6 py-8 sm:px-8 sm:py-10 md:p-12">
+    <div className="min-h-screen flex items-center justify-center py-6 sm:py-12 relative mt-12 bg-gray-100">
+      <div className="bg-white shadow-lg rounded-lg overflow-hidden max-w-4xl w-full mx-4 sm:mx-0 grid grid-cols-1 sm:grid-cols-2">
+        {/* Left Side - Image */}
+        <div className="relative ">
+          <img
+            src=
+            "https://img.freepik.com/free-photo/navratri-highly-detailed-candle-decoration_23-2151193693.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid" alt="Signup Illustration"
+            className="w-full h-full object-cover opacity-70"
+          />
+
+          <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center text-white">
+            <h1 className="text-3xl font-bold text-white">Welcome Back!</h1>
+            <p className="mt-2 text-center font-bold text-white md:mb-16">
+              To keep connected with us please login with your personal info
+            </p>
+            <Link href="/login" className="mt-4 px-6 py-2 border border-white rounded-full bg-white text-orange-600 transition mb-5">
+              Sign In
+            </Link>
+          </div>
+        </div>
+
+        {/* Right Side - Form */}
+        <div className="bg-orange-100 bg-opacity-70 px-6 py-8 sm:px-8 sm:py-5 ">
           <h2 className="text-xl md:text-2xl font-bold text-center text-orange-500">
             Create an account
           </h2>
-          <p className="text-center text-sm md:text-md text-orange-400 mb-4 md:mb-6">
+          <p className="text-center text-sm md:text-md text-gray-600 mb-4 md:mb-6">
             Enter your information to create your account.
           </p>
           <form onSubmit={handleSubmit}>
-            <div className="space-y-5">
+            <div className="space-y-3">
               <div>
                 <label className="text-sm md:text-md font-small text-orange-500">
-                  Username
+                  Enter Username:
                 </label>
                 <input
                   type="text"
                   name="username"
                   value={formState.username}
                   onChange={handleChange}
-                  className="mt-1 w-full px-4 py-3 border rounded-lg text-orange-500 focus:outline-none focus:border-orange-500"
+                  className="mt-1 w-full px-4 pb-1 border-b border-orange-600 text-gray-500 focus:outline-none focus:border-orange-500 bg-transparent"
                   required
                 />
                 {errors.username && (
@@ -149,30 +162,28 @@ export default function SignupForm() {
               </div>
               <div>
                 <label className="text-sm md:text-md font-small text-orange-500">
-                  Email
+                  Enter email :
                 </label>
                 <input
                   type="email"
                   name="email"
                   value={formState.email}
                   onChange={handleChange}
-                  className="mt-1 w-full px-4 py-3 border rounded-lg text-orange-500 focus:outline-none focus:border-orange-500"
+                  className="mt-1 w-full px-4 pb-1 border-b border-orange-600 text-gray-500 focus:outline-none focus:border-orange-500 bg-transparent"
                   required
                 />
-                {errors.email && (
-                  <p className="text-red-500 text-xs">{errors.email}</p>
-                )}
+                {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
               </div>
               <div>
                 <label className="text-sm md:text-md font-small text-orange-500">
-                  Contact
+                  Contact No:
                 </label>
                 <input
                   type="text"
                   name="contact"
                   value={formState.contact}
                   onChange={handleChange}
-                  className="mt-1 w-full px-4 py-3 border rounded-lg text-orange-500 focus:outline-none focus:border-orange-500"
+                  className="mt-1 w-full px-4 pb-1 border-b border-orange-600 text-gray-500 focus:outline-none focus:border-orange-500 bg-transparent"
                   required
                 />
                 {errors.contact && (
@@ -189,13 +200,13 @@ export default function SignupForm() {
                     name="password"
                     value={formState.password}
                     onChange={handleChange}
-                    className="mt-1 w-full px-4 py-3 border rounded-lg text-orange-500 focus:outline-none focus:border-orange-500"
+                    className="mt-1 w-full px-4 pb-1 border-b border-orange-600 text-gray-500 focus:outline-none focus:border-orange-500 bg-transparent"
                     required
                   />
                   <button
                     type="button"
                     onClick={toggleShowPassword}
-                    className="absolute right-3 bottom-3 text-orange-600 hover:text-orange-700"
+                    className="absolute right-3 bottom-2 text-orange-600 hover:text-orange-700"
                   >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
@@ -214,35 +225,34 @@ export default function SignupForm() {
                     name="confirmPassword"
                     value={formState.confirmPassword}
                     onChange={handleChange}
-                    className="mt-1 w-full px-4 py-3 border rounded-lg text-orange-500 focus:outline-none focus:border-orange-500"
+                    className="mt-1 w-full px-4 pb-1 border-b border-orange-600 text-gray-500 focus:outline-none focus:border-orange-500 bg-transparent"
                     required
                   />
                   <button
                     type="button"
                     onClick={toggleShowConfirmPassword}
-                    className="absolute right-3 bottom-3 text-orange-600 hover:text-orange-700"
+                    className="absolute right-3 bottom-2 text-orange-600 hover:text-orange-700"
                   >
                     {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
                 </div>
                 {errors.confirmPassword && (
-                  <p className="text-red-500 text-xs">
-                    {errors.confirmPassword}
-                  </p>
+                  <p className="text-red-500 text-xs">{errors.confirmPassword}</p>
                 )}
               </div>
             </div>
             <div className="mt-6">
               <button
                 type="submit"
-                className="w-full px-5 py-3 border border-transparent text-md font-medium rounded-lg text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full px-5 py-2 border border-transparent text-md font-medium rounded-lg text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Sign up
               </button>
             </div>
           </form>
+
           <div className="mt-6 text-center">
-            <p className="text-md md:text-lg text-purple-600">
+            <p className="text-sm text-blue-600">
               Already registered?{" "}
               <Link href="/login" className="text-orange-500 hover:underline">
                 Sign In
@@ -252,5 +262,6 @@ export default function SignupForm() {
         </div>
       </div>
     </div>
+
   );
 }
