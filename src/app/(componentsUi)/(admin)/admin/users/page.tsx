@@ -7,23 +7,23 @@ import Layout from "../../layout";
 import { toast, ToastContainer } from "react-toastify";
 import { IoMdAdd } from "react-icons/io";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import Modal from "./Modal";
-import AstrologyFormData from "./insertAstrology";
-import { getAstrologyService } from "./action";
 import { BiCaretLeft } from "react-icons/bi";
-import ViewAstrology from "./ViewAstrology";
+import Modal from "./Modal";
+import { getUserService } from "./action";
+import UserFormData from "./insertUser";
+// import ViewUser from "./ViewUser";
 
 interface Service {
-  id: number;
-  service_title: string;
-  service_image: string;
-  service_type: string;
-  service_price: number;
-  service_desc: string;
-  timestamp: string;
+    id:                 number;
+    username:           string;
+    email:              string;  
+    contact:            string;
+    password:           string
+    date_of_reg:        string;
+    account_status:     string;
 }
 
-export default function ManageAstrologyService() {
+export default function ManageUserService() {
   const isAuthenticated = useAuth();
   const router = useRouter();
   const [role, setRole] = useState<string | null>(null);
@@ -73,7 +73,7 @@ export default function ManageAstrologyService() {
   
       // calling service
       const fetchServices = async () => {
-        const response = await getAstrologyService();
+        const response = await getUserService();
         if (response) {
           setServices(response);
         }
@@ -86,7 +86,7 @@ export default function ManageAstrologyService() {
   if (!isAuthenticated || loading) {
     return <div>Loading...</div>; // Show a loading indicator while waiting
   }
-  const handleAddAstrology = () => {
+  const handleAddUser = () => {
     setIsAddModalOpen(true);
   };
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,14 +148,14 @@ export default function ManageAstrologyService() {
         <div className="bg-white rounded-lg shadow p-6 mb-6">
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">
             <h1 className="text-2xl font-bold text-gray-800 mb-4 md:mb-0">
-              Manage Astrology Services
+              Manage User Services
             </h1>
             <button
-              onClick={handleAddAstrology}
+              onClick={handleAddUser}
               className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               <IoMdAdd className="mr-2" />
-              Add Astrology
+              Add User
             </button>
           </div>
 
@@ -164,7 +164,7 @@ export default function ManageAstrologyService() {
               <FiSearch className="absolute left-3 top-3 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search astrology by name, category, or keyword"
+                placeholder="Search User by name, category, or keyword"
                 className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 onChange={handleSearch}
               />
@@ -195,13 +195,19 @@ export default function ManageAstrologyService() {
                     SN.
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Astrology Name
+                    User Name
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Astrology Type
+                    Email
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Contact
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Added date
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Account Status
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Actions
@@ -209,34 +215,40 @@ export default function ManageAstrologyService() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {currentServices.map((item, index) => (
-                  <tr key={item.id} className="hover:bg-gray-50">
+                {currentServices.map((user, index) => (
+                  <tr key={user.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <input
                         type="checkbox"
-                        checked={selectedServiceIds.includes(item.id)}
-                        onChange={() => handleSelectService(item.id)}
+                        checked={selectedServiceIds.includes(user.id)}
+                        onChange={() => handleSelectService(user.id)}
                       />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {item.service_title}
+                      {user.username}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {item.service_price}
+                      {user.email}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {new Date(item.timestamp).toLocaleString()}
+                      {user.contact}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {new Date(user.date_of_reg).toLocaleString()}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {user.account_status}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <button
-                        onClick={() => handleView(item.id.toString())}
+                        onClick={() => handleView(user.id.toString())}
                         className="p-1 text-green-600 hover:text-green-800"
                       >
                         <FiEye />
                       </button>
                       <button
-                        onClick={() => handleEdit(item.id.toString())}
+                        onClick={() => handleEdit(user.id.toString())}
                         className="p-1 text-blue-600 hover:text-blue-800"
                       >
                         <FiEdit />
@@ -302,9 +314,9 @@ export default function ManageAstrologyService() {
        <Modal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        service_title="Astrology Puja"
+        username="User"
       >
-        <AstrologyFormData />
+        <UserFormData />
         <button
           onClick={() => setIsAddModalOpen(false)}
           className="text-red-600 hover:text-red-800"
@@ -327,19 +339,19 @@ export default function ManageAstrologyService() {
         </button>
       </Modal> */}
 
-      <Modal
+      {/* <Modal
         isOpen={isViewModalOpen}
         onClose={() => setIsViewModalOpen(false)}
-        service_title="View Astrology"
+        service_title="View User"
       >
-        {viewPujaId && <ViewAstrology id={Number(viewPujaId)} />}
+        {viewPujaId && <ViewUser id={Number(viewPujaId)} />}
         <button
           onClick={() => setIsViewModalOpen(false)}
           className="text-red-600 hover:text-red-800"
         >
           Close
         </button>
-      </Modal>
+      </Modal> */}
     </Layout>
   );
 }
