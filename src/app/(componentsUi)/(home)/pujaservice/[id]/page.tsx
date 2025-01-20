@@ -8,11 +8,12 @@ import "../pujaservice.css";
 import cartAuth from "@/app/helper/cartAuth";
 import { toast } from "react-toastify";
 import { useCart } from "@/app/context/CartContext";
+import moment from "moment-timezone";
 
 const SinglePujaService = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const isUser = cartAuth(); // Check auth status once at the top of the component
+  const isUser = cartAuth();
 
   const encryptedId = searchParams.get("id");
   const decryptId = (encryptedId: string | null) => {
@@ -58,10 +59,14 @@ const SinglePujaService = () => {
 
         const packages = data?.packages || [];
         const locations = Array.from(
-          new Set<string>(packages.map((pkg: any) => pkg.location).filter(Boolean))
+          new Set<string>(
+            packages.map((pkg: any) => pkg.location).filter(Boolean)
+          )
         );
         const languages = Array.from(
-          new Set<string>(packages.map((pkg: any) => pkg.language).filter(Boolean))
+          new Set<string>(
+            packages.map((pkg: any) => pkg.language).filter(Boolean)
+          )
         );
 
         setAvailableLocations(locations);
@@ -92,6 +97,8 @@ const SinglePujaService = () => {
       setFilteredPackages(filtered);
     }
     setSelectedPackage(null);
+    // Set timezone to Indian Standard Time (IST)
+    moment.tz.setDefault("Asia/Kolkata");
   }, [selectedLocation, selectedLanguage, pujaDetails]);
 
   const { addToCart } = useCart();
@@ -144,7 +151,7 @@ const SinglePujaService = () => {
     if (date < currentDate) {
       setErrorMessage("Date cannot be in the past.");
     } else {
-      setErrorMessage(""); // Clear error message when a valid date is selected
+      setErrorMessage("");
       setSelectedDate(date);
     }
   };
@@ -158,7 +165,7 @@ const SinglePujaService = () => {
     if (selectedDate === currentDate && time < currentTime) {
       setErrorMessage("Time cannot be in the past.");
     } else {
-      setErrorMessage(""); // Clear error message when a valid time is selected
+      setErrorMessage("");
       setSelectedTime(time);
     }
   };
@@ -179,7 +186,9 @@ const SinglePujaService = () => {
       <Section
         bgImageUrl="/image/singlepuja.jpeg"
         title={title || "Default Title"}
-        description={`Experience divine blessings through our sacred ${title || "Default Title"}, performed with utmost devotion and authentic rituals`}
+        description={`Experience divine blessings through our sacred ${
+          title || "Default Title"
+        }, performed with utmost devotion and authentic rituals`}
       />
 
       <main className="container mx-auto px-4 py-8">
@@ -250,7 +259,7 @@ const SinglePujaService = () => {
           </div>
         </div>
 
-        {/* Package Options - Clickable Cards */}
+        {/* Package Options  */}
         {filteredPackages.length > 0 ? (
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {filteredPackages.map((pkg: any) => (
@@ -299,6 +308,7 @@ const SinglePujaService = () => {
               <input
                 type="time"
                 value={selectedTime}
+                min={new Date().toISOString().split("T")[1].slice(0, 5)} // Ensure future times
                 onChange={handleTimeChange}
                 className="w-full p-3"
               />
