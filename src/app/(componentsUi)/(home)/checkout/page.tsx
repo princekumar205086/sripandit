@@ -1,9 +1,26 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
-import { FaShoppingCart, FaArrowLeft, FaCreditCard, FaPhoneAlt, FaEnvelope, FaLock } from "react-icons/fa";
+import {
+  FaShoppingCart,
+  FaArrowLeft,
+  FaCreditCard,
+  FaPhoneAlt,
+  FaEnvelope,
+  FaLock,
+} from "react-icons/fa";
 import { RiSecurePaymentFill } from "react-icons/ri";
 import { MdEdit, MdLocationOn, MdLanguage, MdAccessTime } from "react-icons/md";
+import {
+  fetchCheckout,
+  deleteCheckout,
+  fetchAddress,
+  insertAddress,
+  updateAddress,
+} from "./action";
+import { jwtDecode } from "jwt-decode";
+import Section from "../pujaservice/section";
+import { fetchPujaServiceDetails } from "../pujaservice/action";
 
 const CheckoutPage = () => {
   const [selectedPayment, setSelectedPayment] = useState("credit");
@@ -12,6 +29,14 @@ const CheckoutPage = () => {
     language: false,
     time: false,
   });
+
+  // decode user id from token
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const decodedToken: any = jwtDecode(token);
+  const userId = decodedToken.id;
 
   const bookingDetails = {
     title: "Ganesh Puja Service",
@@ -24,7 +49,7 @@ const CheckoutPage = () => {
     total: 3298,
     location: "123 Temple Street, Mumbai",
     language: "Sanskrit & Hindi",
-    time: "Sunday, 10:00 AM IST"
+    time: "Sunday, 10:00 AM IST",
   };
 
   const handleEdit = (field: keyof typeof isEditMode) => {
@@ -36,26 +61,11 @@ const CheckoutPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-md">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <button className="text-gray-600 hover:text-gray-800">
-              <FaArrowLeft className="text-xl" />
-            </button>
-            <img
-              src="https://images.unsplash.com/photo-1598714805247-06f7fb0ae483"
-              alt="Puja Service Logo"
-              className="h-10 w-auto object-contain"
-            />
-          </div>
-          <div className="relative">
-            <FaShoppingCart className="text-2xl text-gray-600" />
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">1</span>
-          </div>
-        </div>
-      </header>
-
+      <Section
+        bgImageUrl="/image/cart1.jpeg"
+        title="Checkout"
+        description="Review your booking details and proceed to payment"
+      />
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -64,7 +74,9 @@ const CheckoutPage = () => {
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-2xl font-semibold mb-4">Booking Summary</h2>
               <div className="space-y-4">
-                <h3 className="text-xl font-medium text-gray-800">{bookingDetails.title}</h3>
+                <h3 className="text-xl font-medium text-gray-800">
+                  {bookingDetails.title}
+                </h3>
                 <p className="text-gray-600">{bookingDetails.description}</p>
                 <div className="border-t pt-4">
                   <h4 className="font-medium">Package Details:</h4>
@@ -94,7 +106,9 @@ const CheckoutPage = () => {
                           defaultValue={bookingDetails.location}
                         />
                       ) : (
-                        <p className="text-gray-600">{bookingDetails.location}</p>
+                        <p className="text-gray-600">
+                          {bookingDetails.location}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -119,7 +133,9 @@ const CheckoutPage = () => {
                           defaultValue={bookingDetails.language}
                         />
                       ) : (
-                        <p className="text-gray-600">{bookingDetails.language}</p>
+                        <p className="text-gray-600">
+                          {bookingDetails.language}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -157,8 +173,36 @@ const CheckoutPage = () => {
                 </div>
               </div>
             </div>
-          </div>
 
+            {/* Address Section */}
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <h2 className="text-2xl font-semibold mb-4">Your Address</h2>
+              {/* add address button */}
+              <button
+                className="flex items-center space-x-2 text-orange-500 hover:text-orange-600"
+                onClick={() => {
+                  // open modal
+                }}
+              >
+                <FaShoppingCart className="text-xl" />
+                <span>Add Address</span>
+              </button>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <MdLocationOn className="text-2xl text-orange-500" />
+                  <div>
+                    <h3 className="font-medium">Home Address</h3>
+                    <p className="text-gray-600">123 Temple Street, Mumbai</p>
+                    <p className="text-gray-600">Maharashtra, 400001</p>
+                    <p className="text-gray-600">India</p>
+                  </div>
+                </div>
+                <button className="text-orange-500 hover:text-orange-600">
+                  <MdEdit className="text-xl" />
+                </button>
+              </div>
+            </div>
+          </div>
           {/* Payment Section */}
           <div className="lg:col-span-1 space-y-6">
             <div className="bg-white rounded-lg shadow-md p-6">
@@ -219,13 +263,19 @@ const CheckoutPage = () => {
               <h2 className="text-xl font-semibold mb-4">Need Help?</h2>
               <ul className="space-y-2 text-gray-600">
                 <li>
-                  <a href="#" className="hover:text-orange-500">Cancellation Policy</a>
+                  <a href="#" className="hover:text-orange-500">
+                    Cancellation Policy
+                  </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-orange-500">Puja Instructions</a>
+                  <a href="#" className="hover:text-orange-500">
+                    Puja Instructions
+                  </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-orange-500">FAQs</a>
+                  <a href="#" className="hover:text-orange-500">
+                    FAQs
+                  </a>
                 </li>
               </ul>
             </div>
@@ -241,7 +291,7 @@ const CheckoutPage = () => {
               <RiSecurePaymentFill className="text-2xl text-green-500" />
               <span className="text-gray-600">Secure Payment</span>
             </div>
-            <div className="flex flex-col items-center space-y-2">
+            {/* <div className="flex flex-col items-center space-y-2">
               <div className="flex items-center space-x-2">
                 <FaPhoneAlt className="text-gray-500" />
                 <span>+91 1234567890</span>
@@ -252,9 +302,13 @@ const CheckoutPage = () => {
               </div>
             </div>
             <div className="flex justify-center md:justify-end space-x-4">
-              <a href="#" className="text-gray-600 hover:text-orange-500">Privacy Policy</a>
-              <a href="#" className="text-gray-600 hover:text-orange-500">Terms of Service</a>
-            </div>
+              <a href="#" className="text-gray-600 hover:text-orange-500">
+                Privacy Policy
+              </a>
+              <a href="#" className="text-gray-600 hover:text-orange-500">
+                Terms of Service
+              </a>
+            </div> */}
           </div>
         </div>
       </footer>

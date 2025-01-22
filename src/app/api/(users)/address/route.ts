@@ -1,38 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-
-// Add new item to cart
-
+// Add new address
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { userId, pujaServiceId, packageId, selected_date, selected_time, promoCodeId } = reqBody;
+    const { street, city, state, postalCode, country, userId } = reqBody;
 
-    // Insert new cart item
-    const newCartItem = await prisma.cart.create({
+    // Insert new address
+    const newAddress = await prisma.address.create({
       data: {
+        street,
+        city,
+        state,
+        postalCode,
+        country,
         userId,
-        pujaServiceId,
-        packageId,
-        selected_date: new Date(selected_date),
-        selected_time,
-        promoCodeId: promoCodeId ? parseInt(promoCodeId) : null, 
       },
     });
 
     return NextResponse.json({
-      message: "Cart item created successfully",
+      message: "Address created successfully",
       success: true,
-      cartItem: newCartItem,
+      address: newAddress,
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
-// fetching all cart items
-
+// Fetch all addresses for a user
 export async function GET(request: NextRequest) {
   try {
     const userId = request.nextUrl.searchParams.get('userId');
@@ -41,15 +38,11 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "User ID is required" }, { status: 400 });
     }
 
-    const cartItems = await prisma.cart.findMany({
+    const addresses = await prisma.address.findMany({
       where: { userId: parseInt(userId) },
-      include: {
-        pujaService: true,
-        package: true,
-      },
     });
 
-    return NextResponse.json(cartItems);
+    return NextResponse.json(addresses);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

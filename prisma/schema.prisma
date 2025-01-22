@@ -38,7 +38,7 @@ model User {
   forgotPasswordToken       String?  @db.VarChar(255)
   forgotPasswordTokenExpiry DateTime?
   changePasswordToken       String?  @db.VarChar(255)
-  chagePasswordTokenExpiry DateTime?
+  chagePasswordTokenExpiry  DateTime?
   role                      Role     @default(USER)
   personalInformation       PersonalInformation? @relation(fields: [personalInformationId], references: [id])
   personalInformationId     Int? @unique
@@ -262,6 +262,8 @@ model Cart {
   selected_date DateTime
   selected_time String
   createdAt     DateTime     @default(now())
+  promoCode     PromoCode?   @relation(fields: [promoCodeId], references: [id])
+  promoCodeId   Int?
   checkout      Checkout?
 }
 
@@ -272,6 +274,7 @@ model PromoCode {
   expiryDate  DateTime
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  carts       Cart[]
   checkouts   Checkout[]
 }
 
@@ -289,23 +292,21 @@ model Checkout {
 }
 
 model Booking {
-  id                Int           @id @default(autoincrement())
-  user              User          @relation(fields: [userId], references: [id])
-  userId            Int
-  pujaService       PujaService   @relation(fields: [pujaServiceId], references: [id])
-  pujaServiceId     Int
-  package           Package       @relation(fields: [packageId], references: [id])
-  packageId         Int
-  selected_date     DateTime
-  selected_time     String
-  status            BookingStatus @default(PENDING)
+  id                 Int           @id @default(autoincrement())
+  user               User          @relation(fields: [userId], references: [id])
+  userId             Int
+  pujaService        PujaService   @relation(fields: [pujaServiceId], references: [id])
+  pujaServiceId      Int
+  package            Package       @relation(fields: [packageId], references: [id])
+  packageId          Int
+  selected_date      DateTime
+  selected_time      String
+  status             BookingStatus @default(PENDING)
   cancellationReason String?
-  failureReason     String?
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
-  payments          Payment[]
-
-  @@index([userId, pujaServiceId, packageId])
+  failureReason      String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  payments           Payment[]
 }
 
 model Payment {

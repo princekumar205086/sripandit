@@ -18,7 +18,7 @@ const SinglePujaService = () => {
   const encryptedId = searchParams.get("id");
   const decryptId = (encryptedId: string | null) => {
     if (encryptedId) {
-      try {
+      try { 
         const bytes = CryptoJS.AES.decrypt(
           decodeURIComponent(encryptedId),
           "your-secret-key"
@@ -147,7 +147,7 @@ const SinglePujaService = () => {
   // Date and Time Validation Logic
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = e.target.value;
-    const currentDate = new Date().toISOString().split("T")[0];
+    const currentDate = moment().tz("Asia/Kolkata").format("YYYY-MM-DD");
     if (date < currentDate) {
       setErrorMessage("Date cannot be in the past.");
     } else {
@@ -158,8 +158,8 @@ const SinglePujaService = () => {
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const time = e.target.value;
-    const currentDate = new Date().toISOString().split("T")[0];
-    const currentTime = new Date().toISOString().split("T")[1].slice(0, 5);
+    const currentDate = moment().tz("Asia/Kolkata").format("YYYY-MM-DD");
+    const currentTime = moment().tz("Asia/Kolkata").format("HH:mm");
 
     // If the selected date is today, validate the time against the current time
     if (selectedDate === currentDate && time < currentTime) {
@@ -299,7 +299,7 @@ const SinglePujaService = () => {
                 type="date"
                 value={selectedDate}
                 onChange={handleDateChange}
-                min={new Date().toISOString().split("T")[0]} // Ensure future dates
+                min={moment().tz("Asia/Kolkata").format("YYYY-MM-DD")} // Ensure future dates
                 className="w-full p-3"
               />
             </div>
@@ -308,7 +308,7 @@ const SinglePujaService = () => {
               <input
                 type="time"
                 value={selectedTime}
-                min={new Date().toISOString().split("T")[1].slice(0, 5)} // Ensure future times
+                min={moment().tz("Asia/Kolkata").format("HH:mm")} // Ensure future times
                 onChange={handleTimeChange}
                 className="w-full p-3"
               />
