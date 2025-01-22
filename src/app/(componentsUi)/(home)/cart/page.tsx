@@ -7,7 +7,7 @@ import Image from "next/image";
 import { FaTrash } from "react-icons/fa";
 
 const CartPage: React.FC = () => {
-  const { cartItems, removeFromCart, clearCart } = useCart();
+  const {cartItems, removeFromCart, clearCart } = useCart();
   const [promoCode, setPromoCode] = React.useState("");
   const subtotal = cartItems.reduce((total, item) => total + item.price, 0);
   const [discount, setDiscount] = React.useState(0);
@@ -60,12 +60,11 @@ const CartPage: React.FC = () => {
                   height={96}
                 />
                 <div className="ml-6 flex-grow">
-                  <h2 className="text-lg font-semibold">{item.name}</h2>
-                  <p className="text-lg font-semibold">{item.type}</p>
+                  <h3 className="text-lg font-semibold text-black text-left">{item.name} | {item.type}</h3>
                   <p className="text-md">{item.location} | {item.language}</p>
                   <p className="text-md">{item.date} | {item.time}</p>
-                  <div className="mt-2 flex justify-between items-center">
-                    <span className="text-xl font-bold">₹{item.price}</span>
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-semibold">Pandit(S): 1 | Duration: 2hrs</span>
                     <button
                       onClick={() => removeFromCart(item.id)}
                       className="text-red-500 hover:text-red-700 flex items-center"
@@ -76,6 +75,7 @@ const CartPage: React.FC = () => {
                     </button>
                   </div>
                 </div>
+                <h2 className="relative text-xl font-bold -top-10 right-20">₹{item.price}</h2>
               </div>
               ))}
             </div>
