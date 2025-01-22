@@ -38,7 +38,7 @@ const Footer = () => {
     { name: "Blog", link: "/blog" },
     { name: "Careers", link: "/career" },
     { name: "Gallery", link: "/gallery" },
-    { name: "Terms of Service", link: "/terms-of-tervice" },
+    { name: "Terms of Service", link: "/terms-of-service" },
     { name: "Cancellation/Refund Policy", link: "/cancellation-refund-policy" },
     { name: "Privacy Policy", link: "/privacy-policy" },
   ];

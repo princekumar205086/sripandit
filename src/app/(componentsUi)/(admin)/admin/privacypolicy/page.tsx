@@ -91,20 +91,22 @@ export default function PrivacyPolicyManagement() {
   // Delete policies via API
   const handleDelete = async () => {
     if (selectedPolicyIds.length > 0) {
+      ;
+  
       try {
         const response = await fetch("/api/privacypolicy/${id}", {
           method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ids: selectedPolicyIds }),
         });
+  
         if (response.ok) {
           toast.success("Selected policies deleted successfully");
           setPolicies(policies.filter((policy) => !selectedPolicyIds.includes(policy.id)));
           setSelectedPolicyIds([]);
         } else {
-          toast.error("Failed to delete policies");
+          const errorData = await response.json();
+          toast.error(`Failed to delete policies: ${errorData.message}`);
         }
       } catch (error) {
         toast.error("An error occurred while deleting policies");
@@ -113,6 +115,7 @@ export default function PrivacyPolicyManagement() {
       toast.warning("Please select policies to delete");
     }
   };
+  
 
   const handleSelectPolicy = (id: number) => {
     setSelectedPolicyIds((prevSelectedIds) =>
@@ -192,7 +195,7 @@ export default function PrivacyPolicyManagement() {
                   </th>
                   <th className="px-6 py-3 text-left">SN.</th>
                   <th className="px-6 py-3 text-left">Title</th>
-                  <th className="px-6 py-3 text-left">Content</th>
+                  <th className="px-6 py-3 text-left ">Content</th>
                   <th className="px-10 py-3 text-left">Actions</th>
                 </tr>
               </thead>
@@ -208,7 +211,7 @@ export default function PrivacyPolicyManagement() {
                     </td>
                     <td className="px-6 py-4">{index + 1}</td>
                     <td className="px-6 py-4">{policy.title}</td>
-                    <td className="px-6 py-4 " dangerouslySetInnerHTML={{ __html: policy.content }}></td>
+                    <td className="px-6 py-4 line-clamp-2" dangerouslySetInnerHTML={{ __html: policy.content }}></td>
                     <td className="px-6 py-4">
                       <button
                         onClick={() => handleView(policy.id)}
