@@ -8,10 +8,11 @@ import { FaTrash } from "react-icons/fa";
 import { insertCart } from "./action";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import Link from "next/link";
 
 const CartPage: React.FC = () => {
   const { cartItems, removeFromCart, clearCart } = useCart();
-  const[promoCodeId, setPromoCodeId] = React.useState<number | null>(null);
+  const [promoCodeId, setPromoCodeId] = React.useState<number | null>(null);
   const [promoCode, setPromoCode] = React.useState("");
   const [appliedPromoCode, setAppliedPromoCode] = React.useState<string | null>(
     null
@@ -20,6 +21,24 @@ const CartPage: React.FC = () => {
   const [promoError, setPromoError] = React.useState("");
   const subtotal = cartItems.reduce((total, item) => total + item.price, 0);
   const discountAmount = (subtotal * discountPercentage) / 100;
+  const [cartId, setCartId] = React.useState("");
+
+  React.useEffect(() => {
+    // Check if cartId exists in localStorage
+    let storedCartId = localStorage.getItem("cartId");
+    if (!storedCartId) {
+      // If cartId doesn't exist in localStorage, generate a new one
+      storedCartId = "C" + Math.random().toString(36).substr(2, 9) + Date.now();
+      localStorage.setItem("cartId", storedCartId); // Save the cartId in localStorage
+    }
+    setCartId(storedCartId); // Set cartId from localStorage or newly generated
+  }, []);
+
+  React.useEffect(() => {
+    if (cartId) {
+      console.log("cartId:", cartId);
+    }
+  }, [cartId]);
 
   const applyPromoCode = async () => {
     try {
@@ -76,9 +95,8 @@ const CartPage: React.FC = () => {
     }
   };
 
+  const token = localStorage.getItem("token");
   const handleCartData = () => {
-    const token = localStorage.getItem("token");
-
     if (token) {
       const decodedToken: any = jwtDecode(token);
       const userId = decodedToken.userId;
@@ -86,6 +104,7 @@ const CartPage: React.FC = () => {
       cartItems.forEach((item) => {
         insertCart({
           userId,
+          cartId,
           pujaServiceId: item.id,
           packageId: item.packageId,
           selected_date: item.date,
@@ -93,7 +112,9 @@ const CartPage: React.FC = () => {
           promoCodeId: promoCodeId ?? 0,
         })
           .then(() => {
-            window.location.href = "/checkout";
+            window.location.href = `/checkout/${cartId}`;
+            // remove cartId from localStorage
+            localStorage.removeItem("cartId");
           })
           .catch((error) => {
             console.error("Error inserting cart data", error);
@@ -113,140 +134,155 @@ const CartPage: React.FC = () => {
             : "Checkout the package in your cart."
         }
       />
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        {cartItems.length === 0 ? (
-          <Image
-            src="/image/empty.jpeg"
-            width={300}
-            height={300}
-            alt="Empty Cart"
-            className="w-full h-auto sm:w-3/4 sm:h-auto md:w-1/2 md:h-auto"
-          />
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              {cartItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="bg-white rounded-lg shadow-md p-6 mb-4 flex items-center"
-                >
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    className="w-24 h-24 object-cover rounded-md"
-                    width={96}
-                    height={96}
-                  />
-                  <div className="ml-6 flex-grow">
-                    <h3 className="text-lg font-semibold text-black text-left">
-                      {item.name} | {item.type}
-                    </h3>
-                    <p className="text-md">
-                      {item.location} | {item.language}
-                    </p>
-                    <p className="text-md">
-                      {item.date} | {item.time}
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <span className="text-lg font-semibold">
-                        Pandit(S): 1 | Duration: 2hrs
-                      </span>
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        className="text-red-500 hover:text-red-700 flex items-center"
-                        aria-label={`Remove ${item.name} from cart`}
-                      >
-                        <FaTrash className="mr-2" />
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-                  <h2 className="relative text-xl font-bold -top-10 right-20">
-                    ₹{item.price}
-                  </h2>
-                </div>
-              ))}
-            </div>
+      {!token && cartItems.length > 0 ? (
+        <div className="bg-white p-4 text-center">
+          <p className="text-lg text-gray-500">
+            You need to login view your cart.
+          </p>
+          <Link href="/login" className="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors">
+            Login
+          </Link>
+        </div>
+      ) : (
+        <main className="max-w-7xl mx-auto px-4 py-8">
+          {/* is not authenticate as user and cart leanght 0 */}
 
-            <div className="bg-white rounded-lg shadow-md p-6 h-fit">
-              <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-              <div className="space-y-4">
-                <div className="flex justify-between">
-                  <span>Subtotal:</span>
-                  <span>₹{subtotal}</span>
-                </div>
-                {discountPercentage > 0 && (
-                  <div className="flex justify-between text-green-600">
-                    <span>
-                      Discount (
-                      {appliedPromoCode ? `${discountPercentage}%` : ""}):
-                    </span>
-                    <span>-₹{discountAmount.toFixed(2)}</span>
+          {cartItems.length === 0 ? (
+            <Image
+              src="/image/empty.jpeg"
+              width={300}
+              height={300}
+              alt="Empty Cart"
+              className="w-full h-auto sm:w-3/4 sm:h-auto md:w-1/2 md:h-auto"
+            />
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2">
+                {cartItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="bg-white rounded-lg shadow-md p-6 mb-4 flex items-center"
+                  >
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      className="w-24 h-24 object-cover rounded-md"
+                      width={96}
+                      height={96}
+                    />
+                    <div className="ml-6 flex-grow">
+                      <h3 className="text-lg font-semibold text-black text-left">
+                        {item.name} | {item.type}
+                      </h3>
+                      <p className="text-md">
+                        {item.location} | {item.language}
+                      </p>
+                      <p className="text-md">
+                        {item.date} | {item.time}
+                      </p>
+                      <div className="flex justify-between items-center">
+                        <span className="text-lg font-semibold">
+                          Pandit(S): 1 | Duration: 2hrs
+                        </span>
+                        <button
+                          onClick={() => removeFromCart(item.id)}
+                          className="text-red-500 hover:text-red-700 flex items-center"
+                          aria-label={`Remove ${item.name} from cart`}
+                        >
+                          <FaTrash className="mr-2" />
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                    <h2 className="relative text-xl font-bold -top-10 right-20">
+                      ₹{item.price}
+                    </h2>
                   </div>
-                )}
-                <div className="flex justify-between font-bold text-lg border-t pt-4">
-                  <span>Total:</span>
-                  <span>₹{(subtotal - discountAmount).toFixed(2)}</span>
-                </div>
-                <div className="mt-6">
-                  <label
-                    htmlFor="promo"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
-                    Apply Coupon
-                  </label>
-                  {!appliedPromoCode ? (
-                    <div className="flex space-x-2">
-                      <input
-                        type="text"
-                        id="promo"
-                        value={promoCode.toUpperCase()}
-                        onChange={(e) => setPromoCode(e.target.value)}
-                        className="flex-1 border rounded-md px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="Enter code"
-                      />
-                      <button
-                        onClick={applyPromoCode}
-                        className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors"
-                      >
-                        Apply
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex justify-between items-center">
-                      <span className="text-green-600">{appliedPromoCode}</span>
-                      <button
-                        onClick={removePromoCode}
-                        className="text-red-500 hover:text-red-700 flex items-center"
-                      >
-                        <FaTrash className="mr-2" />
-                        Remove
-                      </button>
+                ))}
+              </div>
+
+              <div className="bg-white rounded-lg shadow-md p-6 h-fit">
+                <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+                <div className="space-y-4">
+                  <div className="flex justify-between">
+                    <span>Subtotal:</span>
+                    <span>₹{subtotal}</span>
+                  </div>
+                  {discountPercentage > 0 && (
+                    <div className="flex justify-between text-green-600">
+                      <span>
+                        Discount (
+                        {appliedPromoCode ? `${discountPercentage}%` : ""}):
+                      </span>
+                      <span>-₹{discountAmount.toFixed(2)}</span>
                     </div>
                   )}
-                  {promoError && (
-                    <p className="text-red-500 mt-2">{promoError}</p>
-                  )}
-                </div>
-                <div className="space-y-3 mt-6">
-                  <button
-                    className="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700 transition-colors"
-                    onClick={handleCartData}
-                  >
-                    Proceed to Checkout
-                  </button>
-                  <button
-                    onClick={clearCart}
-                    className="mt-6 w-full bg-red-500 text-white py-2 rounded-lg"
-                  >
-                    Clear Cart
-                  </button>
+                  <div className="flex justify-between font-bold text-lg border-t pt-4">
+                    <span>Total:</span>
+                    <span>₹{(subtotal - discountAmount).toFixed(2)}</span>
+                  </div>
+                  <div className="mt-6">
+                    <label
+                      htmlFor="promo"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Apply Coupon
+                    </label>
+                    {!appliedPromoCode ? (
+                      <div className="flex space-x-2">
+                        <input
+                          type="text"
+                          id="promo"
+                          value={promoCode.toUpperCase()}
+                          onChange={(e) => setPromoCode(e.target.value)}
+                          className="flex-1 border rounded-md px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          placeholder="Enter code"
+                        />
+                        <button
+                          onClick={applyPromoCode}
+                          className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors"
+                        >
+                          Apply
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex justify-between items-center">
+                        <span className="text-green-600">
+                          {appliedPromoCode}
+                        </span>
+                        <button
+                          onClick={removePromoCode}
+                          className="text-red-500 hover:text-red-700 flex items-center"
+                        >
+                          <FaTrash className="mr-2" />
+                          Remove
+                        </button>
+                      </div>
+                    )}
+                    {promoError && (
+                      <p className="text-red-500 mt-2">{promoError}</p>
+                    )}
+                  </div>
+                  <div className="space-y-3 mt-6">
+                    <button
+                      className="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700 transition-colors"
+                      onClick={handleCartData}
+                    >
+                      Proceed to Checkout
+                    </button>
+                    <button
+                      onClick={clearCart}
+                      className="mt-6 w-full bg-red-500 text-white py-2 rounded-lg"
+                    >
+                      Clear Cart
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
-      </main>
+          )}
+        </main>
+      )}
     </div>
   );
 };

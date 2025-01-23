@@ -8,11 +8,11 @@ interface CheckoutData {
 
 // insert checkout
 
-export async function insertCheckout(data: CheckoutData) {  
+export async function insertCheckout(data: CheckoutData) {
   try {
     const response = await axios.post("/api/checkout", data);
     return response.data;
-  } catch (error:any) {
+  } catch (error: any) {
     return error.response.data;
   }
 }
@@ -23,7 +23,7 @@ export async function fetchCheckout(userId: number) {
   try {
     const response = await axios.get(`/api/checkout?userId=${userId}`);
     return response.data;
-  } catch (error:any) {
+  } catch (error: any) {
     return error.response.data;
   }
 }
@@ -32,9 +32,11 @@ export async function fetchCheckout(userId: number) {
 
 export async function deleteCheckout(checkoutId: number) {
   try {
-    const response = await axios.delete(`/api/checkout?checkoutId=${checkoutId}`);
+    const response = await axios.delete(
+      `/api/checkout?checkoutId=${checkoutId}`
+    );
     return response.data;
-  } catch (error:any) {
+  } catch (error: any) {
     return error.response.data;
   }
 }
@@ -50,7 +52,7 @@ export async function updateCheckout(data: UpdateCheckoutData) {
   try {
     const response = await axios.put("/api/checkout", data);
     return response.data;
-  } catch (error:any) {
+  } catch (error: any) {
     return error.response.data;
   }
 }
@@ -61,7 +63,7 @@ export async function deleteAllCheckout() {
   try {
     const response = await axios.delete(`/api/checkout`);
     return response.data;
-  } catch (error:any) {
+  } catch (error: any) {
     return error.response.data;
   }
 }
@@ -72,7 +74,7 @@ export async function fetchAddress(userId: number) {
   try {
     const response = await axios.get(`/api/address?userId=${userId}`);
     return response.data;
-  } catch (error:any) {
+  } catch (error: any) {
     return error.response.data;
   }
 }
@@ -92,10 +94,10 @@ export async function insertAddress(data: AddressData) {
   try {
     const response = await axios.post("/api/address", data);
     return response.data;
-  } catch (error:any) {
+  } catch (error: any) {
     return error.response.data;
   }
-} 
+}
 
 // update address
 
@@ -112,7 +114,44 @@ export async function updateAddress(data: UpdateAddressData) {
   try {
     const response = await axios.put("/api/address", data);
     return response.data;
-  } catch (error:any) {
+  } catch (error: any) {
+    return error.response.data;
+  }
+}
+
+// fetch checkout details by cartId
+
+export async function fetchCheckoutDetails(cartId: string) {
+  try {
+    const config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `http://localhost:3000/api/chekoutdetails?cartId=${cartId}`,
+      headers: {}
+    };
+
+    const response = await axios.request(config);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error fetching checkout details:", error);
+    return error.response?.data || { error: "An error occurred" };
+  }
+}
+
+// handling payment
+
+interface PaymentData {
+  userId: number;
+  amount: number;
+  transactionId: string;
+  cartId: number;
+}
+
+export async function handlePayment(data: PaymentData) {
+  try {
+    const response = await axios.post("/api/payment", data);
+    return response.data;
+  } catch (error: any) {
     return error.response.data;
   }
 }

@@ -7,12 +7,13 @@ import { prisma } from '@/lib/prisma';
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { userId, pujaServiceId, packageId, selected_date, selected_time, promoCodeId } = reqBody;
+    const { userId, pujaServiceId, packageId, selected_date, selected_time, promoCodeId, cartId } = reqBody;
 
     // Insert new cart item
     const newCartItem = await prisma.cart.create({
       data: {
         userId,
+        cartId,
         pujaServiceId,
         packageId,
         selected_date: new Date(selected_date),
@@ -46,6 +47,7 @@ export async function GET(request: NextRequest) {
       include: {
         pujaService: true,
         package: true,
+        promoCode: true,
       },
     });
 

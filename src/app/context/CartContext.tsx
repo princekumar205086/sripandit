@@ -8,7 +8,6 @@ import React, {
   ReactNode,
 } from "react";
 
-
 interface CartItem {
   id: number;
   image: string;
@@ -60,13 +59,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
   }, [cartItems]);
 
   const addToCart = (item: CartItem) => {
-    setCartItems((prevItems) => {
-      if (prevItems.some((cartItem) => cartItem.id === item.id)) {
-        console.warn("Item is already in the cart.");
-        return prevItems;
-      }
-      return [...prevItems, item];
-    });
+    setCartItems([item]); // Replace the existing item with the new one
   };
 
   const removeFromCart = (id: number) => {

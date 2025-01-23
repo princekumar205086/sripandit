@@ -3,7 +3,7 @@ import axios from "axios";
 
 export async function getAstrologyService() {
   try {
-    const response = await axios.get(`${process.env.BASE_URL}/api/astrology`);
+    const response = await axios.get(`/api/astrology`);
     return response.data;
   } catch (error: any) {
     console.error(
@@ -16,7 +16,7 @@ export async function getAstrologyService() {
 export async function getAstrologySingleService(id: string) {
   try {
     const response = await axios.get(
-      `${process.env.BASE_URL}/api/astrology/${id}`
+      `/api/astrology/${id}`
     );
     return response.data;
   } catch (error: any) {

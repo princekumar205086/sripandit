@@ -265,6 +265,8 @@ model Cart {
   promoCode     PromoCode?   @relation(fields: [promoCodeId], references: [id])
   promoCodeId   Int?
   checkout      Checkout?
+  cartId        String       @unique
+  status        Status       @default(TRUE)
 }
 
 model PromoCode {
