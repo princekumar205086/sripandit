@@ -126,7 +126,7 @@ export async function fetchCheckoutDetails(cartId: string) {
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: `http://localhost:3000/api/chekoutdetails?cartId=${cartId}`,
+      url: `/api/chekoutdetails?cartId=${cartId}`,
       headers: {}
     };
 
