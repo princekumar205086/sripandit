@@ -39,7 +39,7 @@ const EmailVerification = () => {
       const config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'http://localhost:3000/api/verify-email',
+        url: '/api/verify-email',
         headers: { 'Content-Type': 'application/json' },
         data,
       };
