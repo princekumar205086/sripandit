@@ -6,7 +6,12 @@ const MAX_RETRIES = 5;
 const RETRY_DELAY = 2000; // Initial delay in milliseconds
 
 // Helper function to retry requests with exponential backoff
-async function makePaymentRequest(apiUrl: string, base64Payload: string, xVerify: string, retries: number = 0): Promise<any> {
+async function makePaymentRequest(
+  apiUrl: string,
+  base64Payload: string,
+  xVerify: string,
+  retries: number = 0
+): Promise<any> {
   try {
     const response = await axios.post(
       apiUrl,
@@ -22,10 +27,12 @@ async function makePaymentRequest(apiUrl: string, base64Payload: string, xVerify
   } catch (error: any) {
     if (error.response?.status === 429 && retries < MAX_RETRIES) {
       const retryAfter = error.response.headers["retry-after"];
-      const delay = retryAfter ? parseInt(retryAfter, 10) * 1000 : RETRY_DELAY * Math.pow(2, retries);
+      const delay = retryAfter
+        ? parseInt(retryAfter, 10) * 1000
+        : RETRY_DELAY * Math.pow(2, retries);
       console.log(`Rate limit exceeded. Retrying in ${delay}ms...`);
 
-      await new Promise(resolve => setTimeout(resolve, delay));
+      await new Promise((resolve) => setTimeout(resolve, delay));
       return makePaymentRequest(apiUrl, base64Payload, xVerify, retries + 1);
     }
     throw error;
@@ -58,17 +65,20 @@ export async function POST(request: NextRequest) {
     };
 
     // Base64 encode the payload
-    const base64Payload = Buffer.from(JSON.stringify(payload)).toString("base64");
+    const base64Payload = Buffer.from(JSON.stringify(payload)).toString(
+      "base64"
+    );
 
     // Compute X-VERIFY header
     const apiEndpoint = "/pg/v1/pay";
     const saltKey = process.env.PHONEPE_SALT_KEY!;
     const saltIndex = process.env.PHONEPE_SALT_INDEX!;
-    const xVerify = crypto
-      .createHash("sha256")
-      .update(base64Payload + apiEndpoint + saltKey)
-      .digest("hex")
-      .toLowerCase() + `###${saltIndex}`;
+    const xVerify =
+      crypto
+        .createHash("sha256")
+        .update(base64Payload + apiEndpoint + saltKey)
+        .digest("hex")
+        .toLowerCase() + `###${saltIndex}`;
 
     // Define API URL
     const apiUrl =
@@ -92,7 +102,10 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     );
   } catch (error: any) {
-    console.error("Payment initiation error:", error.response?.data || error.message);
+    console.error(
+      "Payment initiation error:",
+      error.response?.data || error.message
+    );
     return NextResponse.json(
       { error: error.response?.data || error.message },
       { status: 500 }

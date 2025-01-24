@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, use } from "react";
-import { FaCreditCard } from "react-icons/fa";
 import { RiSecurePaymentFill } from "react-icons/ri";
 import {
   MdLocationOn,
@@ -84,7 +83,7 @@ const CheckoutPage = () => {
         userId: userId,
         cartId: cartId,
       });
-  
+
       const { paymentUrl } = response.data;
       if (paymentUrl) {
         window.location.href = paymentUrl;

@@ -51,10 +51,10 @@ export async function POST(request: NextRequest) {
     });
 
     await sendEmail({
-      email: process.env.ownemail, // The email address to receive booking notifications
+      email: process.env.ownemail, 
       emailType: "BOOKING",
       username: "Admin", 
-      useremail: email, // Assuming this is the email of the user who made the booking
+      useremail: email,
       city,
       pujaName,
       date,
