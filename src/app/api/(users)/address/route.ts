@@ -1,21 +1,42 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma";
+import { NextRequest, NextResponse } from "next/server";
 
-// Add new address
+// Fetch all addresses for a user
+export async function GET(request: NextRequest) {
+  try {
+    const userId = request.nextUrl.searchParams.get("userId");
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: "User ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const addresses = await prisma.address.findMany({
+      where: { userId: parseInt(userId) },
+    });
+
+    return NextResponse.json(addresses);
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+// Create a new address for a user
 export async function POST(request: NextRequest) {
   try {
-    const reqBody = await request.json();
-    const { street, city, state, postalCode, country, userId } = reqBody;
+    const { addressline, addressline2, city, state, postalCode, country, userId } = await request.json();
 
-    // Insert new address
     const newAddress = await prisma.address.create({
       data: {
-        street,
+        addressline,
+        addressline2,
         city,
         state,
         postalCode,
         country,
-        userId,
+        userId: parseInt(userId),
       },
     });
 
@@ -29,21 +50,37 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Fetch all addresses for a user
-export async function GET(request: NextRequest) {
+// Set a specific address as default for a user
+export async function PUT(request: NextRequest) {
   try {
-    const userId = request.nextUrl.searchParams.get('userId');
+    const { addressId, userId } = await request.json();
 
-    if (!userId) {
-      return NextResponse.json({ error: "User ID is required" }, { status: 400 });
+    if (!addressId || !userId) {
+      return NextResponse.json(
+        { error: "Address ID and User ID are required" },
+        { status: 400 }
+      );
     }
 
-    const addresses = await prisma.address.findMany({
-      where: { userId: parseInt(userId) },
+    // Unset the previous default address
+    await prisma.address.updateMany({
+      where: { userId: parseInt(userId), isDefault: true },
+      data: { isDefault: false },
     });
 
-    return NextResponse.json(addresses);
+    // Set the new default address
+    const updatedAddress = await prisma.address.update({
+      where: { id: parseInt(addressId) },
+      data: { isDefault: true },
+    });
+
+    return NextResponse.json({
+      message: "Default address updated successfully",
+      success: true,
+      defaultAddressId: updatedAddress.id,
+    });
   } catch (error: any) {
+    console.error("Error setting default address:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

@@ -1,7 +1,9 @@
 // my address page for user
 "use client";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { FaTrash, FaPencilAlt, FaMapMarkerAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const Addresses = () => {
   const [addresses, setAddresses] = useState([
@@ -36,40 +38,30 @@ const Addresses = () => {
   >(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   interface FormData {
-    name: string;
     addressLine1: string;
     addressLine2: string;
     city: string;
     state: string;
     zipCode: string;
-    phone: string;
   }
 
   const [formData, setFormData] = useState<FormData>({
-    name: "",
     addressLine1: "",
     addressLine2: "",
     city: "",
     state: "",
     zipCode: "",
-    phone: "",
   });
   const [errors, setErrors] = useState<Partial<FormData>>({});
-
-  const states = ["NY", "CA", "TX", "FL", "IL"]; // Add more states as needed
+  const [loadingPincode, setLoadingPincode] = useState(false);
 
   const validateForm = () => {
     const newErrors: Partial<FormData> = {};
-    if (!formData.name) newErrors.name = "Address name is required";
     if (!formData.addressLine1) newErrors.addressLine1 = "Address is required";
     if (!formData.city) newErrors.city = "City is required";
     if (!formData.state) newErrors.state = "State is required";
     if (!formData.zipCode) newErrors.zipCode = "ZIP code is required";
-    if (!formData.phone) newErrors.phone = "Phone number is required";
-    if (formData.phone && !/^\(\d{3}\) \d{3}-\d{4}$/.test(formData.phone)) {
-      newErrors.phone = "Invalid phone format. Use (XXX) XXX-XXXX";
-    }
-    if (formData.zipCode && !/^\d{5}$/.test(formData.zipCode)) {
+    if (formData.zipCode && !/^\d{6}$/.test(formData.zipCode)) {
       newErrors.zipCode = "Invalid ZIP code format";
     }
     setErrors(newErrors);
@@ -82,15 +74,19 @@ const Addresses = () => {
       if (selectedAddress) {
         setAddresses(
           addresses.map((addr) =>
-            addr.id === selectedAddress.id
-              ? { ...formData, id: addr.id, isDefault: addr.isDefault }
-              : addr
+            addr.id === selectedAddress.id ? { ...addr, ...formData } : addr
           )
         );
       } else {
         setAddresses([
           ...addresses,
-          { ...formData, id: Date.now(), isDefault: addresses.length === 0 },
+          {
+            ...formData,
+            id: Date.now(),
+            isDefault: addresses.length === 0,
+            name: "New Address",
+            phone: "",
+          },
         ]);
       }
       setIsModalOpen(false);
@@ -100,13 +96,11 @@ const Addresses = () => {
 
   const resetForm = () => {
     setFormData({
-      name: "",
       addressLine1: "",
       addressLine2: "",
       city: "",
       state: "",
       zipCode: "",
-      phone: "",
     });
     setSelectedAddress(null);
     setErrors({});
@@ -138,6 +132,40 @@ const Addresses = () => {
         isDefault: addr.id === id,
       }))
     );
+  };
+
+  const handlePincodeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const pincode = e.target.value;
+    if (pincode.length === 6) {
+      setLoadingPincode(true);
+      try {
+        // Construct the URL using the pincode
+        const response = await axios.get(
+          `https://api.postalpincode.in/pincode/${pincode}`
+        );
+
+        // Check if the response is successful
+        if (response.data[0].Status === "Success") {
+          const postOffice = response.data[0].PostOffice[0];
+
+          // Set the fetched data to the form fields
+          setFormData({
+            ...formData,
+            city: postOffice.District,
+            state: postOffice.State,
+          });
+        }
+      } catch (error) {
+        toast.error("Invalid Pincode");
+          setFormData({
+            ...formData,
+            city: "",
+            state: "",
+          });
+      } finally {
+        setLoadingPincode(false);
+      }
+    }
   };
 
   useEffect(() => {
@@ -246,24 +274,6 @@ const Addresses = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-[#2F1C0A] mb-1">
-                  Address Name*
-                </label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-[#FFA500] focus:border-transparent"
-                  placeholder="Home, Office, etc."
-                />
-                {errors.name && (
-                  <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-[#2F1C0A] mb-1">
                   Address Line 1*
                 </label>
                 <input
@@ -317,20 +327,14 @@ const Addresses = () => {
                   <label className="block text-sm font-medium text-[#2F1C0A] mb-1">
                     State*
                   </label>
-                  <select
+                  <input
+                    type="text"
                     value={formData.state}
                     onChange={(e) =>
                       setFormData({ ...formData, state: e.target.value })
                     }
                     className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-[#FFA500] focus:border-transparent"
-                  >
-                    <option value="">Select State</option>
-                    {states.map((state) => (
-                      <option key={state} value={state}>
-                        {state}
-                      </option>
-                    ))}
-                  </select>
+                  />
                   {errors.state && (
                     <p className="text-red-500 text-sm mt-1">{errors.state}</p>
                   )}
@@ -360,20 +364,9 @@ const Addresses = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-[#2F1C0A] mb-1">
-                    Phone Number*
+                    Country
                   </label>
-                  <input
-                    type="text"
-                    value={formData.phone}
-                    onChange={(e) =>
-                      setFormData({ ...formData, phone: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-[#FFA500] focus:border-transparent"
-                    placeholder="(XXX) XXX-XXXX"
-                  />
-                  {errors.phone && (
-                    <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
-                  )}
+                  <input type="text" value="India" readOnly />
                 </div>
               </div>
 
