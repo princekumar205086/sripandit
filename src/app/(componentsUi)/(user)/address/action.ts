@@ -31,13 +31,20 @@ export async function fetchAddresses(userId: number) {
 // Set default address
 export async function setDefaultAddress(addressId: number, userId: number) {
   try {
-    const response = await axios.put(`/api/address/setDefaultAddress?addressId=${addressId}&userId=${userId}`);
+    const response = await axios.put(`/api/address/`, {
+      addressId,
+      userId
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      maxBodyLength: Infinity
+    });
     return response.data;
   } catch (error: any) {
-    return error.response.data;
+    return error.response?.data || { message: error.message };
   }
 }
-
 // Update address
 export async function updateAddress(addressId: number, data: {
   addressline: string;
@@ -59,7 +66,7 @@ export async function updateAddress(addressId: number, data: {
 // Delete address
 export async function deleteAddress(addressId: number) {
   try {
-    const response = await axios.delete(`/api/address?addressId=${addressId}`);
+    const response = await axios.delete(`/api/address/${addressId}`);
     return response.data;
   } catch (error: any) {
     return error.response.data;

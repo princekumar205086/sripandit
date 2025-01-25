@@ -52,6 +52,7 @@ const CheckoutPage = () => {
 
   const [details, setDetails] = useState<CheckoutDetails | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [addresId, setAddressId] = useState<number | null>(null);
   useEffect(() => {
     if (!cartId || typeof cartId !== "string") {
       console.error("Invalid cartId:", cartId);
@@ -96,6 +97,11 @@ const CheckoutPage = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleDefaultAddressChange = (addressId: number) => {
+    console.log("Selected default address ID:", addressId);
+    setAddressId(addressId);
   };
 
   return (
@@ -219,7 +225,7 @@ const CheckoutPage = () => {
 
             {/* Address Section */}
             <div className="bg-white rounded-lg shadow-md p-6">
-              <Addresses />
+              <Addresses onSelectDefaultAddress={handleDefaultAddressChange} />
             </div>
           </div>
           {/* Payment Section */}
