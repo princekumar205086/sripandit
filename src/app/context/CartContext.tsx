@@ -1,17 +1,27 @@
-"use client"
-import React, { createContext, useContext, useState, ReactNode } from "react";
+"use client";
 
-// Define the cart item type
-export interface CartItem {
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
+
+interface CartItem {
   id: number;
+  image: string;
   name: string;
+  type: string;
   package: string;
+  packageId: number;
   location: string;
   language: string;
   price: number;
+  date: string;
+  time: string;
 }
 
-// Define the context value type
 interface CartContextType {
   cartItems: CartItem[];
   addToCart: (item: CartItem) => void;
@@ -19,30 +29,43 @@ interface CartContextType {
   clearCart: () => void;
 }
 
-// Create the context
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-// Provider props
-interface CartProviderProps {
-  children: ReactNode;
-}
-
-// Create the provider
-export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
+export const CartProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const addToCart = (item: CartItem) => {
-    setCartItems((prevItems) => {
-      const isAlreadyInCart = prevItems.some((cartItem) => cartItem.id === item.id);
-      if (isAlreadyInCart) {
-        return prevItems; // Prevent duplicates
+  // Load cart items from localStorage on initial render
+  useEffect(() => {
+    try {
+      const savedCart = localStorage.getItem("cart");
+      if (savedCart) {
+        const parsedCart = JSON.parse(savedCart);
+        setCartItems(parsedCart);
       }
-      return [...prevItems, item];
-    });
+    } catch (error) {
+      console.error("Error loading cart from localStorage:", error);
+    }
+  }, []);
+
+  // Save cart items to localStorage on every change
+  useEffect(() => {
+    try {
+      localStorage.setItem("cart", JSON.stringify(cartItems));
+    } catch (error) {
+      console.error("Error saving cart to localStorage:", error);
+    }
+  }, [cartItems]);
+
+  const addToCart = (item: CartItem) => {
+    setCartItems([item]); // Replace the existing item with the new one
   };
 
   const removeFromCart = (id: number) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+    setCartItems((prevItems) =>
+      prevItems.filter((cartItem) => cartItem.id !== id)
+    );
   };
 
   const clearCart = () => {
@@ -50,13 +73,14 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider
+      value={{ cartItems, addToCart, removeFromCart, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );
 };
 
-// Custom hook for accessing the cart context
 export const useCart = (): CartContextType => {
   const context = useContext(CartContext);
   if (!context) {

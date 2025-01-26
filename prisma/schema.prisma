@@ -18,29 +18,71 @@ enum Status {
   FALSE
 }
 
+enum AccountStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+  DEACTIVATED
+}
+
 model User {
-  id                        Int      @id @default(autoincrement())
+  id                        Int                                 @id @default(autoincrement())
   username                  String
-  email                     String   @unique
+  email                     String                              @unique
   contact                   String?
   password                  String
-  date_of_reg               DateTime @default(now())
-  account_status            String   @default("0")
-  verifyToken               String?  @db.VarChar(255)
+  date_of_reg               DateTime                            @default(now())
+  account_status            AccountStatus  @default(PENDING)
+  verifyToken               String?                             @db.VarChar(255)
   verifyTokenExpiry         DateTime?
-  forgotPasswordToken       String?  @db.VarChar(255)
+  forgotPasswordToken       String?                             @db.VarChar(255)
   forgotPasswordTokenExpiry DateTime?
-  changePasswordToken       String?  @db.VarChar(255)
-  chabgePasswordTokenExpiry DateTime?
-  role                      Role     @default(USER)
-  blogCategories            BlogCategory[]   @relation("UserBlogCategories")
-  blogPosts                 BlogPost[]       @relation("UserBlogPosts")
-  blogComments              BlogComments[]   @relation("UserBlogComments")
-  blogLikes                 BlogLikes[]      @relation("UserBlogLikes")
-  blogViews                 BlogView[]       @relation("UserBlogViews")
-
+  changePasswordToken       String?                             @db.VarChar(255)
+  chagePasswordTokenExpiry  DateTime?
+  role                      Role                                @default(USER)
+  personalInformation       PersonalInformation?                @relation(fields: [personalInformationId], references: [id])
+  personalInformationId     Int? @unique
+  addresses                 Address[]
+  blogCategories            BlogCategory[]                      @relation("UserBlogCategories")
+  blogPosts                 BlogPost[]                          @relation("UserBlogPosts")
+  blogComments              BlogComments[]                      @relation("UserBlogComments")
+  blogLikes                 BlogLikes[]                         @relation("UserBlogLikes")
+  blogViews                 BlogView[]                          @relation("UserBlogViews")
+  carts                     Cart[]
+  checkouts                 Checkout[]
+  bookings                  Booking[]
   @@unique([id, role], map: "unique_admin")
 }
+
+model PersonalInformation {
+  id          Int      @id @default(autoincrement())
+  firstname   String
+  lastname    String
+  dob         DateTime
+  profile_pic String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User?
+}
+
+model Address {
+  id                    Int      @id @default(autoincrement())
+  addressline           String   
+  addressline2          String? 
+  city                  String   
+  state                 String   
+  postalCode            String   
+  country               String   
+  userId                Int      
+  user                  User     @relation(fields: [userId], references: [id])
+  isDefault             Boolean  @default(false) 
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt 
+
+  @@index([userId, isDefault])
+}
+
+
 
 model PujaService {
   id             Int          @id @default(autoincrement())
@@ -51,6 +93,8 @@ model PujaService {
   categoryId     Int
   date_of_create DateTime     @default(now())
   packages       Package[]    @relation("PujaServicePackages")
+  carts          Cart[]
+  bookings       Booking[]
 }
 
 model PujaCategory {
@@ -68,6 +112,8 @@ model Package {
   description    String       @db.VarChar(10000)
   pujaService    PujaService  @relation(fields: [pujaServiceId], references: [id], name: "PujaServicePackages")
   pujaServiceId  Int
+  carts          Cart[]
+  bookings       Booking[]
 }
 
 model PujaBooking {
@@ -85,7 +131,7 @@ model PujaBooking {
 model AstrologyService {
   id            Int      @id @default(autoincrement())
   service_title String
-  service_image String   // Added attribute for service image
+  service_image String
   service_type  String
   service_price Float
   service_desc  String    @db.VarChar(5000)
@@ -190,4 +236,112 @@ model BlogView {
   user      User      @relation(fields: [user_id], references: [id], name: "UserBlogViews")
   user_id   Int
   createdAt DateTime  @default(now())
+}
+
+model PrivacyPolicy {
+  id         Int      @id @default(autoincrement())
+  title      String
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model TermsOfService {
+  id         Int      @id @default(autoincrement())
+  title      String
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Cart {
+  id            Int          @id @default(autoincrement())
+  user          User         @relation(fields: [userId], references: [id])
+  userId        Int
+  pujaService   PujaService  @relation(fields: [pujaServiceId], references: [id])
+  pujaServiceId Int
+  package       Package      @relation(fields: [packageId], references: [id])
+  packageId     Int
+  selected_date DateTime
+  selected_time String
+  createdAt     DateTime     @default(now())
+  promoCode     PromoCode?   @relation(fields: [promoCodeId], references: [id])
+  promoCodeId   Int?
+  checkout      Checkout?
+  cartId        String       @unique
+  status        Status       @default(TRUE)
+}
+
+model PromoCode {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique
+  discount    Float
+  expiryDate  DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  carts       Cart[]
+  checkouts   Checkout[]
+}
+
+model Checkout {
+  id          Int        @id @default(autoincrement())
+  user        User       @relation(fields: [userId], references: [id])
+  userId      Int
+  cart        Cart       @relation(fields: [cartId], references: [id])
+  cartId      Int @unique
+  promoCode   PromoCode? @relation(fields: [promoCodeId], references: [id])
+  promoCodeId Int?
+  totalAmount Float
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Booking {
+  id                 Int           @id @default(autoincrement())
+  user               User          @relation(fields: [userId], references: [id])
+  userId             Int
+  pujaService        PujaService   @relation(fields: [pujaServiceId], references: [id])
+  pujaServiceId      Int
+  package            Package       @relation(fields: [packageId], references: [id])
+  packageId          Int
+  selected_date      DateTime
+  selected_time      String
+  status             BookingStatus @default(PENDING)
+  cancellationReason String?
+  failureReason      String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  payments           Payment[]
+}
+
+model Payment {
+  id          Int           @id @default(autoincrement())
+  booking     Booking       @relation(fields: [bookingId], references: [id])
+  bookingId   Int
+  amount      Float
+  method      PaymentMethod
+  status      PaymentStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  FAILED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  UPI
+  WALLET
+  BANK_TRANSFER
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
 }

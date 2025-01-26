@@ -25,14 +25,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Check account status
-    if (user.account_status === "0") {
+    if (user.account_status === "PENDING") {
       return NextResponse.json(
         { error: "Verify your email first." },
         { status: 403 }
       );
-    } else if (user.account_status === "2") {
+    } else if (user.account_status === "DEACTIVATED") {
       return NextResponse.json(
-        { error: "You can't log in, your account is blocked." },
+        { error: "You can't log in, your account is deactivated" },
         { status: 403 }
       );
     }
