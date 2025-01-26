@@ -10,7 +10,6 @@ import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiCaretLeft } from "react-icons/bi";
 import Modal from "./Modal";
 import { getUserService } from "./action";
-import UserFormData from "./insertUser";
 // import ViewUser from "./ViewUser";
 
 interface Service {
@@ -311,19 +310,6 @@ export default function ManageUserService() {
       </div>
 
        {/* Modals */}
-       <Modal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        username="User"
-      >
-        <UserFormData />
-        <button
-          onClick={() => setIsAddModalOpen(false)}
-          className="text-red-600 hover:text-red-800"
-        >
-          Close
-        </button>
-      </Modal>
 
       {/* <Modal
         isOpen={isEditModalOpen}

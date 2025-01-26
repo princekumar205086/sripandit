@@ -63,7 +63,7 @@ export const addAstrologyService = async (formData: AstrologyFormData) => {
 
 export const getAstrologyService = async () => {
     try {
-      const response = await axios.get(`/api/astrology`);
+      const response = await axios.get("/api/astrology");
       return response.data.map(mapServiceData);
     } catch (error: any) {
       return handleAxiosError(error) || [];
