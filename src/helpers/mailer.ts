@@ -19,7 +19,7 @@ export const sendEmail = async ({
     const hashedToken = await bcryptjs.hash(username.toString(), 10);
     // create a transporter object
     var transporter = nodemailer.createTransport({
-      host: "smtp.hostinger.com",
+      host: "smtp.gmail.com",
       port: 465, // SSL port
       secure: true, // true for 465, false for other ports
       auth: {
@@ -32,7 +32,7 @@ export const sendEmail = async ({
       from: process.env.userid,
       to: email,
       subject: "Email Verification",
-      text: `Hello ${username},\n\nPlease verify your email address by clicking on the following link:\n\nhttps://www.okpuja.com/verify?token=${hashedToken}\n\nThank You!`,
+      text: `Hello ${username},\n\nPlease verify your email address by clicking on the following link:\n\nhttps://www.okpuja.com/verify-email?token=${hashedToken}.\n\nThank You!`,
     };
 
     if (emailType === "VERIFY") {

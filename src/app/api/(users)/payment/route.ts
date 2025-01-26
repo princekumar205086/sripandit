@@ -11,6 +11,7 @@ export async function POST(request: NextRequest) {
     const newPayment = await prisma.payment.create({
       data: {
         bookingId,
+        
         amount,
         method,
       },

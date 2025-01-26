@@ -26,30 +26,28 @@ enum AccountStatus {
 }
 
 model User {
-  id                        Int      @id @default(autoincrement())
+  id                        Int                                 @id @default(autoincrement())
   username                  String
-  email                     String   @unique
+  email                     String                              @unique
   contact                   String?
   password                  String
-  date_of_reg               DateTime @default(now())
+  date_of_reg               DateTime                            @default(now())
   account_status            AccountStatus  @default(PENDING)
-  verifyToken               String?  @db.VarChar(255)
+  verifyToken               String?                             @db.VarChar(255)
   verifyTokenExpiry         DateTime?
-  forgotPasswordToken       String?  @db.VarChar(255)
+  forgotPasswordToken       String?                             @db.VarChar(255)
   forgotPasswordTokenExpiry DateTime?
-  changePasswordToken       String?  @db.VarChar(255)
-  chagePasswordTokenExpiry DateTime?
-  role                      Role     @default(USER)
-  personalInformation       PersonalInformation? @relation(fields: [personalInformationId], references: [id])
+  changePasswordToken       String?                             @db.VarChar(255)
+  chagePasswordTokenExpiry  DateTime?
+  role                      Role                                @default(USER)
+  personalInformation       PersonalInformation?                @relation(fields: [personalInformationId], references: [id])
   personalInformationId     Int? @unique
   addresses                 Address[]
-  defaultAddressId          Int? @unique
-  defaultAddress            Address? @relation("DefaultAddress", fields: [defaultAddressId], references: [id])
-  blogCategories            BlogCategory[] @relation("UserBlogCategories")
-  blogPosts                 BlogPost[] @relation("UserBlogPosts")
-  blogComments              BlogComments[] @relation("UserBlogComments")
-  blogLikes                 BlogLikes[] @relation("UserBlogLikes")
-  blogViews                 BlogView[] @relation("UserBlogViews")
+  blogCategories            BlogCategory[]                      @relation("UserBlogCategories")
+  blogPosts                 BlogPost[]                          @relation("UserBlogPosts")
+  blogComments              BlogComments[]                      @relation("UserBlogComments")
+  blogLikes                 BlogLikes[]                         @relation("UserBlogLikes")
+  blogViews                 BlogView[]                          @relation("UserBlogViews")
   carts                     Cart[]
   checkouts                 Checkout[]
   bookings                  Booking[]
@@ -68,18 +66,23 @@ model PersonalInformation {
 }
 
 model Address {
-  id          Int      @id @default(autoincrement())
-  street      String
-  city        String
-  state       String
-  postalCode  String
-  country     String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  user        User     @relation(fields: [userId], references: [id])
-  userId      Int
-  defaultFor  User?    @relation("DefaultAddress")
+  id                    Int      @id @default(autoincrement())
+  addressline           String   
+  addressline2          String? 
+  city                  String   
+  state                 String   
+  postalCode            String   
+  country               String   
+  userId                Int      
+  user                  User     @relation(fields: [userId], references: [id])
+  isDefault             Boolean  @default(false) 
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt 
+
+  @@index([userId, isDefault])
 }
+
+
 
 model PujaService {
   id             Int          @id @default(autoincrement())
@@ -262,7 +265,11 @@ model Cart {
   selected_date DateTime
   selected_time String
   createdAt     DateTime     @default(now())
+  promoCode     PromoCode?   @relation(fields: [promoCodeId], references: [id])
+  promoCodeId   Int?
   checkout      Checkout?
+  cartId        String       @unique
+  status        Status       @default(TRUE)
 }
 
 model PromoCode {
@@ -272,6 +279,7 @@ model PromoCode {
   expiryDate  DateTime
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  carts       Cart[]
   checkouts   Checkout[]
 }
 
@@ -289,23 +297,21 @@ model Checkout {
 }
 
 model Booking {
-  id                Int           @id @default(autoincrement())
-  user              User          @relation(fields: [userId], references: [id])
-  userId            Int
-  pujaService       PujaService   @relation(fields: [pujaServiceId], references: [id])
-  pujaServiceId     Int
-  package           Package       @relation(fields: [packageId], references: [id])
-  packageId         Int
-  selected_date     DateTime
-  selected_time     String
-  status            BookingStatus @default(PENDING)
+  id                 Int           @id @default(autoincrement())
+  user               User          @relation(fields: [userId], references: [id])
+  userId             Int
+  pujaService        PujaService   @relation(fields: [pujaServiceId], references: [id])
+  pujaServiceId      Int
+  package            Package       @relation(fields: [packageId], references: [id])
+  packageId          Int
+  selected_date      DateTime
+  selected_time      String
+  status             BookingStatus @default(PENDING)
   cancellationReason String?
-  failureReason     String?
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
-  payments          Payment[]
-
-  @@index([userId, pujaServiceId, packageId])
+  failureReason      String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  payments           Payment[]
 }
 
 model Payment {
@@ -339,3 +345,53 @@ enum PaymentStatus {
   COMPLETED
   FAILED
 }
+
+model Gallery {
+  id              Int             @id @default(autoincrement())
+  image           String
+  galleryCategory GalleryCategory @relation(fields: [galleryCategoryId], references: [id])
+  galleryCategoryId Int
+  popularity      Int
+  status          String
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+model GalleryCategory {
+  id        Int      @id @default(autoincrement())
+  title     String
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  galleries Gallery[]
+}
+
+model CancellationRefundPolicy {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model JobOpening {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  deadline    DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Event {
+  id        Int      @id @default(autoincrement())
+  imagesrc  String
+  title     String
+  day       String
+  number    Int
+  month     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+

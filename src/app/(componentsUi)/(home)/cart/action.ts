@@ -4,10 +4,12 @@ import axios from "axios";
 
 interface CartData {
   userId: number;
+  cartId: string;
   pujaServiceId: number;
   packageId: number;
   selected_date: string;
   selected_time: string;
+  promoCodeId: number;
 }
 
 export async function insertCart(data: CartData) {  
@@ -66,5 +68,21 @@ export async function updateCart(data: UpdateCartData) {
     return response.data;
   } catch (error:any) {
     return error.response.data;
+  }
+}
+
+// apply and remove promo code
+
+interface PromoCodeData {
+  code: string;
+  action: string;
+}
+
+export async function promoCode(data: PromoCodeData) {
+  try {
+    const response = await axios.post("/api/checkpromo", data);
+    return response.data;
+  } catch (error: any) {
+    return error.response?.data || { error: "An error occurred" };
   }
 }

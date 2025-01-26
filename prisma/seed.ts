@@ -15,6 +15,7 @@ async function main() {
       email: 'admin@example.com',
       password: hashedPassword,
       role: Role.ADMIN, // Use Role.ADMIN enum value
+      account_status: 'ACTIVE',
     },
   });
 }
