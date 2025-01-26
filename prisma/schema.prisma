@@ -71,7 +71,7 @@ model Address {
   city                  String   
   state                 String   
   postalCode            String   
-  country               String   
+  country               String   @default("INDIA") 
   userId                Int      
   user                  User     @relation(fields: [userId], references: [id])
   isDefault             Boolean  @default(false) 
@@ -313,6 +313,7 @@ enum BookingStatus {
   CONFIRMED
   CANCELLED
   FAILED
+  DONE
 }
 
 enum PaymentMethod {

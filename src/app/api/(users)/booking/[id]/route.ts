@@ -2,7 +2,10 @@ import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 // Delete a booking
-export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
+export async function DELETE(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
     const { id } = context.params;
 
@@ -35,11 +38,23 @@ export async function DELETE(request: NextRequest, context: { params: { id: stri
 }
 
 // Update a booking
-export async function PUT(request: NextRequest, context: { params: { id: string } }) {
+export async function PUT(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
     const { id } = context.params;
     const reqBody = await request.json();
-    const { userId, cartId, BookId, selected_date, selected_time, status, cancellationReason, failureReason } = reqBody;
+    const {
+      userId,
+      cartId,
+      BookId,
+      selected_date,
+      selected_time,
+      status,
+      cancellationReason,
+      failureReason,
+    } = reqBody;
 
     if (!id) {
       return NextResponse.json(
@@ -72,8 +87,16 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
   }
 }
 
+/*  
+I want specific bookings data based on the from booking id
+
+*/
+
 // Fetch a single booking by ID
-export async function GET(request: NextRequest, context: { params: { id: string } }) {
+export async function GET(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
     const { id } = context.params;
 
@@ -89,10 +112,7 @@ export async function GET(request: NextRequest, context: { params: { id: string 
     });
 
     if (!booking) {
-      return NextResponse.json(
-        { error: "Booking not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Booking not found" }, { status: 404 });
     }
 
     return NextResponse.json(booking);

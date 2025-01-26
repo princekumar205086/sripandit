@@ -32,6 +32,9 @@ export async function POST(request: NextRequest) {
 }
 
 // Fetch all bookings
+
+/* 
+*/
 export async function GET() {
   try {
     const bookings = await prisma.booking.findMany();
