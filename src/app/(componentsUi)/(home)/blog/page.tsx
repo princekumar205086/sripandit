@@ -35,6 +35,8 @@ export default function Blog() {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const postsPerPage = 9;
 
   const encryptId = (id: number) => {
     const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY || "default-secret-key";
@@ -90,8 +92,18 @@ export default function Blog() {
   }, [searchQuery, selectedCategory, posts]);
 
   const handleCategoryClick = (categorySlug: string, event: React.MouseEvent) => {
-    event.preventDefault();  // Prevent default link behavior (scroll to top)
+    event.preventDefault(); // Prevent default link behavior (scroll to top)
     setSelectedCategory(categorySlug);
+  };
+
+  // Pagination logic
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
   };
 
   return (
@@ -102,8 +114,7 @@ export default function Blog() {
         description="Read our latest blog posts and stay updated with the latest trends. We cover a wide range of topics including astrology, puja services, and more."
       />
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-6 text-gray-600 text-center">
-        </div>
+        <div className="mb-6 text-gray-600 text-center"></div>
 
         {error && (
           <div className="text-center text-red-500 py-8">
@@ -111,31 +122,10 @@ export default function Blog() {
           </div>
         )}
 
-        <div className="flex justify-between mb-6">
-          {/* Category Filter as Left Side */}
-          <div className="flex space-x-4 flex-wrap">
-            <Link
-              href="/blog"
-              className={`px-4 py-2 border rounded-md text-sm font-medium ${selectedCategory === "" ? "bg-orange-500 text-white" : "bg-gray-200 text-gray-700"}`}
-              onClick={(e) => handleCategoryClick("", e)} 
-            >
-              All Categories
-            </Link>
-
-            {categories.map((category, index) => (
-              <Link
-                key={index}
-                href={`/blog?category=${category.category_slug}`}
-                className={`px-4 py-2 border rounded-md text-sm font-medium ${selectedCategory === category.category_slug ? "bg-orange-500 text-white" : "bg-gray-200 text-gray-700"}`}
-                onClick={(e) => handleCategoryClick(category.category_slug, e)} // Prevent scroll to top
-              >
-                {category.category_name}
-              </Link>
-            ))}
-          </div>
-
-          {/* Search Bar as Right Side */}
-          <div className="w-1/3">
+        {/* Responsive Flex Layout for Search and Categories */}
+        <div className="flex flex-wrap justify-between items-center mb-6 space-y-4 sm:space-y-0">
+          {/* Search Bar (Left Side) */}
+          <div className="w-full sm:w-1/2 lg:w-1/3">
             <input
               type="text"
               placeholder="Search blog posts..."
@@ -144,15 +134,32 @@ export default function Blog() {
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
+
+          {/* Category Filter (Right Side, Dropdown on Mobile) */}
+          <div className="w-full sm:w-1/2 lg:w-1/3">
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            >
+              <option value="">All Categories</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.category_slug}>
+                  {category.category_name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
-        {filteredPosts.length === 0 && !error ? (
+        {/* Display Blog Posts */}
+        {currentPosts.length === 0 && !error ? (
           <div className="text-center text-gray-500 py-8">
             <p>No blog posts available at the moment. Please check back later.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredPosts.map((post: BlogPost, index: number) => (
+            {currentPosts.map((post: BlogPost, index: number) => (
               <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div className="relative">
                   <Link href={`/blog/${slugify(post.post_title)}?id=${encodeURIComponent(
@@ -196,6 +203,39 @@ export default function Blog() {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-8">
+            <nav className="inline-flex rounded-md shadow">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="px-4 py-2 border border-gray-300 text-gray-700 bg-white hover:bg-gray-50"
+              >
+                Previous
+              </button>
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`px-4 py-2 border border-gray-300 ${
+                    currentPage === index + 1 ? "bg-orange-500 text-white" : "bg-white text-gray-700"
+                  } hover:bg-gray-50`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 border border-gray-300 text-gray-700 bg-white hover:bg-gray-50"
+              >
+                Next
+              </button>
+            </nav>
           </div>
         )}
       </div>
