@@ -157,7 +157,7 @@ export default function TermsOfService() {
               className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
             >
               <IoMdAdd className="mr-2" />
-              Add Privacy Policy
+              Add Term Of Service
             </button>
           </div>
           <div className="relative mt-4">
