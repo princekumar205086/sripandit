@@ -49,34 +49,46 @@ const BookingSuccess = () => {
           </p>
         </div>
         {/* Transaction deatil card  */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">
             Transaction Details
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <p className="text-gray-600 mb-2">Booking ID: {''} <span>PUJA123456</span></p>
+              <p className="text-gray-600 mb-2">
+                Booking ID: {""} <span>PUJA123456</span>
+              </p>
             </div>
             <div>
-              <p className="text-gray-600 mb-2">Transaction ID: {''} <span>PUJA123456</span></p>
+              <p className="text-gray-600 mb-2">
+                Transaction ID: {""} <span>PUJA123456</span>
+              </p>
             </div>
             <div>
-              <p className="text-gray-600 mb-2">Amount Paid: {''} <span>₹ 5,999</span></p>
+              <p className="text-gray-600 mb-2">
+                Amount Paid: {""} <span>₹ 5,999</span>
+              </p>
             </div>
             <div>
-              <p className="text-gray-600 mb-2">Payment Method: {''} <span>PhonePe</span></p>
+              <p className="text-gray-600 mb-2">
+                Payment Method: {""} <span>PhonePe</span>
+              </p>
             </div>
             <div>
-              <p className="text-gray-600 mb-2">Payment Date: {''} <span>December 15, 2023 | 12:00 AM</span></p>
+              <p className="text-gray-600 mb-2">
+                Payment Date: {""} <span>December 15, 2023 | 12:00 AM</span>
+              </p>
             </div>
             <div>
-              <p className="text-gray-600 mb-2">Payment Status: {''} <span>Success</span></p>
+              <p className="text-gray-600 mb-2">
+                Payment Status: {""} <span>Success</span>
+              </p>
             </div>
           </div>
         </div>
 
         {/* Booking Details Card */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">
             Booking Details
           </h2>
@@ -121,7 +133,7 @@ const BookingSuccess = () => {
         </div>
 
         {/* Address Detail */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">
             Address Details
           </h2>
@@ -176,7 +188,7 @@ const BookingSuccess = () => {
         </div>
 
         {/* Contact Support */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">
             Need Assistance?
           </h2>
@@ -198,32 +210,6 @@ const BookingSuccess = () => {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-6">
-            <p className="text-lg font-medium">
-              Connecting Spiritual Services with Devotees
-            </p>
-          </div>
-          <div className="flex justify-center gap-4">
-            <a
-              href="#"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Privacy Policy
-            </a>
-            <span className="text-gray-500">|</span>
-            <a
-              href="#"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Terms of Service
-            </a>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };

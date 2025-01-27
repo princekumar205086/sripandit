@@ -76,24 +76,43 @@ const CheckoutPage = () => {
     ((details.package?.price ?? 0) * (details.promoCode?.discount ?? 0)) / 100;
   //payment handling
   const handlePayment = async () => {
+    if (!amount || !userId || !cartId) {
+      alert("Missing required payment details.");
+      return;
+    }
+
     setIsLoading(true);
+
     try {
+      const transactionId = `PU${Math.floor(Math.random() * 1e6)
+        .toString()
+        .padStart(6, "0")}${Date.now()}`;
       const response = await axios.post("/api/onlinepayment", {
-        amount: amount,
-        transactionId: `TRANS_${Date.now()}`,
-        userId: userId,
-        cartId: cartId,
+        amount,
+        transactionId,
+        userId,
+        cartId,
       });
 
       const { paymentUrl } = response.data;
+
       if (paymentUrl) {
         window.location.href = paymentUrl;
       } else {
         alert("Failed to initiate payment");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Payment error:", error);
-      alert("An error occurred while initiating payment. Please try again.");
+
+      if (error.response) {
+        alert(error.response.data?.message || "Payment initiation failed.");
+      } else if (error.request) {
+        alert(
+          "No response from the server. Please check your internet connection."
+        );
+      } else {
+        alert("An error occurred. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }

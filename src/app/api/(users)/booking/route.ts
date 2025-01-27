@@ -5,16 +5,19 @@ import { prisma } from '@/lib/prisma';
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { userId, pujaServiceId, packageId, selected_date, selected_time } = reqBody;
+    const { userId, cartId, BookId, selected_date, selected_time, status, cancellationReason, failureReason } = reqBody;
 
     // Insert new booking
     const newBooking = await prisma.booking.create({
       data: {
         userId,
-        pujaServiceId,
-        packageId,
+        cartId,
+        BookId,
         selected_date: new Date(selected_date),
         selected_time,
+        status,
+        cancellationReason,
+        failureReason,
       },
     });
 
@@ -28,24 +31,13 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Fetch all bookings for a user
-export async function GET(request: NextRequest) {
+// Fetch all bookings
+
+/* 
+*/
+export async function GET() {
   try {
-    const userId = request.nextUrl.searchParams.get('userId');
-
-    if (!userId) {
-      return NextResponse.json({ error: "User ID is required" }, { status: 400 });
-    }
-
-    const bookings = await prisma.booking.findMany({
-      where: { userId: parseInt(userId) },
-      include: {
-        pujaService: true,
-        package: true,
-        payments: true,
-      },
-    });
-
+    const bookings = await prisma.booking.findMany();
     return NextResponse.json(bookings);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
