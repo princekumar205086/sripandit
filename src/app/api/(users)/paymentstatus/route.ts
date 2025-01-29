@@ -1,26 +1,23 @@
+// app/api/paymentstatus/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import axios from "axios";
 
-function generateTransactionId(): string {
-  const prefix = "PU";
-  const randomPart = Math.floor(Math.random() * 1e6)
-    .toString()
-    .padStart(6, "0");
-  const timestamp = Date.now();
-  return `${prefix}${randomPart}${timestamp}`;
-}
-
 export async function GET(request: NextRequest) {
+  console.log("Payment status request received");
+  const { searchParams } = new URL(request.url);
+  const transactionId = searchParams.get("transactionId");
   try {
-    const transactionId = generateTransactionId(); 
-    const { searchParams } = new URL(request.url);
-    const userProvidedTransactionId =
-      searchParams.get("transactionId") || transactionId;
+    if (!transactionId) {
+      return NextResponse.json(
+        { error: "Transaction ID is required" },
+        { status: 400 }
+      );
+    }
 
     const payload = {
       merchantId: process.env.PHONEPE_MERCHANT_ID!,
-      merchantTransactionId: userProvidedTransactionId,
+      merchantTransactionId: transactionId,
     };
 
     const base64Payload = Buffer.from(JSON.stringify(payload)).toString(
@@ -44,11 +41,12 @@ export async function GET(request: NextRequest) {
     const response = await axios.post(
       apiUrl,
       { request: base64Payload },
-      { headers: { "Content-Type": "application/json", "X-VERIFY": xVerify } }
+      {
+        headers: { "Content-Type": "application/json", "X-VERIFY": xVerify },
+      }
     );
 
     const data = response.data;
-
     if (data.success) {
       return NextResponse.json({
         success: true,
@@ -66,7 +64,7 @@ export async function GET(request: NextRequest) {
       { status: 400 }
     );
   } catch (error: any) {
-    console.error("Transaction status error:", error.message);
+    console.error("Transaction status error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

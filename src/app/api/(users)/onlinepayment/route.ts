@@ -5,7 +5,12 @@ import axios from "axios";
 const MAX_RETRIES = 5;
 const RETRY_DELAY = 2000;
 
-async function makePaymentRequest(apiUrl: string, base64Payload: string, xVerify: string, retries: number = 0) {
+async function makePaymentRequest(
+  apiUrl: string,
+  base64Payload: string,
+  xVerify: string,
+  retries: number = 0
+) {
   try {
     const response = await axios.post(
       apiUrl,
@@ -25,12 +30,27 @@ async function makePaymentRequest(apiUrl: string, base64Payload: string, xVerify
 }
 
 export async function POST(request: NextRequest) {
+  console.log('====================================');
+  console.log('Payment initiation request received');
+  console.log('====================================');
   try {
     const reqBody = await request.json();
-    const { amount, transactionId, userId, cartId } = reqBody;
+    const {
+      amount,
+      transactionId,
+      userId,
+      checkoutId,
+      bookId,
+      date,
+      time,
+      addressId,
+    } = reqBody;
 
-    if (!amount || !transactionId || !userId || !cartId) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    if (!amount || !transactionId || !userId || !checkoutId || !addressId) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
     }
 
     const payload = {
@@ -38,34 +58,42 @@ export async function POST(request: NextRequest) {
       merchantTransactionId: transactionId,
       merchantUserId: userId,
       amount: amount * 100,
-      redirectUrl: process.env.PHONEPE_REDIRECT_URL!,
+      redirectUrl: `${process.env.PHONEPE_REDIRECT_URL}?userId=${userId}&cartId=${checkoutId}`,
       redirectMode: "REDIRECT",
       callbackUrl: process.env.PHONEPE_CALLBACK_URL!,
       paymentInstrument: { type: "PAY_PAGE" },
     };
 
-    const base64Payload = Buffer.from(JSON.stringify(payload)).toString("base64");
+    const base64Payload = Buffer.from(JSON.stringify(payload)).toString(
+      "base64"
+    );
     const apiEndpoint = "/pg/v1/pay";
     const saltKey = process.env.PHONEPE_SALT_KEY!;
     const saltIndex = process.env.PHONEPE_SALT_INDEX!;
-    const xVerify = crypto
-      .createHash("sha256")
-      .update(base64Payload + apiEndpoint + saltKey)
-      .digest("hex")
-      .toLowerCase() + `###${saltIndex}`;
+    const xVerify =
+      crypto
+        .createHash("sha256")
+        .update(base64Payload + apiEndpoint + saltKey)
+        .digest("hex")
+        .toLowerCase() + `###${saltIndex}`;
 
     const apiUrl =
       process.env.PHONEPE_ENV === "PROD"
         ? "https://api.phonepe.com/apis/hermes/pg/v1/pay"
         : "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay";
 
+    console.log(`Making payment request to URL: ${apiUrl}`);
     const data = await makePaymentRequest(apiUrl, base64Payload, xVerify);
 
     if (data.success && data.data?.instrumentResponse?.redirectInfo?.url) {
-      return NextResponse.json({ success: true, paymentUrl: data.data.instrumentResponse.redirectInfo.url });
+      console.log('====================================');
+      console.log('Payment initiation successful');
+      console.log('====================================');
+      return NextResponse.json({
+        success: true,
+        paymentUrl: data.data.instrumentResponse.redirectInfo.url,
+      });
     }
-
-    return NextResponse.json({ error: data.message || "Failed to initiate payment" }, { status: 400 });
   } catch (error: any) {
     console.error("Payment initiation error:", error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });

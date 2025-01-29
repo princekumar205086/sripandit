@@ -65,19 +65,19 @@ model PersonalInformation {
 }
 
 model Address {
-  id                    Int      @id @default(autoincrement())
-  addressline           String   
-  addressline2          String? 
-  city                  String   
-  state                 String   
-  postalCode            String   
-  country               String   @default("INDIA") 
-  userId                Int      
-  user                  User     @relation(fields: [userId], references: [id])
-  isDefault             Boolean  @default(false) 
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt 
-
+  id                  Int      @id @default(autoincrement())
+  addressline         String  
+  addressline2        String? 
+  city                String  
+  state               String  
+  postalCode          String  
+  country             String   @default("INDIA") 
+  userId              Int      
+  user                User     @relation(fields: [userId], references: [id])
+  isDefault           Boolean  @default(false) 
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  bookings            Booking[] 
   @@index([userId, isDefault])
 }
 
@@ -283,11 +283,13 @@ model Booking {
   id                 Int           @id @default(autoincrement())
   user               User          @relation(fields: [userId], references: [id])
   userId             Int
-  cart               Cart       @relation(fields: [cartId], references: [id])
+  cart               Cart          @relation(fields: [cartId], references: [id])
   cartId             Int
   BookId             String
-  selected_date      DateTime
+  selected_date      String
   selected_time      String
+  addresses          Address       @relation(fields: [addressId], references: [id])
+  addressId          Int        
   status             BookingStatus @default(PENDING)
   cancellationReason String?
   failureReason      String?
@@ -300,7 +302,7 @@ model Payment {
   id                  Int             @id @default(autoincrement())
   booking             Booking         @relation(fields: [bookingId], references: [id])
   bookingId           Int
-  trasanctionId       String
+  transactionId       String
   amount              Float
   method              PaymentMethod
   status              PaymentStatus   @default(PENDING)
@@ -378,4 +380,3 @@ model Event {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
