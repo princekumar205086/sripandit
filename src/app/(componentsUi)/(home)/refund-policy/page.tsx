@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { FaSearch, FaPrint, FaArrowUp } from "react-icons/fa";
 import Section from "../pujaservice/section";
 
-const CancellationRefundPolicy = () => {
+const RefundPolicy = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [refundPolicyContent, setRefundPolicyContent] = useState<TermContent[]>(
@@ -26,7 +26,6 @@ const CancellationRefundPolicy = () => {
     title: string;
     content: string;
   }
-
   useEffect(() => {
     const fetchRefundPolicy = async () => {
       try {
@@ -132,4 +131,4 @@ const CancellationRefundPolicy = () => {
   );
 };
 
-export default CancellationRefundPolicy;
+export default RefundPolicy;
