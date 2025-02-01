@@ -37,7 +37,6 @@ const AstrologyBookingModal = ({
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       onClose();
     },
   });

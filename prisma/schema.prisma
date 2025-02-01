@@ -304,8 +304,8 @@ model Payment {
   bookingId           Int
   transactionId       String
   amount              Float
-  method              PaymentMethod
-  status              PaymentStatus   @default(PENDING)
+  method              String
+  status              String
   createdAt           DateTime        @default(now())
   updatedAt           DateTime        @updatedAt
 }
@@ -316,20 +316,6 @@ enum BookingStatus {
   CANCELLED
   FAILED
   DONE
-}
-
-enum PaymentMethod {
-  CREDIT_CARD
-  DEBIT_CARD
-  UPI
-  WALLET
-  BANK_TRANSFER
-}
-
-enum PaymentStatus {
-  PENDING
-  COMPLETED
-  FAILED
 }
 
 model Gallery {

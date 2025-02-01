@@ -45,7 +45,6 @@ const ContactForm = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (isEmailValid) {
-      console.log("Form submitted", { name, email, message });
       // Add your form submission logic here
     }
   };

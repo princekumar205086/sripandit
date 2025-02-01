@@ -97,7 +97,6 @@ const Hero: React.FC = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log(data);
     } catch (error) {
       console.error("Error:", error);
     } finally {

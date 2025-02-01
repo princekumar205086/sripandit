@@ -1,70 +1,139 @@
-// app/api/paymentstatus/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import axios from "axios";
 
-export async function GET(request: NextRequest) {
-  console.log("Payment status request received");
-  const { searchParams } = new URL(request.url);
-  const transactionId = searchParams.get("transactionId");
+const salt_key = process.env.PHONEPE_SALT_KEY!;
+const merchant_id = process.env.PHONEPE_MERCHANT_ID!;
+const keyIndex = process.env.PHONEPE_SALT_INDEX!;
+
+async function saveData(url: string, data: any) {
   try {
-    if (!transactionId) {
-      return NextResponse.json(
-        { error: "Transaction ID is required" },
-        { status: 400 }
-      );
-    }
-
-    const payload = {
-      merchantId: process.env.PHONEPE_MERCHANT_ID!,
-      merchantTransactionId: transactionId,
-    };
-
-    const base64Payload = Buffer.from(JSON.stringify(payload)).toString(
-      "base64"
+    const response = await axios.post(url, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data; // Ensure this returns the data containing bookingId
+  } catch (error: any) {
+    console.error(
+      `Error saving data to ${url}:`,
+      error.response ? error.response.data : error.message
     );
-    const apiEndpoint = "/pg/v1/status";
-    const saltKey = process.env.PHONEPE_SALT_KEY!;
-    const saltIndex = process.env.PHONEPE_SALT_INDEX!;
-    const xVerify =
-      crypto
-        .createHash("sha256")
-        .update(base64Payload + apiEndpoint + saltKey)
-        .digest("hex")
-        .toLowerCase() + `###${saltIndex}`;
+    throw error;
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const searchParams = req.nextUrl.searchParams;
+    const merchantTransactionId = searchParams.get("id");
+    const userId = searchParams.get("userId");
+    const checkoutId = searchParams.get("checkoutId");
+    const bookId = searchParams.get("bookId");
+    const date = searchParams.get("date");
+    const time = searchParams.get("time");
+    const addressId = searchParams.get("addressId");
+
+    const string =
+      `/pg/v1/status/${merchant_id}/${merchantTransactionId}` + salt_key;
+    const sha256 = crypto.createHash("sha256").update(string).digest("hex");
+    const checksum = sha256 + "###" + keyIndex;
 
     const apiUrl =
-      process.env.PHONEPE_ENV === "PROD"
+      process.env.PHONEPE_ENV! === "PROD"
         ? "https://api.phonepe.com/apis/hermes/pg/v1/status"
         : "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status";
 
-    const response = await axios.post(
-      apiUrl,
-      { request: base64Payload },
-      {
-        headers: { "Content-Type": "application/json", "X-VERIFY": xVerify },
-      }
-    );
+    const options = {
+      method: "GET",
+      url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${merchant_id}/${merchantTransactionId}`,
+      headers: {
+        accept: "application/json",
 
-    const data = response.data;
-    if (data.success) {
-      return NextResponse.json({
-        success: true,
-        transactionId: data.data?.transactionId,
-        paymentMethod: data.data?.paymentMethod,
-        amountPaid: data.data?.amount / 100,
-        paymentDate: new Date(data.data?.paymentDate).toLocaleString(),
-        status: data.code,
-        message: data.message,
+        "Content-Type": "application/json",
+        "X-VERIFY": checksum,
+        "X-MERCHANT-ID": merchant_id,
+      },
+    };
+
+    const response = await axios(options);
+
+    if (response.data.success === true) {
+      const data = response.data;
+      // save booking data
+      // console.log('====================================');
+      // console.log('Payment Data:', data);
+      // console.log('====================================');
+
+      const bookingData = {
+        cartId: parseInt(checkoutId ?? "0"),
+        userId: parseInt(userId ?? "0"),
+        BookId: bookId,
+        selected_date: date,
+        selected_time: time,
+        addressId: parseInt(addressId ?? "0"),
+        status: "PENDING",
+        cancellationReason: "null",
+        failureReason: "null",
+      };
+
+      const bookingRes = await saveData(
+        "http://localhost:3000/api/booking",
+        bookingData
+      );
+      let bookingId = 0;
+
+      if (bookingRes.success) {
+        try {
+          const bookingResponse = await axios.get(
+            `http://localhost:3000/api/booking?userId=${userId}&cartId=${checkoutId}`
+          );
+          if (bookingResponse.data && bookingResponse.data.id) {
+            bookingId = bookingResponse.data.id;
+          } else {
+            console.error("Booking ID not found in the response");
+          }
+        } catch (error) {
+          console.error("Error fetching booking data:", error);
+        }
+      }
+
+      if (bookingId) {
+        const paymentData = {
+          transactionId: data.data?.transactionId,
+          amount: data.data?.amount,
+          status: data.data?.state,
+          method: data.data?.paymentInstrument?.cardType,
+          bookingId,
+        };
+        const paymentResponse = await saveData(
+          "http://localhost:3000/api/payment",
+          paymentData
+        );
+        if (paymentResponse.success) {
+          return NextResponse.redirect(
+            `http://localhost:3000/confirmbooking?userId=${userId}&cartId=${checkoutId}`,
+            {
+              status: 301,
+            }
+          );
+        } else {
+          return NextResponse.redirect("http://localhost:3000/failedbooking", {
+            status: 301,
+          });
+        }
+      }
+    } else {
+      return NextResponse.redirect("http://localhost:3000/failedbooking", {
+        status: 301,
       });
     }
-
-    return NextResponse.json(
-      { success: false, status: data.code, message: data.message },
-      { status: 400 }
-    );
   } catch (error: any) {
-    console.error("Transaction status error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error(error);
+    // Return error response
+    return NextResponse.json(
+      { error: "Payment check failed", details: error.message },
+      { status: 500 }
+    );
   }
 }

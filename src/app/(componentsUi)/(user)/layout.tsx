@@ -81,7 +81,6 @@ export default function Layout(props: Props) {
   }, [pathname]);
 
   const handleLogout = () => {
-    console.log("Logout clicked");
     localStorage.removeItem("token");
     toast.success("Successfully logged out");
     router.push("/login");

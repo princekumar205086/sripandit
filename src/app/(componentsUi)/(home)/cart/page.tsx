@@ -36,7 +36,7 @@ const CartPage: React.FC = () => {
 
   React.useEffect(() => {
     if (cartId) {
-      console.log("cartId:", cartId);
+      const cartIds = cartId;
     }
   }, [cartId]);
 

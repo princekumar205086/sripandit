@@ -27,7 +27,7 @@ export default function ResetPassword() {
     e.preventDefault();
     if (validateForm()) {
       // Handle password reset logic here
-      console.log("Password reset submitted");
+      // console.log("Password reset submitted");
     }
   };
 

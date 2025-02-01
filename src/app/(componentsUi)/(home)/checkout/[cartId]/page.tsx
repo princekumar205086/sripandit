@@ -12,16 +12,10 @@ import Image from "next/image";
 import Section from "../../pujaservice/section";
 import Addresses from "@/app/(componentsUi)/(user)/address/Address";
 import { useParams } from "next/navigation";
-import {
-  fetchCheckoutDetails,
-  fetchBookingId,
-  saveBooking,
-  savePayment,
-} from "../action";
+import { fetchCheckoutDetails, fetchBookingId } from "../action";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
-import { date } from "yup";
 
 const CheckoutPage: React.FC = () => {
   const { cartId: rawCartId } = useParams() as { cartId?: string | string[] };
@@ -56,10 +50,7 @@ const CheckoutPage: React.FC = () => {
   const [details, setDetails] = useState<CheckoutDetails | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [addressId, setAddressId] = useState<number>(0);
-  const [bookingId, setBookingId] = useState<number>(0);
   const [userId, setUserId] = useState<number>(0);
-  const [paymentMethod] = useState<string>("phonepe");
-  const [paymentStatus] = useState<string>("pending");
 
   // userId
   useEffect(() => {
@@ -86,17 +77,8 @@ const CheckoutPage: React.FC = () => {
         console.error("Error fetching checkout details:", error)
       );
   }, [cartId]);
-  // fetch booking id
+  // fetch checkout id
   const checkoutId = details?.id;
-  useEffect(() => {
-    if (!userId || !checkoutId) return;
-
-    fetchBookingId(userId, checkoutId.toString())
-      .then((data) => setBookingId(data.id))
-      .catch((error) =>
-        console.error("Error fetching booking ID:", error.message)
-      );
-  }, [userId, checkoutId]);
 
   if (!details) {
     return <div>Loading...</div>;
@@ -155,36 +137,6 @@ const CheckoutPage: React.FC = () => {
   const handleDefaultAddressChange = (addressId: number) => {
     setAddressId(addressId);
   };
-
-  // const bookingData = {
-  //   userId,
-  //   cartId: details.id,
-  //   BookId: bookingId,
-  //   selected_date: details.selected_date,
-  //   selected_time: details.selected_time,
-  //   addressId,
-  //   status: "PENDING",
-  //   cancellationReason: "",
-  //   failureReason: "",
-  // };
-
-  // const bookingResponse = await saveBooking(bookingData);
-  // if (bookingResponse.success) {
-  //   toast.success("Booking created successfully.");
-
-  //   const paymentData = {
-  //     bookingId,
-  //     transactionId,
-  //     amount,
-  //     method: paymentMethod,
-  //     status: paymentStatus,
-  //   };
-
-  //   const paymentResponse = await savePayment(paymentData);
-  //   if (paymentResponse.success) {
-  //     toast.success("Payment saved successfully.");
-  //     window.location.href = paymentUrl;
-  //   }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -350,26 +302,6 @@ const CheckoutPage: React.FC = () => {
                 <div className="space-y-3">
                   <h3 className="font-medium">Payment</h3>
                   <div className="space-y-2">
-                    {/* <div className="space-y-2">
-                      <label className="flex items-center space-x-3">
-                        <input
-                          type="radio"
-                          name="payment"
-                          value="phonepe"
-                          checked={selectedPayment === "phonepe"}
-                          onChange={(e) => setSelectedPayment(e.target.value)}
-                          className="text-orange-500 focus:ring-orange-500"
-                        />
-                        <span>PhonePe</span>
-                        <Image
-                          src="/image/phonepe-logo.png" // Add a PhonePe logo to your public folder
-                          alt="PhonePe"
-                          width={24}
-                          height={24}
-                        />
-                      </label>
-                    </div> */}
-
                     {/* payment powered by phonepe */}
                     <h3 className="font-medium">Payment powered by:</h3>
                     <Image

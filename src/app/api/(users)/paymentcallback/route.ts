@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import axios from "axios";
 
+
 async function validateXVerify(request: NextRequest, reqBody: any): Promise<boolean> {
   const xVerifyHeader = request.headers.get("x-verify");
   const saltKey = process.env.PHONEPE_SALT_KEY!;
@@ -47,6 +48,9 @@ export async function POST(request: NextRequest) {
     };
     
     const { bookingId } = await saveData("/api/booking", bookingData);
+    console.log('====================================');
+    console.log('Booking ID:', bookingId);
+    console.log('====================================');
 
     const paymentData = {
       userId: reqBody.userId,

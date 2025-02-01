@@ -48,7 +48,6 @@ export default function ViewPuja({ id }: { id: number }) {
       setLoading(true);
       try {
         const data = await fetchPujaServiceDetails(id);
-        console.log('Fetched data:', data);  // Check the response data
         const transformedPackages = (data?.packages || []).map((pkg: PackageDetails) => ({
           id: pkg.id,
           location: pkg.location,
