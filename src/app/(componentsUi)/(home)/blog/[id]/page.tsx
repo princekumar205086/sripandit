@@ -25,7 +25,6 @@ const BlogPostPage = () => {
   const searchParams = useSearchParams();
   const encryptedId = searchParams.get("id");
 
-  // Decrypt blog ID from URL
   const decryptId = (encryptedId: string | null): string | null => {
     if (encryptedId) {
       try {
@@ -76,26 +75,25 @@ const BlogPostPage = () => {
   };
 
   const handlePostComment = async () => {
-    if (!comment) return;
+    if (!comment.trim()) return;
 
     try {
-      const userId = 1; // Example user ID (replace with actual logged-in user's ID)
+      const userId = 2; 
       const response = await axios.post('/api/blogcomment', {
         postId: blogId,
         userId: userId,
         commentText: comment,
       });
-
       if (response.status === 201) {
-        // Update the post with the new comment
         setPost((prevPost) => ({
           ...prevPost!,
-          blogComments: [...prevPost!.blogComments, response.data],
+          blogComments: response.data.allComments, 
         }));
-        setComment(""); // Clear the comment input after posting
+        setComment("");
       }
     } catch (error) {
       console.error("Error posting comment:", error);
+      setError("Failed to post comment.");
     }
   };
 
@@ -195,7 +193,7 @@ const BlogPostPage = () => {
                 <div className="mt-6 space-y-4">
                   {post.blogComments.map((comment, index) => (
                     <div key={index} className="p-4 bg-white rounded-lg shadow-md">
-                      <p className="text-gray-700">{comment.comment_text}</p>
+                      <p className="text-gray-700">{comment.commentText}</p>
                       <span className="text-sm text-gray-500">By {comment.user.name}</span>
                     </div>
                   ))}

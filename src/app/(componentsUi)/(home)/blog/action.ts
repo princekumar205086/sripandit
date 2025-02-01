@@ -5,7 +5,7 @@ import axios from "axios";
 export const fetchblogdata = async () => {
   try {
     const response = await axios.get('api/blogpost');
-    return response.data; 
+    return response.data;
   } catch (error: any) {
     console.error("Error fetching blog posts:", error);
     return [];
@@ -19,10 +19,10 @@ export const fetchCategories = async () => {
     if (response.status !== 200) {
       throw new Error("Failed to fetch categories");
     }
-    return response.data; 
+    return response.data;
   } catch (error: any) {
     console.error("Error fetching categories:", error);
-    throw error; 
+    throw error;
   }
 };
 
@@ -59,7 +59,25 @@ export const updateBlogPost = async (post: BlogPost) => {
     return response.data;
   } catch (error: any) {
     console.error("Error updating blog post:", error);
-    throw error; 
+    throw error;
   }
 };
 
+export const getBlogComment = async () => {
+  try {
+    const response = await axios.get(`/api/blogcomments`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error fetching blog comments:", error);
+    return [];
+  }
+}
+
+export const deletecomments = async (id: number) => {
+  const response = await axios.delete(`/api/blogcomments/${id}`, {
+    method: 'DELETE',
+  });
+  if (response.status !== 200) {
+    throw new Error('Failed to delete blog post');
+  }
+};
