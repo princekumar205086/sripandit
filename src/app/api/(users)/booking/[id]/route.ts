@@ -87,7 +87,7 @@ export async function PUT(
   }
 }
 
-// fetch all bookings for a user by userId
+// fetch all bookings for a user by userId if provided user id role is admin then fetch all bookings
 
 export async function GET(
   request: NextRequest,
@@ -103,8 +103,19 @@ export async function GET(
       );
     }
 
+    const user = await prisma.user.findUnique({
+      where: { id: parseInt(id) },
+      select: { role: true },
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    const whereClause = user.role === "ADMIN" ? {} : { userId: parseInt(id) };
+
     const bookings = await prisma.booking.findMany({
-      where: { userId: parseInt(id) },
+      where: whereClause,
       include: {
         user: {
           select: {

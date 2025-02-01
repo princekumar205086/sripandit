@@ -304,7 +304,7 @@ model Payment {
   bookingId           Int
   transactionId       String
   amount              Float
-  method              String
+  method              String?
   status              String
   createdAt           DateTime        @default(now())
   updatedAt           DateTime        @updatedAt

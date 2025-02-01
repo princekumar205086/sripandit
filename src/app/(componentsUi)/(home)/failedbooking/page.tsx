@@ -41,12 +41,12 @@ const BookingFailed = () => {
           <p className="text-gray-600 text-lg mt-2">
             {" "}
             Your booking ID is{" "}
-            <span className="font-semibold text-red-600">PUJA123456</span>
+            <span className="font-semibold text-red-600">OK...........</span>
           </p>
         </div>
 
         {/* Booking Details Card */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+        {/* <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">
             Booking Details
           </h2>
@@ -88,7 +88,7 @@ const BookingFailed = () => {
               ))}
             </ul>
           </div>
-        </div>
+        </div> */}
 
         {/* Contact Support */}
         <div className="bg-white rounded-xl shadow-sm p-6 mb-8">

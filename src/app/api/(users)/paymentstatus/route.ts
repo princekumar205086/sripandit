@@ -117,6 +117,10 @@ export async function POST(req: NextRequest) {
               status: 301,
             }
           );
+        } else if (paymentResponse.error) {
+          return NextResponse.redirect("http://localhost:3000/failedbooking", {
+            status: 301,
+          });
         } else {
           return NextResponse.redirect("http://localhost:3000/failedbooking", {
             status: 301,
