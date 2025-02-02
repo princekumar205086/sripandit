@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { userId, cartId, BookId, selected_date, selected_time, addressId, status, cancellationReason, failureReason } = reqBody;
+    const { userId, cartId, BookId, selected_date, selected_time, addressId, status, cancellationReason, failureReason, rejectionReason } = reqBody;
 
     // Insert new booking
     const newBooking = await prisma.booking.create({
