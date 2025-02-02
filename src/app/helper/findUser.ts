@@ -6,7 +6,7 @@ interface DecodedToken {
   UserId?: number;
 }
 
-const useUser = () => {
+const findUser = () => {
   const [isRole, setIsRole] = useState<string | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
 
@@ -31,4 +31,4 @@ const useUser = () => {
   return { isRole, userId };
 };
 
-export default useUser;
+export default findUser;
