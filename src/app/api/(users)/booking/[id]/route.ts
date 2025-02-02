@@ -54,6 +54,7 @@ export async function PUT(
       status,
       cancellationReason,
       failureReason,
+      rejectionReason,
     } = reqBody;
 
     if (!id) {
@@ -74,6 +75,7 @@ export async function PUT(
         status,
         cancellationReason,
         failureReason,
+        rejectionReason
       },
     });
 

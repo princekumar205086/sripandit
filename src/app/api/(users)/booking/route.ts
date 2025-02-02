@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
         status,
         cancellationReason: cancellationReason || '',
         failureReason: failureReason || '',
+        rejectionReason: rejectionReason || '',
       },
     });
 

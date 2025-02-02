@@ -66,6 +66,8 @@ model PersonalInformation {
 
 model Address {
   id                  Int      @id @default(autoincrement())
+  name                String?
+  phone               Int?
   addressline         String  
   addressline2        String? 
   city                String  
@@ -293,6 +295,7 @@ model Booking {
   status             BookingStatus @default(PENDING)
   cancellationReason String?
   failureReason      String?
+  rejectionReason    String?
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
   payments           Payment[]
@@ -312,9 +315,10 @@ model Payment {
 
 enum BookingStatus {
   PENDING
-  CONFIRMED
-  CANCELLED
-  FAILED
+  CONFIRM
+  CANCEL
+  REJECT
+  FAIL
   DONE
 }
 
