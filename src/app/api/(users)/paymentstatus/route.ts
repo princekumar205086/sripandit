@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import axios from "axios";
+import { sendEmail } from "@/helpers/mailer";
 
 const salt_key = process.env.PHONEPE_SALT_KEY!;
 const merchant_id = process.env.PHONEPE_MERCHANT_ID!;
 const keyIndex = process.env.PHONEPE_SALT_INDEX!;
+const base_url = "http://localhost:3000";
 
 async function saveData(url: string, data: any) {
   try {
@@ -28,6 +30,7 @@ export async function POST(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams;
     const merchantTransactionId = searchParams.get("id");
     const userId = searchParams.get("userId");
+    const userEmail = searchParams.get("userEmail");
     const checkoutId = searchParams.get("checkoutId");
     const bookId = searchParams.get("bookId");
     const date = searchParams.get("date");
@@ -49,7 +52,6 @@ export async function POST(req: NextRequest) {
       url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${merchant_id}/${merchantTransactionId}`,
       headers: {
         accept: "application/json",
-
         "Content-Type": "application/json",
         "X-VERIFY": checksum,
         "X-MERCHANT-ID": merchant_id,
@@ -60,11 +62,6 @@ export async function POST(req: NextRequest) {
 
     if (response.data.success === true) {
       const data = response.data;
-      // save booking data
-      // console.log('====================================');
-      // console.log('Payment Data:', data);
-      // console.log('====================================');
-
       const bookingData = {
         cartId: parseInt(checkoutId ?? "0"),
         userId: parseInt(userId ?? "0"),
@@ -77,16 +74,13 @@ export async function POST(req: NextRequest) {
         failureReason: "null",
       };
 
-      const bookingRes = await saveData(
-        "http://localhost:3000/api/booking",
-        bookingData
-      );
+      const bookingRes = await saveData(`${base_url}/api/booking`, bookingData);
       let bookingId = 0;
 
       if (bookingRes.success) {
         try {
           const bookingResponse = await axios.get(
-            `http://localhost:3000/api/booking?userId=${userId}&cartId=${checkoutId}`
+            `${base_url}/api/booking?userId=${userId}&cartId=${checkoutId}`
           );
           if (bookingResponse.data && bookingResponse.data.id) {
             bookingId = bookingResponse.data.id;
@@ -103,32 +97,81 @@ export async function POST(req: NextRequest) {
           transactionId: data.data?.transactionId,
           amount: data.data?.amount,
           status: data.data?.state,
-          method: data.data?.paymentInstrument?.cardType,
+          method: data.data?.paymentInstrument?.type,
           bookingId,
         };
         const paymentResponse = await saveData(
-          "http://localhost:3000/api/payment",
+          `${base_url}/api/payment`,
           paymentData
         );
+
         if (paymentResponse.success) {
+          // Fetch booking details for email
+          const bookingDetails = await axios.get(
+            `${base_url}/api/pujabookingdetails?userId=${userId}&cartId=${checkoutId}`
+          );
+
+          // Determine noOfPandits and pujaDuration based on package type
+          let noOfPandits: number;
+          let pujaDuration: string;
+          switch (bookingDetails.data.cart?.package?.type) {
+            case "Basic":
+              noOfPandits = 1;
+              pujaDuration = "1.5 hrs";
+              break;
+            case "Standard":
+              noOfPandits = 2;
+              pujaDuration = "2 hrs - 2.5 hrs";
+              break;
+            case "Premium":
+              noOfPandits = 3 - 5;
+              pujaDuration = "2.5 hrs - 3.5 hrs";
+              break;
+            default:
+              noOfPandits = 1;
+              pujaDuration = "1.5 hrs";
+          }
+          // Get user name
+          const user = bookingDetails.data.user;
+          const personalInfo = user?.personalInformation;
+          const name = personalInfo
+            ? `${personalInfo.firstname} ${personalInfo.lastname}`
+            : "Unknown";
+
+          // Send email to user and admin
+          await sendEmail({
+            email: userEmail,
+            emailType: "SERVICE_REQUESTED",
+            username: name || "Default Name",
+            serviceType: bookingDetails.data.cart?.pujaService?.title,
+            date: bookingDetails.data.cart?.selected_date,
+            time: bookingDetails.data.cart?.selected_time,
+            location: bookingDetails.data.cart?.package?.location,
+            contactNumber: bookingDetails.data.user?.contact,
+            useremail: userEmail,
+            bookingDetails: bookingDetails.data,
+            noOfPandits,
+            pujaDuration,
+          });
+
           return NextResponse.redirect(
-            `http://localhost:3000/confirmbooking?userId=${userId}&cartId=${checkoutId}`,
+            `${base_url}/confirmbooking?userId=${userId}&cartId=${checkoutId}`,
             {
               status: 301,
             }
           );
         } else if (paymentResponse.error) {
-          return NextResponse.redirect("http://localhost:3000/failedbooking", {
+          return NextResponse.redirect(`${base_url}/failedbooking`, {
             status: 301,
           });
         } else {
-          return NextResponse.redirect("http://localhost:3000/failedbooking", {
+          return NextResponse.redirect(`${base_url}/failedbooking`, {
             status: 301,
           });
         }
       }
     } else {
-      return NextResponse.redirect("http://localhost:3000/failedbooking", {
+      return NextResponse.redirect(`${base_url}/failedbooking`, {
         status: 301,
       });
     }

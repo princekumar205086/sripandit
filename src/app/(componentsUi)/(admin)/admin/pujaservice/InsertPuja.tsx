@@ -53,7 +53,6 @@ const PujaForm: React.FC = () => {
 
   const languages = [
     "Hindi",
-    "English",
     "Bengali",
     "Tamil",
     "Kannada",

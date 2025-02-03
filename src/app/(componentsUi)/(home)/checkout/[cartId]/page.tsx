@@ -51,6 +51,7 @@ const CheckoutPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [addressId, setAddressId] = useState<number>(0);
   const [userId, setUserId] = useState<number>(0);
+  const [userEmail, setUserEmail] = useState<string>("");
 
   // userId
   useEffect(() => {
@@ -59,11 +60,17 @@ const CheckoutPage: React.FC = () => {
       try {
         const decodedToken: any = jwtDecode(token);
         setUserId(decodedToken.userId);
+        setUserEmail(decodedToken.email);
       } catch (error) {
         console.error("Failed to decode token:", error);
       }
     }
   }, []);
+
+  console.log("userId", userId);
+  console.log("userEmail", userEmail);
+  
+  
   // fetch checkout details
   useEffect(() => {
     if (!cartId) {
@@ -104,6 +111,7 @@ const CheckoutPage: React.FC = () => {
         amount,
         transactionId,
         userId,
+        userEmail,
         bookId: cartId,
         checkoutId,
         addressId,

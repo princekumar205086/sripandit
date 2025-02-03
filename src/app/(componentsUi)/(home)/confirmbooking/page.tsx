@@ -121,15 +121,15 @@ const BookingSuccess = () => {
   let noOfPandits: number;
   let pujaDuration: string;
   switch (bookingDetails?.cart?.package?.type) {
-    case "basic":
+    case "Basic":
       noOfPandits = 1;
       pujaDuration = "1.5 hrs";
       break;
-    case "standard":
+    case "Standard":
       noOfPandits = 2;
       pujaDuration = "2 hrs - 2.5 hrs";
       break;
-    case "premium":
+    case "Premium":
       noOfPandits = 3 - 5;
       pujaDuration = "2.5 hrs - 3.5 hrs";
       break;

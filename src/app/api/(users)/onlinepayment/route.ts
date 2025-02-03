@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
       amount,
       transactionId,
       userId,
+      userEmail,
       checkoutId,
       bookId,
       date,
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest) {
       merchantTransactionId: transactionId,
       merchantUserId: userId,
       amount: amount * 100,
-      redirectUrl: `http://localhost:3000/api/paymentstatus?id=${transactionId}&userId=${userId}&checkoutId=${checkoutId}&bookId=${bookId}&date=${date}&time=${time}&addressId=${addressId}`,
+      redirectUrl: `http://localhost:3000/api/paymentstatus?id=${transactionId}&userId=${userId}&userEmail=${userEmail}&checkoutId=${checkoutId}&bookId=${bookId}&date=${date}&time=${time}&addressId=${addressId}`,
       redirectMode: "POST",
       callbackUrl: `http://localhost:3000/api/paymentstatus?id=${transactionId}`,
       paymentInstrument: { type: "PAY_PAGE" },
@@ -65,7 +66,10 @@ export async function POST(request: NextRequest) {
 
     const response = await axios(options);
 
-    if (response.data.success && response.data.data?.instrumentResponse?.redirectInfo?.url) {
+    if (
+      response.data.success &&
+      response.data.data?.instrumentResponse?.redirectInfo?.url
+    ) {
       return NextResponse.json({
         success: true,
         paymentUrl: response.data.data.instrumentResponse.redirectInfo.url,
@@ -75,6 +79,9 @@ export async function POST(request: NextRequest) {
     }
   } catch (error: any) {
     console.error("Payment initiation error:", error.message);
-    return NextResponse.json({ error: "Payment initiation failed", details: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: "Payment initiation failed", details: error.message },
+      { status: 500 }
+    );
   }
 }

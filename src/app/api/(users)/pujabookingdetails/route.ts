@@ -188,6 +188,12 @@ export async function GET(request: NextRequest) {
             username: true,
             email: true,
             contact: true,
+            personalInformation: {
+              select: {
+                firstname: true,
+                lastname: true,
+              },
+            },
           },
         },
         cart: {
