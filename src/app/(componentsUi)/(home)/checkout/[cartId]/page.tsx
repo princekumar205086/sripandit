@@ -315,8 +315,8 @@ const CheckoutPage: React.FC = () => {
                     <Image
                       src="/image/phonepe.svg"
                       alt="PhonePe"
-                      width={100}
-                      height={100}
+                      width={200}
+                      height={120}
                     />
                     <p className="text-gray-600">
                       Pay securely using Phonepe with okpuja
