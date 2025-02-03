@@ -5,6 +5,7 @@ import axios from "axios";
 const salt_key = process.env.PHONEPE_SALT_KEY!;
 const merchant_id = process.env.PHONEPE_MERCHANT_ID!;
 const keyIndex = process.env.PHONEPE_SALT_INDEX!;
+const base_url = "https://www.okpuja.com/";
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,9 +34,9 @@ export async function POST(request: NextRequest) {
       merchantTransactionId: transactionId,
       merchantUserId: userId,
       amount: amount * 100,
-      redirectUrl: `http://localhost:3000/api/paymentstatus?id=${transactionId}&userId=${userId}&userEmail=${userEmail}&checkoutId=${checkoutId}&bookId=${bookId}&date=${date}&time=${time}&addressId=${addressId}`,
+      redirectUrl: `${base_url}/api/paymentstatus?id=${transactionId}&userId=${userId}&userEmail=${userEmail}&checkoutId=${checkoutId}&bookId=${bookId}&date=${date}&time=${time}&addressId=${addressId}`,
       redirectMode: "POST",
-      callbackUrl: `http://localhost:3000/api/paymentstatus?id=${transactionId}`,
+      callbackUrl: `${base_url}/api/paymentstatus?id=${transactionId}`,
       paymentInstrument: { type: "PAY_PAGE" },
     };
 
