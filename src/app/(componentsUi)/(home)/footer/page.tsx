@@ -152,7 +152,7 @@ const Footer = () => {
               Payment powered by Phonepe
             </h6>
             <Image
-              src="/image/phonepe-logo.png"
+              src="/image/phonepe.svg"
               alt="phonepe"
               width={120}
               height={80} // Adjust height to be smaller

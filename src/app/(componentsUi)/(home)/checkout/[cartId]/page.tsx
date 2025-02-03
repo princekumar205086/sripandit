@@ -313,7 +313,7 @@ const CheckoutPage: React.FC = () => {
                     {/* payment powered by phonepe */}
                     <h3 className="font-medium">Payment powered by:</h3>
                     <Image
-                      src="/image/phonepe-logo.png"
+                      src="/image/phonepe.svg"
                       alt="PhonePe"
                       width={100}
                       height={100}
