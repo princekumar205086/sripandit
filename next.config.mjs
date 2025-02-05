@@ -10,6 +10,9 @@ const nextConfig = {
       {
         hostname: "randomuser.me",
       },
+      {
+        hostname: "http://localhost:3000",
+      },
       // Add other valid hostnames if needed
     ],
   },

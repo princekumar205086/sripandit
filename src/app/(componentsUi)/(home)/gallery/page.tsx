@@ -21,119 +21,29 @@ const categories = [
   "Lakshmi Puja",
 ] as const;
 
-const galleryItems: GalleryItem[] = [
-  {
-    id: 13,
-    title: "Godh Bharai / Seemantham Puja",
-    image: "/uploads/godh bharai.jpeg",
-    category: "Lakshmi Puja",
-    popularity: 1,
-    date: "2024-09-14",
-  },
-  {
-    id: 14,
-    title: "Maha Ganapati Homa",
-    image: "/uploads/Maha ganpati.jpg",
-    category: "Ganesh Chaturthi",
-    popularity: 1,
-    date: "2024-08-20",
-  },
-  {
-    id: 9,
-    title: "Mundan Puja or Chola Sanskar",
-    image: "/uploads/Mundan Puja.png",
-    category: "Kali Puja",
-    popularity: 1,
-    date: "2024-07-15",
-  },
-  {
-    id: 11,
-    title: "Engagement Puja",
-    image: "/uploads/ring exchange.jpeg",
-    category: "Durga Puja",
-    popularity: 1,
-    date: "2024-09-05",
-  },
-  {
-    id: 12,
-    title: "Marriage Anniversary Puja",
-    image: "/uploads/marriage puja.jpeg",
-    category: "Saraswati Puja",
-    popularity: 1,
-    date: "2024-08-10",
-  },
-  {
-    id: 15,
-    title: "Satyanarayan Puja",
-    image: "/uploads/satya narayan puja.jpeg",
-    category: "Lakshmi Puja",
-    popularity: 1,
-    date: "2024-07-25",
-  },
-  {
-    id: 16,
-    title: "Griha Pravesh Puja",
-    image: "/uploads/Griha Pravesh puja.jpeg",
-    category: "Lakshmi Puja",
-    popularity: 1,
-    date: "2024-09-18",
-  },
-  {
-    id: 17,
-    title: "Ayushya Homa / Havan",
-    image: "/uploads/aayush homa.jpeg",
-    category: "Saraswati Puja",
-    popularity: 1,
-    date: "2024-07-30",
-  },
-  {
-    id: 10,
-    title: "Vehicle Puja / Car Puja",
-    image: "/uploads/car vehicle puja.jpeg",
-    category: "Ganesh Chaturthi",
-    popularity: 1,
-    date: "2024-08-12",
-  },
-  {
-    id: 18,
-    title: "Navagraha Puja And Homa",
-    image: "/uploads/navgraha puja.jpeg",
-    category: "Durga Puja",
-    popularity: 1,
-    date: "2024-09-01",
-  },
-  {
-    id: 19,
-    title: "Shuddhi Puja And Havan",
-    image: "/uploads/suddhi puja.jpeg",
-    category: "Durga Puja",
-    popularity: 1,
-    date: "2024-08-25",
-  },
-  {
-    id: 20,
-    title: "Maha Mrityunjaya Homa/ Havan",
-    image: "/uploads/maha mritunjay.jpeg",
-    category: "Kali Puja",
-    popularity: 1,
-    date: "2024-07-05",
-  },
-];
-
 export default function Gallery() {
-  const [items, setItems] = useState(galleryItems);
+  const [items, setItems] = useState<GalleryItem[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortCriteria, setSortCriteria] = useState("date");
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
 
+ 
+  useEffect(() => {
+    
+    fetch("/api/gallery")
+      .then((response) => response.json())
+      .then((data) => setItems(data))
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
+
   useEffect(() => {
     filterAndSortItems();
   }, [searchQuery, selectedCategory, sortCriteria]);
 
   const filterAndSortItems = () => {
-    let filteredItems = galleryItems.filter((item) => {
+    let filteredItems = items.filter((item) => {
       const matchesSearch = item.category
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
@@ -195,7 +105,9 @@ export default function Gallery() {
         description="We have a collection of images from our past events and ceremonies. Check out our gallery to see the beautiful moments we have captured."
       />
       <div className="container-fluid mx-auto px-4 w-full py-8 bg-redOrange">
-        <h1 className="text-4xl font-bold text-center text-cream mb-8">Puja Gallery</h1>
+        <h1 className="text-4xl font-bold text-center text-cream mb-8">
+          Puja Gallery
+        </h1>
 
         {/* Search, Filter, and Sort Section */}
         <div className="mb-6 flex flex-wrap items-center justify-between text-cream">
