@@ -123,7 +123,6 @@ export default function Career() {
       }
     });
     if (Object.keys(newErrors).length === 0) {
-      console.log("Form submitted:", formData);
       // Submit the form data to the server here
     } else {
       setErrors(newErrors);

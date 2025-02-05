@@ -32,7 +32,6 @@ export default function Page() {
         body: JSON.stringify(formData),
       });
       const result = await response.json();
-      console.log(result);
       if (response.ok) {
         alert("Category saved successfully!");
         setFormData({

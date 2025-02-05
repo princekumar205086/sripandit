@@ -36,11 +36,11 @@ export async function POST(request: NextRequest) {
     if (image) {
       const buffer = await image.arrayBuffer();
       const fileName = `${Date.now()}-${image.name}`;
-      const uploadsDir = path.join(process.cwd(), "public/uploads"); // Ensure this path exists
-      await fs.mkdir(uploadsDir, { recursive: true }); // Create the directory if it doesn't exist
+      const uploadsDir = path.join(process.cwd(), "public/uploads"); 
+      await fs.mkdir(uploadsDir, { recursive: true }); 
       const filePath = path.join(uploadsDir, fileName);
       await fs.writeFile(filePath, Buffer.from(buffer));
-      imgPath = `/uploads/${fileName}`; // Construct the path to be stored in the database
+      imgPath = `/uploads/${fileName}`; 
     }
 
     // Validate input data

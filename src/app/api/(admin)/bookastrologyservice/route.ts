@@ -56,10 +56,10 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    console.log("Booking created successfully:", newBooking);
+    //console.log("Booking created successfully:", newBooking);
 
     // Log before sending email
-    console.log("Sending email to:", process.env.ownemail);
+    //console.log("Sending email to:", process.env.ownemail);
 
     await sendEmail({
       email: process.env.ownemail, 
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Log after sending email
-    console.log("Email sent successfully");
+    //console.log("Email sent successfully");
 
     // Return the created booking
     return new NextResponse(JSON.stringify(newBooking), {

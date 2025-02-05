@@ -14,7 +14,7 @@ import { CartProvider } from "@/app/context/CartContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "OKPUJA | Your vedic astrology partner",
+  title: "OKPUJA | Your Trusted Partner for Hindu Rituals and Astro Guidance",
   description: "Your vedic astrology partner",
 };
 

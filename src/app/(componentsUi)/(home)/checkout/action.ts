@@ -1,133 +1,14 @@
 import axios from "axios";
 
-interface CheckoutData {
-  userId: number;
-  cartId: number;
-  promoCodeId: number | null;
-}
-
-// insert checkout
-
-export async function insertCheckout(data: CheckoutData) {
-  try {
-    const response = await axios.post("/api/checkout", data);
-    return response.data;
-  } catch (error: any) {
-    return error.response.data;
-  }
-}
-
-// fetch checkout
-
-export async function fetchCheckout(userId: number) {
-  try {
-    const response = await axios.get(`/api/checkout?userId=${userId}`);
-    return response.data;
-  } catch (error: any) {
-    return error.response.data;
-  }
-}
-
-// delete checkout
-
-export async function deleteCheckout(checkoutId: number) {
-  try {
-    const response = await axios.delete(
-      `/api/checkout?checkoutId=${checkoutId}`
-    );
-    return response.data;
-  } catch (error: any) {
-    return error.response.data;
-  }
-}
-
-// update checkout
-
-interface UpdateCheckoutData {
-  checkoutId: number;
-  promoCodeId: number;
-}
-
-export async function updateCheckout(data: UpdateCheckoutData) {
-  try {
-    const response = await axios.put("/api/checkout", data);
-    return response.data;
-  } catch (error: any) {
-    return error.response.data;
-  }
-}
-
-// delete all checkout explicit function
-
-export async function deleteAllCheckout() {
-  try {
-    const response = await axios.delete(`/api/checkout`);
-    return response.data;
-  } catch (error: any) {
-    return error.response.data;
-  }
-}
-//---------------------------------------Address------------------------------------
-// fetch address
-
-export async function fetchAddress(userId: number) {
-  try {
-    const response = await axios.get(`/api/address?userId=${userId}`);
-    return response.data;
-  } catch (error: any) {
-    return error.response.data;
-  }
-}
-
-// insert address
-
-interface AddressData {
-  userId: number;
-  street: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  country: string;
-}
-
-export async function insertAddress(data: AddressData) {
-  try {
-    const response = await axios.post("/api/address", data);
-    return response.data;
-  } catch (error: any) {
-    return error.response.data;
-  }
-}
-
-// update address
-
-interface UpdateAddressData {
-  addressId: number;
-  street: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  country: string;
-}
-
-export async function updateAddress(data: UpdateAddressData) {
-  try {
-    const response = await axios.put("/api/address", data);
-    return response.data;
-  } catch (error: any) {
-    return error.response.data;
-  }
-}
-
 // fetch checkout details by cartId
 
 export async function fetchCheckoutDetails(cartId: string) {
   try {
     const config = {
-      method: 'get',
+      method: "get",
       maxBodyLength: Infinity,
       url: `/api/chekoutdetails?cartId=${cartId}`,
-      headers: {}
+      headers: {},
     };
 
     const response = await axios.request(config);
@@ -138,16 +19,65 @@ export async function fetchCheckoutDetails(cartId: string) {
   }
 }
 
-// handling payment
+// save booking
 
-interface PaymentData {
+interface SaveBookingData {
   userId: number;
-  amount: number;
-  transactionId: string;
   cartId: number;
+  BookId: number;
+  selected_date: string;
+  selected_time: string;
+  addressId: number;
+  status: string;
+  cancellationReason: string;
+  failureReason: string;
 }
 
-export async function handlePayment(data: PaymentData) {
+export async function saveBooking(data: SaveBookingData) {
+  try {
+    const response = await axios.post("/api/booking", data);
+    return response.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+}
+
+// fetch bookingid
+
+export async function fetchBookingId(userId: number, cartId: string) {
+  try {
+    const response = await axios.get(
+      `/api/booking?userId=${userId}&cartId=${cartId}`
+    );
+    return response.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+}
+
+// fetch payment
+
+export async function fetchPayment(transactionId: number) {
+  try {
+    const response = await axios.get(
+      `/api/paymentstatus?transactionId=${transactionId}`
+    );
+    return response.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+}
+
+// save payment
+interface SavePaymentData {
+  bookingId: number;
+  transactionId: string;
+  amount: number;
+  method: string;
+  status: string;
+}
+
+export async function savePayment(data: SavePaymentData) {
   try {
     const response = await axios.post("/api/payment", data);
     return response.data;

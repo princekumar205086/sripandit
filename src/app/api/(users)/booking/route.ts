@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { userId, cartId, BookId, selected_date, selected_time, status, cancellationReason, failureReason } = reqBody;
+    const { userId, cartId, BookId, selected_date, selected_time, addressId, status, cancellationReason, failureReason, rejectionReason } = reqBody;
 
     // Insert new booking
     const newBooking = await prisma.booking.create({
@@ -13,11 +13,13 @@ export async function POST(request: NextRequest) {
         userId,
         cartId,
         BookId,
-        selected_date: new Date(selected_date),
+        selected_date,
         selected_time,
+        addressId,
         status,
-        cancellationReason,
-        failureReason,
+        cancellationReason: cancellationReason || '',
+        failureReason: failureReason || '',
+        rejectionReason: rejectionReason || '',
       },
     });
 
@@ -31,13 +33,29 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Fetch all bookings
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const bookings = await prisma.booking.findMany();
-    return NextResponse.json(bookings);
+    const userId = request.nextUrl.searchParams.get("userId");
+    const cartId = request.nextUrl.searchParams.get("cartId");
+
+    if (!userId || !cartId) {
+      return NextResponse.json(
+        { error: "User ID and Cart ID are required" },
+        { status: 400 }
+      );
+    }
+
+    const booking = await prisma.booking.findFirst({
+      where: { userId: parseInt(userId), cartId: parseInt(cartId) },
+      select: { id: true },
+    });
+
+    if (!booking) {
+      return NextResponse.json({ error: "Booking not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ id: booking.id });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-

@@ -1,3 +1,4 @@
+
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -11,8 +12,11 @@ const nextConfig = {
         hostname: "randomuser.me",
       },
       {
-        hostname: "http://localhost:3000",
+        hostname: "https://api.phonepe.com",
       },
+      {
+        hostname: "https://api-preprod.phonepe.com"
+      }
       // Add other valid hostnames if needed
     ],
   },
