@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { IoMdAdd } from "react-icons/io";
@@ -9,6 +8,7 @@ interface CreateGalleryProps {
 }
 
 const CreateGallery: React.FC<CreateGalleryProps> = ({ onClose }) => {
+  // const [title, setTitle] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
   const [galleryCategoryId, setGalleryCategoryId] = useState<string>("");
   const [popularity, setPopularity] = useState<string>("0");

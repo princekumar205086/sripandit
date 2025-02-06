@@ -128,6 +128,8 @@ const ManageEvents: React.FC = () => {
                 <th className="px-6 py-3">SN.</th>
                 <th className="px-6 py-3">Title</th>
                 <th className="px-6 py-3">Date</th>
+                <th className="px-6 py-3">image path</th>
+
                 <th className="px-6 py-3">Actions</th>
               </tr>
             </thead>
@@ -146,6 +148,8 @@ const ManageEvents: React.FC = () => {
                   <td className="px-6 py-4">
                     {event.day} {event.number}, {event.month}
                   </td>
+                  <td className="px-6 py-4">{event.imagesrc}</td>
+
                   <td className="px-6 py-4 flex space-x-2">
                     <button
                       className="p-1 text-green-600"

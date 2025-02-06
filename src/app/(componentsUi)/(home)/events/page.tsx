@@ -44,6 +44,7 @@ export default function Events() {
         }
         const data = await response.json();
         setEvents(data);
+        console.log("Event Data:", events);
       } catch (error) {
         setError("An error occurred while fetching events.");
         toast.error("An error occurred while fetching events.");
@@ -72,35 +73,33 @@ export default function Events() {
         {events.map((item, index) => (
           <div key={index} className="p-4 md:p-2 sm:p-1">
             <div className="max-w-sm h-full rounded overflow-hidden shadow-lg bg-orange-600 text-white transition-transform transform hover:scale-105">
-              {/* <Image
+              <Image
                 className="w-full h-52 object-cover"
-                src={item?.imagesrc || "/uploads/car vehicle puja.jpeg"}
+                src={item?.imagesrc || "/celender/car vehicle puja.jpeg"}
                 alt={item?.title}
                 width={400}
                 height={200}
-              /> */}
+                unoptimized
+              />
               <div className="px-6 py-4 md:px-4 md:py-2 sm:px-2 sm:py-1">
                 <div className="font-bold text-lg mb-2 md:text-base sm:text-sm">
                   {item.title}
                 </div>
                 <p className="text-xs md:text-xs sm:text-2xs">{item.content}</p>
                 <div className="mt-4">
-                  {item.date &&
-                  item.date.month &&
-                  item.date.number &&
-                  item.date.day ? (
+                  {item.month && item.number !== undefined && item.day ? (
                     <>
                       <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs font-semibold text-gray-700 mr-2 md:px-2 md:py-1 sm:px-1 sm:py-0.5">
-                        {item.date.month} {item.date.number}
+                        {item.month} {parseInt(item.number)}
                       </span>
                       <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs font-semibold text-gray-700 md:px-2 md:py-1 sm:px-1 sm:py-0.5">
-                        {item.date.day}
+                        {item.day}
                       </span>
                     </>
                   ) : (
                     <p className="text-xs text-red-500">
                       Date information missing
-                    </p> // Fallback message if date is undefined
+                    </p>
                   )}
                 </div>
               </div>

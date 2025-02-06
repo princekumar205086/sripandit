@@ -10,7 +10,7 @@ interface CreateEventProps {
 
 const CreateEvent: React.FC<CreateEventProps> = ({ onClose, onEventAdded }) => {
   const [title, setTitle] = useState('');
-  const [imagesrc, setImageSrc] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null); // Store the actual file
   const [day, setDay] = useState('');
   const [number, setNumber] = useState('');
   const [month, setMonth] = useState('');
@@ -21,41 +21,56 @@ const CreateEvent: React.FC<CreateEventProps> = ({ onClose, onEventAdded }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!title || !imagesrc || !day || !number || !month || !content) {
-      toast.warning('Please fill out all fields.');
+  
+    if (!title || !imageFile || !day || !number || !month || !content) {
+      toast.warning("Please fill out all fields.");
       return;
     }
-
+  
     setLoading(true);
-
+  
     try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("image", imageFile); // Append the actual file
+      formData.append("day", day);
+      formData.append("number", number);
+      formData.append("month", month);
+      formData.append("content", content);
+  
       const response = await fetch(API_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, imagesrc, day, number, month, content }),
+        method: "POST",
+        body: formData,
       });
-
-      if (!response.ok) throw new Error('Failed to create event');
-
-      toast.success('Event added successfully!');
-      setTitle('');
-      setImageSrc('');
-      setDay('');
-      setNumber('');
-      setMonth('');
-      setContent('');
+      
+  
+      if (!response.ok) throw new Error("Failed to create event");
+  
+      toast.success("Event added successfully!");
+      setTitle("");
+      setImageFile(null); // Reset the file
+      setDay("");
+      setNumber("");
+      setMonth("");
+      setContent("");
       onEventAdded && onEventAdded();
       onClose();
+      
     } catch (error) {
-      console.error('Error creating event:', error);
-      toast.error('Failed to add event. Please try again.');
+      console.error("Error creating event:", error);
+      toast.error("Failed to add event. Please try again.");
     } finally {
       setLoading(false);
     }
   };
-
   
+  
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]; // Get the selected file
+    if (file) {
+      setImageFile(file); // Store the file object
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="p-6 bg-white rounded-lg space-y-4">
@@ -72,13 +87,11 @@ const CreateEvent: React.FC<CreateEventProps> = ({ onClose, onEventAdded }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Image URL</label>
+        <label className="block text-sm font-medium text-gray-700">Event Image</label>
         <input
           type="file"
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Enter image URL"
-          value={imagesrc}
-          onChange={(e) => setImageSrc(e.target.value)}
+          onChange={handleImageChange} 
           required
         />
       </div>
