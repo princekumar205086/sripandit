@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import { useState, useEffect } from 'react';
+import { jwtDecode } from "jwt-decode";
 
 interface DecodedToken {
   role?: string;
-  UserId?: number;
+  userId?: number;
 }
 
 const findUser = () => {
@@ -16,7 +16,7 @@ const findUser = () => {
       try {
         const decoded: DecodedToken = jwtDecode(token);
         setIsRole(decoded.role || null); 
-        setUserId(decoded.UserId || null); 
+        setUserId(decoded.userId || null); 
       } catch (error) {
         console.error('Failed to decode token:', error);
         setIsRole(null);

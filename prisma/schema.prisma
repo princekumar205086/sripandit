@@ -1,6 +1,6 @@
 datasource db {
-  provider = "postgresql"
-  url      = env("POSTGRES_PRISMA_URL") 
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
@@ -26,30 +26,32 @@ enum AccountStatus {
 }
 
 model User {
-  id                        Int                                 @id @default(autoincrement())
+  id                        Int                  @id @default(autoincrement())
   username                  String
-  email                     String                              @unique
+  email                     String               @unique
   contact                   String?
   password                  String
-  date_of_reg               DateTime                            @default(now())
-  account_status            AccountStatus  @default(PENDING)
-  verifyToken               String?                             @db.VarChar(255)
+  date_of_reg               DateTime             @default(now())
+  account_status            AccountStatus        @default(PENDING)
+  verifyToken               String?              @db.VarChar(255)
   verifyTokenExpiry         DateTime?
-  forgotPasswordToken       String?                             @db.VarChar(255)
+  forgotPasswordToken       String?              @db.VarChar(255)
   forgotPasswordTokenExpiry DateTime?
-  changePasswordToken       String?                             @db.VarChar(255)
+  changePasswordToken       String?              @db.VarChar(255)
   chagePasswordTokenExpiry  DateTime?
-  role                      Role                                @default(USER)
-  personalInformation       PersonalInformation?                @relation(fields: [personalInformationId], references: [id])
-  personalInformationId     Int? @unique
+  role                      Role                 @default(USER)
+  personalInformation       PersonalInformation? @relation(fields: [personalInformationId], references: [id])
+  personalInformationId     Int?                 @unique
   addresses                 Address[]
-  blogCategories            BlogCategory[]                      @relation("UserBlogCategories")
-  blogPosts                 BlogPost[]                          @relation("UserBlogPosts")
-  blogComments              BlogComments[]                      @relation("UserBlogComments")
-  blogLikes                 BlogLikes[]                         @relation("UserBlogLikes")
-  blogViews                 BlogView[]                          @relation("UserBlogViews")
+  blogCategories            BlogCategory[]       @relation("UserBlogCategories")
+  blogPosts                 BlogPost[]           @relation("UserBlogPosts")
+  blogComments              BlogComments[]       @relation("UserBlogComments")
+  blogLikes                 BlogLikes[]          @relation("UserBlogLikes")
+  blogViews                 BlogView[]           @relation("UserBlogViews")
   carts                     Cart[]
   bookings                  Booking[]
+  PromoCode                 PromoCode[]
+
   @@unique([id, role], map: "unique_admin")
 }
 
@@ -65,31 +67,30 @@ model PersonalInformation {
 }
 
 model Address {
-  id                  Int      @id @default(autoincrement())
-  name                String?
-  phone               Int?
-  addressline         String  
-  addressline2        String? 
-  city                String  
-  state               String  
-  postalCode          String  
-  country             String   @default("INDIA") 
-  userId              Int      
-  user                User     @relation(fields: [userId], references: [id])
-  isDefault           Boolean  @default(false) 
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  bookings            Booking[] 
+  id           Int       @id @default(autoincrement())
+  name         String?
+  phone        Int?
+  addressline  String
+  addressline2 String?
+  city         String
+  state        String
+  postalCode   String
+  country      String    @default("INDIA")
+  userId       Int
+  user         User      @relation(fields: [userId], references: [id])
+  isDefault    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  bookings     Booking[]
+
   @@index([userId, isDefault])
 }
-
-
 
 model PujaService {
   id             Int          @id @default(autoincrement())
   title          String
   img            String
-  desc           String       @db.VarChar(10000) 
+  desc           String       @db.VarChar(10000)
   category       PujaCategory @relation(fields: [categoryId], references: [id])
   categoryId     Int
   date_of_create DateTime     @default(now())
@@ -98,33 +99,33 @@ model PujaService {
 }
 
 model PujaCategory {
-  id        Int          @id @default(autoincrement())
-  name      String       @unique
-  services  PujaService[]
+  id       Int           @id @default(autoincrement())
+  name     String        @unique
+  services PujaService[]
 }
 
 model Package {
-  id             Int          @id @default(autoincrement())
-  location       String
-  language       String
-  type           String
-  price          Float
-  description    String       @db.VarChar(10000)
-  pujaService    PujaService  @relation(fields: [pujaServiceId], references: [id], name: "PujaServicePackages")
-  pujaServiceId  Int
-  carts          Cart[]
+  id            Int         @id @default(autoincrement())
+  location      String
+  language      String
+  type          String
+  price         Float
+  description   String      @db.VarChar(10000)
+  pujaService   PujaService @relation(fields: [pujaServiceId], references: [id], name: "PujaServicePackages")
+  pujaServiceId Int
+  carts         Cart[]
 }
 
 model PujaBooking {
-  id             Int      @id @default(autoincrement())
-  city           String
-  pujaName       String
-  language       String
-  date           DateTime
-  time           String
-  location       String
-  contactNumber  String
-  email          String  
+  id            Int      @id @default(autoincrement())
+  city          String
+  pujaName      String
+  language      String
+  date          DateTime
+  time          String
+  location      String
+  contactNumber String
+  email         String
 }
 
 model AstrologyService {
@@ -133,152 +134,157 @@ model AstrologyService {
   service_image String
   service_type  String
   service_price Float
-  service_desc  String    @db.VarChar(5000)
-  timestamp     DateTime  @default(now())
+  service_desc  String   @db.VarChar(5000)
+  timestamp     DateTime @default(now())
 }
 
 model AstrologyBooking {
-  id              Int      @id @default(autoincrement())
-  language        String
-  preferredDate   DateTime
-  preferredTime   DateTime
-  birthPlace      String
-  birthDate       DateTime
-  birthTime       DateTime
-  gender          String
-  questions       String?  // Optional field for questions
-  createdAt       DateTime  @default(now())
+  id            Int      @id @default(autoincrement())
+  language      String
+  preferredDate DateTime
+  preferredTime DateTime
+  birthPlace    String
+  birthDate     DateTime
+  birthTime     DateTime
+  gender        String
+  questions     String? // Optional field for questions
+  createdAt     DateTime @default(now())
 }
 
 model BlogCategory {
-  id                 Int              @id @default(autoincrement())
-  user               User             @relation(fields: [user_id], references: [id], name: "UserBlogCategories")
+  id                 Int        @id @default(autoincrement())
+  user               User       @relation(fields: [user_id], references: [id], name: "UserBlogCategories")
   user_id            Int
   category_name      String
-  category_slug      String           @unique
+  category_slug      String     @unique
   meta_title         String
   meta_keyword       String
   meta_description   String
-  publication_status Status           @default(FALSE)
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @default(now())
-  blogPosts          BlogPost[]       @relation("CategoryBlogPosts")
+  publication_status Status     @default(FALSE)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @default(now())
+  blogPosts          BlogPost[] @relation("CategoryBlogPosts")
 }
 
 model BlogPost {
-  id                 Int              @id @default(autoincrement())
-  user               User             @relation(fields: [user_id], references: [id], name: "UserBlogPosts")
+  id                 Int            @id @default(autoincrement())
+  user               User           @relation(fields: [user_id], references: [id], name: "UserBlogPosts")
   user_id            Int
-  category           BlogCategory     @relation(fields: [category_id], references: [id], name: "CategoryBlogPosts")
+  category           BlogCategory   @relation(fields: [category_id], references: [id], name: "CategoryBlogPosts")
   category_id        Int
   post_title         String
-  post_slug          String           @unique
+  post_slug          String         @unique
   post_description   String
   featured_image     String
   youtube_url        String?
-  publication_status Status           @default(FALSE)
-  is_featured        Boolean          @default(false)
-  view_count         Int              @default(0)
+  publication_status Status         @default(FALSE)
+  is_featured        Boolean        @default(false)
+  view_count         Int            @default(0)
   meta_title         String
   meta_keyword       String
   meta_description   String
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @default(now())
-  blogTags           BlogPost_tag[]   @relation("PostBlogTags")
-  blogComments       BlogComments[]   @relation("PostBlogComments")
-  blogLikes          BlogLikes[]      @relation("PostBlogLikes")
-  blogViews          BlogView[]       @relation("PostBlogViews")
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @default(now())
+  blogTags           BlogPost_tag[] @relation("PostBlogTags")
+  blogComments       BlogComments[] @relation("PostBlogComments")
+  blogLikes          BlogLikes[]    @relation("PostBlogLikes")
+  blogViews          BlogView[]     @relation("PostBlogViews")
 }
 
 model BlogTag {
-  id                 Int              @id @default(autoincrement())
-  tag_name           String           @unique
-  publication_status Status           @default(FALSE)
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @default(now())
-  blogPosts          BlogPost_tag[]   @relation("TagBlogPosts")
+  id                 Int            @id @default(autoincrement())
+  tag_name           String         @unique
+  publication_status Status         @default(FALSE)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @default(now())
+  blogPosts          BlogPost_tag[] @relation("TagBlogPosts")
 }
 
 model BlogPost_tag {
-  id       Int      @id @default(autoincrement())
-  post     BlogPost @relation(fields: [post_id], references: [id], name: "PostBlogTags")
-  post_id  Int
-  tag      BlogTag  @relation(fields: [tag_id], references: [id], name: "TagBlogPosts")
-  tag_id   Int
+  id      Int      @id @default(autoincrement())
+  post    BlogPost @relation(fields: [post_id], references: [id], name: "PostBlogTags")
+  post_id Int
+  tag     BlogTag  @relation(fields: [tag_id], references: [id], name: "TagBlogPosts")
+  tag_id  Int
 }
 
 model BlogComments {
-  id           Int       @id @default(autoincrement())
-  post         BlogPost  @relation(fields: [post_id], references: [id], name: "PostBlogComments")
+  id           Int      @id @default(autoincrement())
+  post         BlogPost @relation(fields: [post_id], references: [id], name: "PostBlogComments")
   post_id      Int
-  user         User      @relation(fields: [user_id], references: [id], name: "UserBlogComments")
+  user         User     @relation(fields: [user_id], references: [id], name: "UserBlogComments")
   user_id      Int
   comment_text String
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
 }
 
 model BlogLikes {
-  id        Int       @id @default(autoincrement())
-  post      BlogPost  @relation(fields: [post_id], references: [id], name: "PostBlogLikes")
+  id        Int      @id @default(autoincrement())
+  post      BlogPost @relation(fields: [post_id], references: [id], name: "PostBlogLikes")
   post_id   Int
-  user      User      @relation(fields: [user_id], references: [id], name: "UserBlogLikes")
+  user      User     @relation(fields: [user_id], references: [id], name: "UserBlogLikes")
   user_id   Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model BlogView {
-  id        Int       @id @default(autoincrement())
-  post      BlogPost  @relation(fields: [post_id], references: [id], name: "PostBlogViews")
+  id        Int      @id @default(autoincrement())
+  post      BlogPost @relation(fields: [post_id], references: [id], name: "PostBlogViews")
   post_id   Int
-  user      User      @relation(fields: [user_id], references: [id], name: "UserBlogViews")
+  user      User     @relation(fields: [user_id], references: [id], name: "UserBlogViews")
   user_id   Int
-  createdAt DateTime  @default(now())
+  createdAt DateTime @default(now())
 }
 
 model PrivacyPolicy {
-  id         Int      @id @default(autoincrement())
-  title      String
-  content    String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model TermsOfService {
-  id         Int      @id @default(autoincrement())
-  title      String
-  content    String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Cart {
-  id            Int          @id @default(autoincrement())
-  user          User         @relation(fields: [userId], references: [id])
+  id            Int         @id @default(autoincrement())
+  user          User        @relation(fields: [userId], references: [id])
   userId        Int
-  pujaService   PujaService  @relation(fields: [pujaServiceId], references: [id])
+  pujaService   PujaService @relation(fields: [pujaServiceId], references: [id])
   pujaServiceId Int
-  package       Package      @relation(fields: [packageId], references: [id])
+  package       Package     @relation(fields: [packageId], references: [id])
   packageId     Int
   selected_date DateTime
   selected_time String
-  createdAt     DateTime     @default(now())
-  promoCode     PromoCode?   @relation(fields: [promoCodeId], references: [id])
+  createdAt     DateTime    @default(now())
+  promoCode     PromoCode?  @relation(fields: [promoCodeId], references: [id])
   promoCodeId   Int?
-  cartId        String       @unique
-  status        Status       @default(TRUE)
+  cartId        String      @unique
+  status        Status      @default(TRUE)
   bookings      Booking[]
 }
 
 model PromoCode {
-  id          Int      @id @default(autoincrement())
-  code        String   @unique
-  discount    Float
-  expiryDate  DateTime
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  carts       Cart[]
+  id           Int      @id @default(autoincrement())
+  code         String   @unique
+  discount     Float
+  discountType String
+  expiryDate   DateTime
+  usageLimit   Int
+  isCustomCode Boolean
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  userId       Int // Add this field
+  user         User     @relation(fields: [userId], references: [id])
+  carts        Cart[]
 }
 
 model Booking {
@@ -291,7 +297,7 @@ model Booking {
   selected_date      String
   selected_time      String
   addresses          Address       @relation(fields: [addressId], references: [id])
-  addressId          Int        
+  addressId          Int
   status             BookingStatus @default(PENDING)
   cancellationReason String?
   failureReason      String?
@@ -302,15 +308,15 @@ model Booking {
 }
 
 model Payment {
-  id                  Int             @id @default(autoincrement())
-  booking             Booking         @relation(fields: [bookingId], references: [id])
-  bookingId           Int
-  transactionId       String
-  amount              Float
-  method              String?
-  status              String
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @updatedAt
+  id            Int      @id @default(autoincrement())
+  booking       Booking  @relation(fields: [bookingId], references: [id])
+  bookingId     Int
+  transactionId String
+  amount        Float
+  method        String?
+  status        String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 enum BookingStatus {
@@ -323,22 +329,22 @@ enum BookingStatus {
 }
 
 model Gallery {
-  id              Int             @id @default(autoincrement())
-  image           String
-  galleryCategory GalleryCategory @relation(fields: [galleryCategoryId], references: [id])
+  id                Int             @id @default(autoincrement())
+  image             String
+  galleryCategory   GalleryCategory @relation(fields: [galleryCategoryId], references: [id])
   galleryCategoryId Int
-  popularity      Int
-  status          String
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  popularity        Int
+  status            String
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
 }
 
 model GalleryCategory {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   title     String
   status    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   galleries Gallery[]
 }
 
