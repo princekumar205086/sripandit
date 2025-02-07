@@ -4,19 +4,22 @@ import { jwtDecode } from "jwt-decode";
 interface DecodedToken {
   role?: string;
   userId?: number;
+  name?: string;
 }
 
 const findUser = () => {
   const [isRole, setIsRole] = useState<string | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
+  const [userName, setUserName] = useState<string | null>("");
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
         const decoded: DecodedToken = jwtDecode(token);
-        setIsRole(decoded.role || null); 
-        setUserId(decoded.userId || null); 
+        setIsRole(decoded.role || null);
+        setUserId(decoded.userId || null);
+        setUserName(decoded.name || "Prince"); 
       } catch (error) {
         console.error('Failed to decode token:', error);
         setIsRole(null);
@@ -28,7 +31,7 @@ const findUser = () => {
     }
   }, []);
 
-  return { isRole, userId };
+  return { isRole, userId, userName };
 };
 
 export default findUser;

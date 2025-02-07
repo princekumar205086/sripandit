@@ -27,7 +27,7 @@ export function useLogin() {
         password: formState.password,
       });
 
-      const { token, role, account_status, message } = response.data;
+      const { token, role, account_status, message, username } = response.data;
 
     if (account_status === "ACTIVE") {
         // Set token and role in localStorage

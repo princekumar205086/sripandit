@@ -9,6 +9,7 @@ import {
   FaBell,
   FaGlobe,
 } from "react-icons/fa";
+import Image from 'next/image'
 import Layout from "../layout";
 
 interface User {
@@ -69,10 +70,11 @@ const ProfilePage = () => {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="md:flex">
               <div className="md:w-1/3 p-4 relative">
-                <img
-                  src={user.image}
+                <Image
+                  src={user.image || "https://via.placeholder.com/200"}
                   alt={user.name}
                   className="w-full h-auto rounded-lg"
+                  layout="fill"
                 />
                 <button className="absolute bottom-6 left-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 ease-in-out flex items-center">
                   <FaEdit className="mr-2" /> Edit Image

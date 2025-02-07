@@ -48,6 +48,7 @@ export async function PUT(
     const { id } = context.params;
     const formData = await request.formData();
     const image = formData.get("image") as File;
+    const title = formData.get("title") as string;
     const galleryCategoryId = formData.get("galleryCategoryId") as string;
     const popularity = formData.get("popularity") as string;
     const status = formData.get("status") as string;
@@ -84,6 +85,7 @@ export async function PUT(
       where: { id: parseInt(id) },
       data: {
         image: imgPath,
+        title,
         galleryCategoryId: parseInt(galleryCategoryId),
         popularity: parseInt(popularity),
         status,

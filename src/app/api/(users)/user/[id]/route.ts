@@ -11,8 +11,21 @@ export async function GET(
     const { id } = context.params;
     const res = await prisma.user.findUnique({
       where: { id: parseInt(id) },
-      include: {
-        personalInformation: true,
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        contact: true,
+        date_of_reg: true,
+        account_status: true,
+        personalInformation: {
+          select: {
+            firstname: true,
+            lastname: true,
+            dob: true,
+            profile_pic: true,
+          },
+        },
       },
     });
     return NextResponse.json(res);

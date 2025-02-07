@@ -8,6 +8,7 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const image = formData.get("image") as File;
+    const title = formData.get("title") as string;
     const galleryCategoryId = formData.get("galleryCategoryId") as string;
     const popularity = formData.get("popularity") as string;
     const status = formData.get("status") as string;
@@ -46,6 +47,7 @@ export async function POST(request: NextRequest) {
     const newGallery = await prisma.gallery.create({
       data: {
         image: imgPath,
+        title,
         galleryCategoryId: parseInt(galleryCategoryId),
         popularity: parseInt(popularity),
         status,
