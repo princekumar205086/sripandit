@@ -106,59 +106,65 @@ export async function POST(req: NextRequest) {
         );
 
         if (paymentResponse.success) {
-          // Fetch booking details for email
-          const bookingDetails = await axios.get(
-            `${base_url}/api/pujabookingdetails?userId=${userId}&cartId=${checkoutId}`
-          );
+          // Fire-and-forget email sending
+          (async () => {
+            try {
+              // Fetch booking details for email
+              const bookingDetails = await axios.get(
+                `${base_url}/api/pujabookingdetails?userId=${userId}&cartId=${checkoutId}`
+              );
 
-          // Determine noOfPandits and pujaDuration based on package type
-          let noOfPandits: number;
-          let pujaDuration: string;
-          switch (bookingDetails.data.cart?.package?.type) {
-            case "Basic":
-              noOfPandits = 1;
-              pujaDuration = "1.5 hrs";
-              break;
-            case "Standard":
-              noOfPandits = 2;
-              pujaDuration = "2 hrs - 2.5 hrs";
-              break;
-            case "Premium":
-              noOfPandits = 3 - 5;
-              pujaDuration = "2.5 hrs - 3.5 hrs";
-              break;
-            default:
-              noOfPandits = 1;
-              pujaDuration = "1.5 hrs";
-          }
-          // Get user name
-          const user = bookingDetails.data.user;
-          const personalInfo = user?.personalInformation;
-          const name = personalInfo
-            ? `${personalInfo.firstname} ${personalInfo.lastname}`
-            : "Unknown";
+              // Determine noOfPandits and pujaDuration based on package type
+              let noOfPandits: number;
+              let pujaDuration: string;
+              switch (bookingDetails.data.cart?.package?.type) {
+                case "Basic":
+                  noOfPandits = 1;
+                  pujaDuration = "1.5 hrs";
+                  break;
+                case "Standard":
+                  noOfPandits = 2;
+                  pujaDuration = "2 hrs - 2.5 hrs";
+                  break;
+                case "Premium":
+                  noOfPandits = 3 - 5;
+                  pujaDuration = "2.5 hrs - 3.5 hrs";
+                  break;
+                default:
+                  noOfPandits = 1;
+                  pujaDuration = "1.5 hrs";
+              }
+              // Get user name
+              const user = bookingDetails.data.user;
+              const personalInfo = user?.personalInformation;
+              const name = personalInfo
+                ? `${personalInfo.firstname} ${personalInfo.lastname}`
+                : "Unknown";
 
-          // // Send email to user and admin
-          // await sendEmail({
-          //   email: userEmail,
-          //   emailType: "SERVICE_REQUESTED",
-          //   username: name || "Default Name",
-          //   serviceType: bookingDetails.data.cart?.pujaService?.title,
-          //   date: bookingDetails.data.cart?.selected_date,
-          //   time: bookingDetails.data.cart?.selected_time,
-          //   location: bookingDetails.data.cart?.package?.location,
-          //   contactNumber: bookingDetails.data.user?.contact,
-          //   useremail: userEmail,
-          //   bookingDetails: bookingDetails.data,
-          //   noOfPandits,
-          //   pujaDuration,
-          // });
+              // Send email to user and admin
+              await sendEmail({
+                email: userEmail,
+                emailType: "SERVICE_REQUESTED",
+                username: name || "Default Name",
+                serviceType: bookingDetails.data.cart?.pujaService?.title,
+                date: bookingDetails.data.cart?.selected_date,
+                time: bookingDetails.data.cart?.selected_time,
+                location: bookingDetails.data.cart?.package?.location,
+                contactNumber: bookingDetails.data.user?.contact,
+                useremail: userEmail,
+                bookingDetails: bookingDetails.data,
+                noOfPandits,
+                pujaDuration,
+              });
+            } catch (emailError) {
+              console.error("Error sending email:", emailError);
+            }
+          })(); // Immediately invoked async function
 
+          // Redirect immediately without waiting for email
           return NextResponse.redirect(
             `${base_url}/confirmbooking?userId=${userId}&cartId=${checkoutId}`,
-            {
-              status: 301,
-            }
+            { status: 301 }
           );
         } else if (paymentResponse.error) {
           return NextResponse.redirect(`${base_url}/failedbooking`, {
