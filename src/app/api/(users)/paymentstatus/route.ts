@@ -6,7 +6,7 @@ import { sendEmail } from "@/helpers/mailer";
 const salt_key = process.env.PHONEPE_SALT_KEY!;
 const merchant_id = process.env.PHONEPE_MERCHANT_ID!;
 const keyIndex = process.env.PHONEPE_SALT_INDEX!;
-const base_url = "http://localhost:3000/";
+const base_url = "https://www.okpuja.com";
 
 async function saveData(url: string, data: any) {
   try {
