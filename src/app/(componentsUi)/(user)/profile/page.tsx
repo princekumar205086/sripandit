@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import Image from 'next/image'
 import Layout from "../layout";
+import { fetchProfile } from "./action";
 
 interface User {
   name: string;

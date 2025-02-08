@@ -138,21 +138,21 @@ export async function POST(req: NextRequest) {
             ? `${personalInfo.firstname} ${personalInfo.lastname}`
             : "Unknown";
 
-          // Send email to user and admin
-          await sendEmail({
-            email: userEmail,
-            emailType: "SERVICE_REQUESTED",
-            username: name || "Default Name",
-            serviceType: bookingDetails.data.cart?.pujaService?.title,
-            date: bookingDetails.data.cart?.selected_date,
-            time: bookingDetails.data.cart?.selected_time,
-            location: bookingDetails.data.cart?.package?.location,
-            contactNumber: bookingDetails.data.user?.contact,
-            useremail: userEmail,
-            bookingDetails: bookingDetails.data,
-            noOfPandits,
-            pujaDuration,
-          });
+          // // Send email to user and admin
+          // await sendEmail({
+          //   email: userEmail,
+          //   emailType: "SERVICE_REQUESTED",
+          //   username: name || "Default Name",
+          //   serviceType: bookingDetails.data.cart?.pujaService?.title,
+          //   date: bookingDetails.data.cart?.selected_date,
+          //   time: bookingDetails.data.cart?.selected_time,
+          //   location: bookingDetails.data.cart?.package?.location,
+          //   contactNumber: bookingDetails.data.user?.contact,
+          //   useremail: userEmail,
+          //   bookingDetails: bookingDetails.data,
+          //   noOfPandits,
+          //   pujaDuration,
+          // });
 
           return NextResponse.redirect(
             `${base_url}/confirmbooking?userId=${userId}&cartId=${checkoutId}`,
