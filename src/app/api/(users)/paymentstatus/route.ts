@@ -106,7 +106,6 @@ export async function POST(req: NextRequest) {
         );
 
         if (paymentResponse.success) {
-          // Fire-and-forget email sending
           (async () => {
             try {
               // Fetch booking details for email
@@ -156,9 +155,6 @@ export async function POST(req: NextRequest) {
                 noOfPandits,
                 pujaDuration,
               });
-              // remove localStorages
-              localStorage.removeItem("cartId");
-              localStorage.removeItem("cart");
             } catch (emailError) {
               console.error("Error sending email:", emailError);
             }

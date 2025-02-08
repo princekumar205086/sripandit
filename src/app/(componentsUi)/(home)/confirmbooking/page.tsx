@@ -20,52 +20,96 @@ const BookingSuccess = () => {
 
   useEffect(() => {
     if (!userId || !cartId) return;
+
     const fetchDetails = async () => {
-      const data = await fetchBookingDetails(userId, cartId);
-      setBookingDetails(data);
+      try {
+        const data = await fetchBookingDetails(userId, cartId);
+        if (data) {
+          setBookingDetails(data);
+        }
+      } catch (error) {
+        console.error("Error fetching booking details:", error);
+      }
     };
+
     fetchDetails();
+
+    // Remove userId and cartId from the URL (without reloading the page)
+    window.history.replaceState({}, document.title, window.location.pathname);
+
+    // Remove the cart item from localStorage
+    window.localStorage.removeItem("cart");
   }, [userId, cartId]);
 
   const handleDownloadReceipt = () => {
     const doc = new jsPDF();
-    
+
     // Title
     doc.setFont("helvetica", "bold");
     doc.setFontSize(22);
     doc.text("OKPUJA Service Booking Invoice", 20, 20);
-  
+
     // Booking Details Section
     doc.setFont("helvetica", "normal");
     doc.setFontSize(12);
-    doc.text(`Booking ID: OK${bookingDetails?.id}-${bookingDetails?.BookId}`, 20, 40);
-    doc.text(`Transaction ID: ${bookingDetails?.payments[0]?.transactionId}`, 20, 50);
+    doc.text(
+      `Booking ID: OK${bookingDetails?.id}-${bookingDetails?.BookId}`,
+      20,
+      40
+    );
+    doc.text(
+      `Transaction ID: ${bookingDetails?.payments[0]?.transactionId}`,
+      20,
+      50
+    );
     doc.text(`Payment Status: ${bookingDetails?.payments[0]?.status}`, 20, 60);
-  
+
     // Payment Information Section
     doc.setFont("helvetica", "bold");
     doc.text("Payment Information", 20, 75);
     doc.setFont("helvetica", "normal");
-    doc.text(`Amount Paid: RS. ${(bookingDetails?.payments[0]?.amount / 100).toFixed(2)}`, 20, 85);  
-    doc.text(`Payment Method: ${bookingDetails?.payments[0]?.method} || NET BANKING`, 20, 95);
-    doc.text(`Payment Date: ${new Date(bookingDetails?.payments[0]?.createdAt).toLocaleString()}`, 20, 105);
-  
+    doc.text(
+      `Amount Paid: RS. ${(bookingDetails?.payments[0]?.amount / 100).toFixed(
+        2
+      )}`,
+      20,
+      85
+    );
+    doc.text(
+      `Payment Method: ${bookingDetails?.payments[0]?.method} || NET BANKING`,
+      20,
+      95
+    );
+    doc.text(
+      `Payment Date: ${new Date(
+        bookingDetails?.payments[0]?.createdAt
+      ).toLocaleString()}`,
+      20,
+      105
+    );
+
     // Service Details Section
     doc.setFont("helvetica", "bold");
     doc.text("Service Details", 20, 120);
     doc.setFont("helvetica", "normal");
     doc.text(`Puja Name: ${bookingDetails?.cart?.pujaService?.title}`, 20, 130);
-    doc.text(`Date & Time: ${new Date(bookingDetails?.cart?.selected_date).toLocaleDateString()} | ${bookingDetails?.cart?.selected_time}`, 20, 140);
+    doc.text(
+      `Date & Time: ${new Date(
+        bookingDetails?.cart?.selected_date
+      ).toLocaleDateString()} | ${bookingDetails?.cart?.selected_time}`,
+      20,
+      140
+    );
     doc.text(`Location: ${bookingDetails?.cart?.package?.location}`, 20, 150);
     doc.text(`Language: ${bookingDetails?.cart?.package?.language}`, 20, 160);
     doc.text("Package Details:", 20, 170);
     const html = bookingDetails?.cart?.package?.description;
     const div = document.createElement("div");
     div.innerHTML = html;
-    doc.text(div.textContent || "", 20, 180); 
-    doc.text(`No. of Pandit: ${noOfPandits || 'N/A'}`, 20, 190);  
-    doc.text(`Puja Duration: ${pujaDuration || 'N/A'}`, 20, 200); 
-  
+    doc.text(div.textContent || "", 20, 180);
+    doc.text(`No. of Pandit: ${noOfPandits || "N/A"}`, 20, 190);
+    doc.text(`Puja Duration: ${pujaDuration || "N/A"}`, 20, 200);
+
     // User Information Section
     doc.setFont("helvetica", "bold");
     doc.text("User Information", 110, 75);
@@ -73,7 +117,7 @@ const BookingSuccess = () => {
     doc.text(`User Name: ${bookingDetails?.user?.username}`, 110, 85);
     doc.text(`Email: ${bookingDetails?.user?.email}`, 110, 95);
     doc.text(`Mobile: ${bookingDetails?.user?.contact}`, 110, 105);
-  
+
     // Address Information Section
     doc.setFont("helvetica", "bold");
     doc.text("Address Information", 110, 120);
@@ -83,17 +127,21 @@ const BookingSuccess = () => {
       110,
       130
     );
-    doc.text(`Landmark: ${bookingDetails?.addresses?.addressline2 || 'N/A'}`, 110, 140);  // Handling undefined value
-  
+    doc.text(
+      `Landmark: ${bookingDetails?.addresses?.addressline2 || "N/A"}`,
+      110,
+      140
+    ); // Handling undefined value
+
     // Footer Section
     doc.setFont("helvetica", "italic");
     doc.text("Thank you for choosing OKPUJA!", 20, 220);
     doc.text("For any inquiries, please contact our support team.", 20, 230);
-  
+
     // Save the file
     doc.save("OKPUJA_Service_Booking_Invoice.pdf");
   };
-  
+
   const handleShareDetails = () => {
     const shareData = {
       title: "Puja Booking Details",

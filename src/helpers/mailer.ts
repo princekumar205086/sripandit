@@ -368,7 +368,7 @@ export const sendEmail = async ({
         }),
       };
       await transporter.sendMail(adminMailOptions);
-      console.log("Sending email to admin"); // Add this line before sending email
+      // console.log("Sending email to admin"); // Add this line before sending email
 
 
       // Notify User
@@ -390,7 +390,7 @@ export const sendEmail = async ({
         }),
       };
       await transporter.sendMail(userMailOptions);
-      console.log("Sending email to user"); // Add this line before sending email
+      // console.log("Sending email to user"); // Add this line before sending email
 
     }
   } catch (error) {
