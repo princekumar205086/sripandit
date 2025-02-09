@@ -9,7 +9,7 @@ async function isAdmin(request: NextRequest) {
     return false;
   }
   const { role } = checkUser(token);
-  return role === "admin";
+  return role === "ADMIN";
 }
 
 // Add new promo code

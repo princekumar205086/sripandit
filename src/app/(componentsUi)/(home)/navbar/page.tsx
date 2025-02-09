@@ -37,6 +37,8 @@ const Navbar = () => {
   // logout function
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("username");
     toast.success("Successfully logged out");
     setToken(null);
     router.push("/login");

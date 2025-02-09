@@ -6,8 +6,22 @@ import { NextResponse, NextRequest } from "next/server";
 export async function GET(request: NextRequest) {
   try {
     const res = await prisma.user.findMany({
-      include: {
-        personalInformation: true,
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        contact: true,
+        date_of_reg: true,
+        account_status: true,
+        role: true,
+        personalInformation: {
+          select: {
+            firstname: true,
+            lastname: true,
+            dob: true,
+            profile_pic: true,
+          },
+        },
       },
     });
     return NextResponse.json(res);

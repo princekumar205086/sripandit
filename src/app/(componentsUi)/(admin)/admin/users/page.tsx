@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Layout from "../layout";
+import Layout from "../../../(user)/layout";
 import { Typography } from "@mui/material";
 import UserList from "./userList";
 

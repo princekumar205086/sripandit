@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import fs from "fs/promises";
 
 // Delete an event
 export async function DELETE(
@@ -38,14 +40,20 @@ export async function DELETE(
 }
 
 // Update an event
+// Update an event
 export async function PUT(
   request: NextRequest,
   context: { params: { id: string } }
 ) {
   try {
     const { id } = context.params;
-    const reqBody = await request.json();
-    const { imagesrc, title, day, number, month, content } = reqBody;
+    const formData = await request.formData();
+    const imagesrc = formData.get("imagesrc") as File;
+    const title = formData.get("title") as string;
+    const day = formData.get("day") as string;
+    const number = formData.get("number") as string;
+    const month = formData.get("month") as string;
+    const content = formData.get("content") as string;
 
     if (!id) {
       return NextResponse.json(
@@ -54,10 +62,22 @@ export async function PUT(
       );
     }
 
+    // Handle file upload
+    let imgPath = "";
+    if (imagesrc) {
+      const buffer = await imagesrc.arrayBuffer();
+      const fileName = `${Date.now()}-${imagesrc.name}`;
+      const uploadsDir = path.join(process.cwd(), "public/uploads"); // Ensure this path exists
+      await fs.mkdir(uploadsDir, { recursive: true }); // Create the directory if it doesn't exist
+      const filePath = path.join(uploadsDir, fileName);
+      await fs.writeFile(filePath, Buffer.from(buffer));
+      imgPath = `/uploads/${fileName}`; // Construct the path to be stored in the database
+    }
+
     const updatedEvent = await prisma.event.update({
       where: { id: parseInt(id) },
       data: {
-        imagesrc,
+        imagesrc: imgPath || undefined, // Only update if a new file is uploaded
         title,
         day,
         number: parseInt(number),
@@ -75,7 +95,6 @@ export async function PUT(
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-
 // Fetch a single event by ID
 export async function GET(
   request: NextRequest,

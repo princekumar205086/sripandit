@@ -67,8 +67,8 @@ const CheckoutPage: React.FC = () => {
     }
   }, []);
 
-  console.log("userId", userId);
-  console.log("userEmail", userEmail);
+  // console.log("userId", userId);
+  // console.log("userEmail", userEmail);
   
   
   // fetch checkout details

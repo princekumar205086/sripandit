@@ -168,49 +168,6 @@ const BookingPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-8">
-              <img
-                src="https://images.unsplash.com/photo-1609102026453-383736e4e131"
-                alt="Logo"
-                className="h-10 w-10 rounded"
-              />
-              <nav className="hidden md:flex space-x-6">
-                <a
-                  href="#"
-                  className="flex items-center text-gray-700 hover:text-orange-500"
-                >
-                  <FaHome className="mr-2" /> Home
-                </a>
-                <a
-                  href="#"
-                  className="flex items-center text-gray-700 hover:text-orange-500"
-                >
-                  <FaUser className="mr-2" /> My Account
-                </a>
-                <a
-                  href="#"
-                  className="flex items-center text-gray-700 hover:text-orange-500"
-                >
-                  <FaQuestionCircle className="mr-2" /> Help
-                </a>
-              </nav>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button className="text-gray-700 hover:text-orange-500">
-                <FaShoppingCart className="text-xl" />
-              </button>
-              <button className="text-gray-700 hover:text-orange-500">
-                <FaBell className="text-xl" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
-
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         {/* Tabs */}
@@ -298,45 +255,6 @@ const BookingPage = () => {
           )}
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#" className="hover:text-orange-400">
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-orange-400">
-                    Help
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-orange-400">
-                    Terms of Service
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Customer Support</h4>
-              <p className="mb-2">Need assistance with your booking?</p>
-              <p className="text-orange-400">1-800-SPIRITUAL</p>
-              <p className="text-orange-400">support@spiritual.com</p>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Business Hours</h4>
-              <p>Monday - Sunday</p>
-              <p>9:00 AM - 9:00 PM</p>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
