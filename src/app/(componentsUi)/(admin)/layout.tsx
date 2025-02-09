@@ -31,9 +31,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { toast } from "react-hot-toast";
+
 import Image from "next/image";
 import "@/app/globals.css";
+import { toast } from "react-toastify";
 
 interface Props {
   children?: ReactNode;

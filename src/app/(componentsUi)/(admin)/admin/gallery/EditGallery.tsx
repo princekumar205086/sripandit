@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 // Define Gallery type
 interface Gallery {
   id: number;
+  title:string;
   image: string;
   galleryCategoryId: number;
   popularity: number;
@@ -17,6 +18,7 @@ interface EditGalleryProps {
 }
 
 const EditGallery: React.FC<EditGalleryProps> = ({ gallery, onClose, onUpdate }) => {
+  const [title , setTitle] = useState<string>(gallery.title);
   const [image, setImage] = useState<File | null>(null);
   const [galleryCategoryId, setGalleryCategoryId] = useState<string>(gallery.galleryCategoryId.toString());
   const [popularity, setPopularity] = useState<string>(gallery.popularity.toString());

@@ -12,6 +12,7 @@ import EditGallery from "./EditGallery";
 
 interface Gallery {
   id: number;
+  title:string;
   image: string;
   galleryCategoryId: number;
   popularity: number;
@@ -152,6 +153,7 @@ const GalleryManagement: React.FC = () => {
                   />
                 </th>
                 <th className="px-6 py-3">SN.</th>
+                <th className="px-6 py-3">title</th>
                 <th className="px-6 py-3">Image</th>
                 <th className="px-6 py-3">Category</th>
                 <th className="px-6 py-3">Popularity</th>
@@ -170,6 +172,7 @@ const GalleryManagement: React.FC = () => {
                     />
                   </td>
                   <td className="px-6 py-4">{index + 1}</td>
+                  <td className="px-6 py-4">{gallery.title}</td>
                   <td className="px-6 py-4">
                     <img
                       src={gallery.image}

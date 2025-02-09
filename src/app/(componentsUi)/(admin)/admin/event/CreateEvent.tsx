@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 interface CreateEventProps {
   onClose: () => void;
@@ -9,53 +9,59 @@ interface CreateEventProps {
 }
 
 const CreateEvent: React.FC<CreateEventProps> = ({ onClose, onEventAdded }) => {
-  const [title, setTitle] = useState('');
-  const [imageFile, setImageFile] = useState<File | null>(null); // Store the actual file
-  const [day, setDay] = useState('');
-  const [number, setNumber] = useState('');
-  const [month, setMonth] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [day, setDay] = useState("");
+  const [number, setNumber] = useState("");
+  const [month, setMonth] = useState("");
+  const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null); // Image preview
 
-  const API_ENDPOINT = '/api/events';
+  const API_ENDPOINT = "/api/events";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (!title || !imageFile || !day || !number || !month || !content) {
       toast.warning("Please fill out all fields.");
       return;
     }
-  
+
+    if (isNaN(parseInt(number))) {
+      toast.warning("Date must be a valid number.");
+      return;
+    }
+
     setLoading(true);
-  
+
     try {
       const formData = new FormData();
       formData.append("title", title);
-      formData.append("image", imageFile); // Append the actual file
+      formData.append("imagesrc", imageFile); // Fixed key name
       formData.append("day", day);
       formData.append("number", number);
       formData.append("month", month);
       formData.append("content", content);
-  
+
       const response = await fetch(API_ENDPOINT, {
         method: "POST",
         body: formData,
       });
-      
-  
+
       if (!response.ok) throw new Error("Failed to create event");
-  
+
       toast.success("Event added successfully!");
       setTitle("");
-      setImageFile(null); // Reset the file
+      setImageFile(null);
+      setPreviewImage(null); // Clear image preview
       setDay("");
       setNumber("");
       setMonth("");
       setContent("");
+
       onEventAdded && onEventAdded();
       onClose();
-      
     } catch (error) {
       console.error("Error creating event:", error);
       toast.error("Failed to add event. Please try again.");
@@ -63,12 +69,12 @@ const CreateEvent: React.FC<CreateEventProps> = ({ onClose, onEventAdded }) => {
       setLoading(false);
     }
   };
-  
-  
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]; // Get the selected file
+    const file = e.target.files?.[0];
     if (file) {
-      setImageFile(file); // Store the file object
+      setImageFile(file);
+      setPreviewImage(URL.createObjectURL(file)); // Preview image
     }
   };
 
@@ -90,10 +96,18 @@ const CreateEvent: React.FC<CreateEventProps> = ({ onClose, onEventAdded }) => {
         <label className="block text-sm font-medium text-gray-700">Event Image</label>
         <input
           type="file"
+          accept="image/*"
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          onChange={handleImageChange} 
+          onChange={handleImageChange}
           required
         />
+        {previewImage && (
+          <img
+            src={previewImage}
+            alt="Preview"
+            className="mt-2 h-32 w-auto rounded-md border"
+          />
+        )}
       </div>
 
       <div>
@@ -154,10 +168,12 @@ const CreateEvent: React.FC<CreateEventProps> = ({ onClose, onEventAdded }) => {
         </button>
         <button
           type="submit"
-          className={`px-4 py-2 text-white rounded-lg ${loading ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
+          className={`px-4 py-2 text-white rounded-lg ${
+            loading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+          }`}
           disabled={loading}
         >
-          {loading ? 'Saving...' : 'Add Event'}
+          {loading ? "Saving..." : "Add Event"}
         </button>
       </div>
     </form>

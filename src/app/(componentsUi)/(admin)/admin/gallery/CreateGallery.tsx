@@ -8,7 +8,7 @@ interface CreateGalleryProps {
 }
 
 const CreateGallery: React.FC<CreateGalleryProps> = ({ onClose }) => {
-  // const [title, setTitle] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
   const [galleryCategoryId, setGalleryCategoryId] = useState<string>("");
   const [popularity, setPopularity] = useState<string>("0");
@@ -23,7 +23,7 @@ const CreateGallery: React.FC<CreateGalleryProps> = ({ onClose }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!image || !galleryCategoryId) {
+    if (!title || !image || !galleryCategoryId) {
       toast.warning("Please fill out all fields.");
       return;
     }
@@ -31,6 +31,7 @@ const CreateGallery: React.FC<CreateGalleryProps> = ({ onClose }) => {
     setLoading(true);
 
     const formData = new FormData();
+    formData.append("title", title);
     formData.append("image", image);
     formData.append("galleryCategoryId", galleryCategoryId);
     formData.append("popularity", popularity);
@@ -45,12 +46,12 @@ const CreateGallery: React.FC<CreateGalleryProps> = ({ onClose }) => {
       const data = await response.json();
       if (data.success) {
         toast.success(data.message);
-        // Reset the form and notify the parent component
+        setTitle("");
         setImage(null);
         setGalleryCategoryId("");
         setPopularity("0");
         setStatus("active");
-        onClose();  // Close the modal upon success
+        onClose();
       } else {
         toast.error(data.error || "Failed to create gallery");
       }
@@ -65,6 +66,18 @@ const CreateGallery: React.FC<CreateGalleryProps> = ({ onClose }) => {
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="bg-white p-6 rounded-lg w-full mx-auto">
         <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">Title</label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter gallery title"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">Gallery Category</label>
             <input
