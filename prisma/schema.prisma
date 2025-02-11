@@ -384,6 +384,13 @@ model contactUs {
   email     String
   phone     String
   message   String
+  status    contactUsStatus @default(PENDING)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum contactUsStatus {
+  PENDING
+  REPLIED
+  CLOSED
 }
