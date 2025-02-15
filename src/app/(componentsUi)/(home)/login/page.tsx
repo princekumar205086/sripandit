@@ -3,11 +3,23 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { useRouter } from "next/navigation";
 import { useLogin, FormState, Errors } from "./action";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import findUser from "@/app/helper/findUser";
+
 
 
 export default function LoginForm() {
+  // checking if user is already logged in if yes then redirect to dashboard according to role
+  const router = useRouter();
+  const { isRole } = findUser();
+  if (isRole === "USER") {
+    router.push("/dashboard");
+  } else if (isRole === "ADMIN") {
+    router.push("/admin/dashboard");
+  }
+
   const { handleSubmit } = useLogin();
 
   const [formState, setFormState] = useState<FormState>({

@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     });
 
     // Log the results for debugging purposes
-    console.log(suggestedPujas);
+    //console.log(suggestedPujas);
 
     return NextResponse.json(suggestedPujas);
   } catch (error: any) {

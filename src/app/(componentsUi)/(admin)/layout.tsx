@@ -31,8 +31,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.min.css";
+import { toast } from "react-hot-toast";
 import Image from "next/image";
 import "@/app/globals.css";
 
@@ -82,8 +81,9 @@ export default function Layout(props: Props) {
   }, [pathname]);
 
   const handleLogout = () => {
-    console.log("Logout clicked");
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("username");
     toast.success("Successfully logged out");
     router.push("/login");
   };

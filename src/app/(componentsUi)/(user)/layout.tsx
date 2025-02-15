@@ -1,6 +1,5 @@
 "use client";
-// this is the root layout for user
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,8 +8,8 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import PeopleIcon from "@mui/icons-material/People";
-import BarChartIcon from "@mui/icons-material/BarChart";
+import { MdAssignment } from "react-icons/md";
+import { FaMapMarkedAlt } from "react-icons/fa";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import LockIcon from "@mui/icons-material/Lock";
@@ -43,9 +42,25 @@ const drawerWidth = 240;
 
 export default function Layout(props: Props) {
   const { children } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [isClosing, setIsClosing] = React.useState(false);
-  const [isCollapse, setIsCollapse] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [isCollapse, setIsCollapse] = useState(false);
+  const [isMounted, setIsMounted] = useState(false); // For Hydration Issue
+
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Hydration Fix: Ensure state-based changes only happen client-side
+  useEffect(() => {
+    setIsMounted(true);
+    if (
+      pathname.startsWith("/support") ||
+      pathname.startsWith("/change-password") ||
+      pathname.startsWith("/contact")
+    ) {
+      setIsCollapse(true);
+    }
+  }, [pathname]);
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -67,22 +82,10 @@ export default function Layout(props: Props) {
     }
   };
 
-  const router = useRouter();
-  const pathname = usePathname();
-
-  useEffect(() => {
-    if (
-      pathname.startsWith("/support") ||
-      pathname.startsWith("/change-password") ||
-      pathname.startsWith("/contact")
-    ) {
-      setIsCollapse(true);
-    }
-  }, [pathname]);
-
   const handleLogout = () => {
-    console.log("Logout clicked");
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("username");
     toast.success("Successfully logged out");
     router.push("/login");
   };
@@ -102,9 +105,9 @@ export default function Layout(props: Props) {
       </Toolbar>
       <Divider />
       <List>
-        {["Dashboard", "Profile", "Users", "Analytics"].map((text) => (
+        {["Dashboard", "Profile", "My Booking", "Address"].map((text) => (
           <Link
-            href={`/${text.toLowerCase()}`}
+            href={`/${text.toLowerCase().replace(/\s+/g, "")}`}
             key={text}
             style={{ textDecoration: "none", color: "black" }}
           >
@@ -126,8 +129,8 @@ export default function Layout(props: Props) {
                 >
                   {text === "Dashboard" && <DashboardIcon />}
                   {text === "Profile" && <AccountCircleIcon />}
-                  {text === "Users" && <PeopleIcon />}
-                  {text === "Analytics" && <BarChartIcon />}
+                  {text === "My Booking" && <MdAssignment />}
+                  {text === "Address" && <FaMapMarkedAlt />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
@@ -312,7 +315,8 @@ export default function Layout(props: Props) {
               mt: 4,
             }}
           >
-            {children}
+            {isMounted ? children : null}{" "}
+            {/* Only render content after mounted */}
           </Box>
         </Box>
       </body>

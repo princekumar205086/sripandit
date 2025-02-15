@@ -1,13 +1,31 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import moment from "moment-timezone";
+import { checkUser } from "@/lib/auth";
 
 interface Params {
   code: string;
 }
 
+// Middleware to check if the user is an admin
+async function isAdmin(request: NextRequest) {
+  const token = request.headers.get("Authorization")?.split(" ")[1];
+  if (!token) {
+    return false;
+  }
+  const { role } = checkUser(token);
+  return role === "ADMIN";
+}
+
 // Delete a promo code
-export async function DELETE(request: NextRequest, context: { params: Params }) {
+export async function DELETE(
+  request: NextRequest,
+  context: { params: Params }
+) {
+  if (!(await isAdmin(request))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  }
+
   try {
     const { code } = context.params;
 
@@ -23,7 +41,10 @@ export async function DELETE(request: NextRequest, context: { params: Params }) 
     });
 
     if (!promoCode) {
-      return NextResponse.json({ error: "Promo code not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Promo code not found" },
+        { status: 404 }
+      );
     }
 
     await prisma.promoCode.delete({
@@ -41,10 +62,14 @@ export async function DELETE(request: NextRequest, context: { params: Params }) 
 
 // Update a promo code
 export async function PUT(request: NextRequest, context: { params: Params }) {
+  if (!(await isAdmin(request))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  }
+
   try {
     const { code } = context.params;
     const reqBody = await request.json();
-    const { discount, expiryDate } = reqBody;
+    const { discount, expiryDate, userId } = reqBody;
 
     if (!code) {
       return NextResponse.json(
@@ -58,6 +83,7 @@ export async function PUT(request: NextRequest, context: { params: Params }) {
       data: {
         discount,
         expiryDate: new Date(expiryDate),
+        userId,
       },
     });
 
@@ -71,6 +97,7 @@ export async function PUT(request: NextRequest, context: { params: Params }) {
   }
 }
 
+// Get a promo code
 export async function GET(request: NextRequest, context: { params: Params }) {
   try {
     const { code } = context.params;
@@ -93,9 +120,8 @@ export async function GET(request: NextRequest, context: { params: Params }) {
       );
     }
 
-    
-
-    const isExpired = new Date() > moment.tz(promoCode.expiryDate, "Asia/Kolkata").toDate();
+    const isExpired =
+      new Date() > moment.tz(promoCode.expiryDate, "Asia/Kolkata").toDate();
 
     return NextResponse.json({
       ...promoCode,
@@ -106,3 +132,47 @@ export async function GET(request: NextRequest, context: { params: Params }) {
   }
 }
 
+// Assign a promo code to a user
+export async function POST(request: NextRequest) {
+  if (!(await isAdmin(request))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  }
+
+  try {
+    const reqBody = await request.json();
+    const { code, userId } = reqBody;
+
+    if (!code || !userId) {
+      return NextResponse.json(
+        { error: "Promo code and user ID are required" },
+        { status: 400 }
+      );
+    }
+
+    const promoCode = await prisma.promoCode.findUnique({
+      where: { code },
+    });
+
+    if (!promoCode) {
+      return NextResponse.json(
+        { error: "Promo code not found" },
+        { status: 404 }
+      );
+    }
+
+    const updatedPromoCode = await prisma.promoCode.update({
+      where: { code },
+      data: {
+        userId,
+      },
+    });
+
+    return NextResponse.json({
+      message: "Promo code assigned to user successfully",
+      success: true,
+      promoCode: updatedPromoCode,
+    });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

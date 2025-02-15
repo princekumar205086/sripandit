@@ -188,17 +188,10 @@ export async function GET(request: NextRequest) {
             username: true,
             email: true,
             contact: true,
-            addresses: {
-              where: {
-                isDefault: true,
-              },
+            personalInformation: {
               select: {
-                addressline: true,
-                addressline2: true,
-                city: true,
-                state: true,
-                postalCode: true,
-                country: true,
+                firstname: true,
+                lastname: true,
               },
             },
           },
@@ -232,11 +225,21 @@ export async function GET(request: NextRequest) {
         },
         payments: {
           select: {
-            trasanctionId: true,
+            transactionId: true,
             amount: true,
             method: true,
             status: true,
             createdAt: true,
+          },
+        },
+        addresses: {
+          select: {
+            addressline: true,
+            addressline2: true,
+            city: true,
+            state: true,
+            postalCode: true,
+            country: true,
           },
         },
       },

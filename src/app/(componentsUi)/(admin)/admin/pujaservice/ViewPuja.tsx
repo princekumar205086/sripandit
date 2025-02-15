@@ -48,7 +48,6 @@ export default function ViewPuja({ id }: { id: number }) {
       setLoading(true);
       try {
         const data = await fetchPujaServiceDetails(id);
-        console.log('Fetched data:', data);  // Check the response data
         const transformedPackages = (data?.packages || []).map((pkg: PackageDetails) => ({
           id: pkg.id,
           location: pkg.location,
@@ -70,11 +69,11 @@ export default function ViewPuja({ id }: { id: number }) {
 
   const getPanditsAndDuration = (type: string) => {
     switch (type) {
-      case "basic":
+      case "Basic":
         return { pandits: "1", duration: "1hr" };
-      case "standard":
+      case "Standard":
         return { pandits: "2", duration: "2.5hr" };
-      case "premium":
+      case "Premium":
         return { pandits: "5+", duration: "5+ hr" };
       default:
         return { pandits: "N/A", duration: "N/A" };

@@ -46,11 +46,15 @@ const Hero: React.FC = () => {
 
   const text = useMemo(() => ["Pandit.", "Astrologer."], []);
 
-  const handleLocationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleLocationChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setLocation(event.target.value);
   };
 
-  const handlePujaNameChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePujaNameChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const input = event.target.value;
     setPujaName(input);
 
@@ -97,7 +101,6 @@ const Hero: React.FC = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log(data);
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -130,7 +133,11 @@ const Hero: React.FC = () => {
               Optimal rituals encounter with certified and seasoned {typedText}
             </h2>
             <p className="text-sm lg:text-base mb-6 lg:mb-6">
-            "Okpuja delivers a full suite of spiritual services tailored to meet your needs. Whether you're seeking traditional Puja ceremonies, powerful Homa rituals, or personalized Astrology consultations, our experienced professionals ensure a meaningful and enriching spiritual experience."
+              "Okpuja delivers a full suite of spiritual services tailored to
+              meet your needs. Whether you're seeking traditional Puja
+              ceremonies, powerful Homa rituals, or personalized Astrology
+              consultations, our experienced professionals ensure a meaningful
+              and enriching spiritual experience."
             </p>
             <button
               className="rounded-full bg-red-500 px-6 py-3 lg:px-6 lg:py-3 font-semibold text-white hover:bg-red-600 transition duration-300 ease-in-out"
@@ -143,7 +150,8 @@ const Hero: React.FC = () => {
           <div className="lg:w-1/3 flex justify-center items-center mt-12 lg:mt-0">
             <div className="bg-cream p-6 lg:p-6 rounded-lg shadow-lg">
               <p className="text-base lg:text-lg text-orange-500 mb-6 lg:mb-6">
-                Secure the services of top-notch priests for your Pujas or Homas with Okpuja{" "}
+                Secure the services of top-notch priests for your Pujas or Homas
+                with Okpuja{" "}
                 <span className="font-bold text-red-500">{location}</span>
               </p>
               <div className="mb-6 lg:mb-6">

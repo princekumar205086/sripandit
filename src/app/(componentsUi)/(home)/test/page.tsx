@@ -27,7 +27,7 @@ const SinglePujaService = () => {
     return null;
   };
   const pujaId = decryptId(encryptedId);
-  console.log(pujaId);
+  //console.log(pujaId);
   
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("");

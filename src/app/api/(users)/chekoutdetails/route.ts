@@ -60,6 +60,7 @@ export async function GET(request: NextRequest) {
             description: true,
           },
         },
+        id: true,
         selected_date: true,
         selected_time: true,
         promoCode: {

@@ -44,7 +44,6 @@ const Page = () => {
       }
 
       const response = await createPujaService(formData);
-      console.log(response);
 
       toast.success("Form submitted successfully!");
 

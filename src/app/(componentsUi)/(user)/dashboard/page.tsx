@@ -9,39 +9,40 @@ import {
   FaUser,
   FaHistory,
   FaHeadset,
-  FaBell,
   FaPlus,
 } from "react-icons/fa";
 import { IoMdNotificationsOutline } from "react-icons/io";
+import findUser from "@/app/helper/findUser";
+import Loader from "@/app/utils/loader";
 
 export default function UserHome() {
   const isAuthenticated = useAuth();
   const router = useRouter();
   const [role, setRole] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true); // Track loading state for role fetching
+  const [loading, setLoading] = useState(true);
 
-  // Fetch the role from localStorage on the client side
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedRole = localStorage.getItem("role");
       setRole(storedRole);
-      setLoading(false); // Finished loading role
+      setLoading(false);
     }
   }, []);
 
-  // Handle redirection based on authentication and role
   useEffect(() => {
     if (!loading) {
       if (!isAuthenticated) {
-        router.push("/login"); // Redirect to login if not authenticated
+        router.push("/login");
       } else if (role !== "USER") {
-        router.push("/login"); // Redirect to unauthorized page if role is not USER
+        router.push("/login");
       }
     }
   }, [isAuthenticated, role, loading, router]);
 
+  const { userName } = findUser();
+
   const [user, setUser] = useState({
-    name: "Rahul Sharma",
+    name: "User",
     upcomingBookings: [
       {
         id: 1,
@@ -75,22 +76,21 @@ export default function UserHome() {
     },
   ]);
 
-  // Show loading state while determining role or authentication
   if (loading) {
-    return <div>Loading...</div>; // Replace with a better loading indicator if needed
+    return <Loader />
   }
 
   if (!isAuthenticated) {
-    return null; // Avoid rendering any content if not authenticated
+    return null;
   }
 
   return (
     <div>
       <Layout>
         <div className="bg-gradient-to-br from-orange-100 to-yellow-100 min-h-screen p-4">
-          <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden">
+          <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden">
             <header className="bg-orange-500 text-white p-6">
-              <h1 className="text-3xl font-bold">Namaste, {user.name}!</h1>
+              <h1 className="text-3xl font-bold">Namaste, {userName}!</h1>
               <p className="text-lg">Welcome to your Puja Booking Dashboard</p>
             </header>
 
@@ -135,7 +135,7 @@ export default function UserHome() {
                   {user.pastBookings.map((booking) => (
                     <div
                       key={booking.id}
-                      className="bg-white rounded-lg p-4 mb-4 shadow-md"
+                      className="bg-white rounded-lg p-4 mb-4 shadow-sm"
                     >
                       <p className="font-semibold">{booking.date}</p>
                       <p>{booking.pandit}</p>
@@ -148,7 +148,7 @@ export default function UserHome() {
               </section>
 
               <aside className="space-y-6">
-                <div className="bg-orange-100 rounded-lg p-4 shadow">
+                <div className="bg-orange-100 rounded-lg p-4 shadow-sm">
                   <h2 className="text-2xl font-semibold mb-4">Quick Actions</h2>
                   <button className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition flex items-center justify-center space-x-2">
                     <FaPlus />

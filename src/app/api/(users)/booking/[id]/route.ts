@@ -54,6 +54,7 @@ export async function PUT(
       status,
       cancellationReason,
       failureReason,
+      rejectionReason,
     } = reqBody;
 
     if (!id) {
@@ -69,11 +70,12 @@ export async function PUT(
         userId,
         cartId,
         BookId,
-        selected_date: new Date(selected_date),
+        selected_date,
         selected_time,
         status,
         cancellationReason,
         failureReason,
+        rejectionReason
       },
     });
 
@@ -87,12 +89,8 @@ export async function PUT(
   }
 }
 
-/*  
-I want specific bookings data based on the from booking id
+// fetch all bookings for a user by userId if provided user id role is admin then fetch all bookings
 
-*/
-
-// Fetch a single booking by ID
 export async function GET(
   request: NextRequest,
   context: { params: { id: string } }
@@ -102,20 +100,82 @@ export async function GET(
 
     if (!id) {
       return NextResponse.json(
-        { error: "Booking ID is required" },
+        { error: "User ID is required" },
         { status: 400 }
       );
     }
 
-    const booking = await prisma.booking.findUnique({
+    const user = await prisma.user.findUnique({
       where: { id: parseInt(id) },
+      select: { role: true },
     });
 
-    if (!booking) {
-      return NextResponse.json({ error: "Booking not found" }, { status: 404 });
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    return NextResponse.json(booking);
+    const whereClause = user.role === "ADMIN" ? {} : { userId: parseInt(id) };
+
+    const bookings = await prisma.booking.findMany({
+      where: whereClause,
+      include: {
+        user: {
+          select: {
+            username: true,
+            email: true,
+            contact: true,
+          },
+        },
+        cart: {
+          select: {
+            selected_date: true,
+            selected_time: true,
+            pujaService: {
+              select: {
+                title: true,
+                img: true,
+              },
+            },
+            package: {
+              select: {
+                location: true,
+                language: true,
+                price: true,
+                type: true,
+                description: true,
+              },
+            },
+            promoCode: {
+              select: {
+                code: true,
+                discount: true,
+              },
+            },
+          },
+        },
+        payments: {
+          select: {
+            transactionId: true,
+            amount: true,
+            method: true,
+            status: true,
+            createdAt: true,
+          },
+        },
+        addresses: {
+          select: {
+            addressline: true,
+            addressline2: true,
+            city: true,
+            state: true,
+            postalCode: true,
+            country: true,
+          },
+        },
+      },
+    });
+
+    return NextResponse.json(bookings);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

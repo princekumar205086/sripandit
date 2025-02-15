@@ -1,30 +1,26 @@
 "use client";
 
-import React, { useState, useEffect, use } from "react";
-import { RiSecurePaymentFill } from "react-icons/ri";
+import React, { useState, useEffect } from "react";
 import {
   MdLocationOn,
   MdLanguage,
   MdAccessTime,
   MdOutlineCalendarToday,
 } from "react-icons/md";
+import { RiSecurePaymentFill } from "react-icons/ri";
 import Image from "next/image";
 import Section from "../../pujaservice/section";
 import Addresses from "@/app/(componentsUi)/(user)/address/Address";
 import { useParams } from "next/navigation";
-import { fetchCheckoutDetails } from "../action";
+import { fetchCheckoutDetails, fetchBookingId } from "../action";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
-const CheckoutPage = () => {
-  const { cartId } = useParams();
-  // userId
-  const token = localStorage.getItem("token");
-  let userId: string | null = null;
-  if (token) {
-    const decodedToken: any = jwtDecode(token);
-    userId = decodedToken.userId;
-  }
+const CheckoutPage: React.FC = () => {
+  const { cartId: rawCartId } = useParams() as { cartId?: string | string[] };
+  const cartId = Array.isArray(rawCartId) ? rawCartId[0] : rawCartId || "";
+
   interface PujaService {
     img: string;
     title: string;
@@ -43,6 +39,7 @@ const CheckoutPage = () => {
   }
 
   interface CheckoutDetails {
+    id: number;
     pujaService: PujaService;
     package: Package;
     promoCode: PromoCode;
@@ -52,37 +49,60 @@ const CheckoutPage = () => {
 
   const [details, setDetails] = useState<CheckoutDetails | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [addresId, setAddressId] = useState<number | null>(null);
+  const [addressId, setAddressId] = useState<number>(0);
+  const [userId, setUserId] = useState<number>(0);
+  const [userEmail, setUserEmail] = useState<string>("");
+
+  // userId
   useEffect(() => {
-    if (!cartId || typeof cartId !== "string") {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decodedToken: any = jwtDecode(token);
+        setUserId(decodedToken.userId);
+        setUserEmail(decodedToken.email);
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+      }
+    }
+  }, []);
+
+  // console.log("userId", userId);
+  // console.log("userEmail", userEmail);
+  
+  
+  // fetch checkout details
+  useEffect(() => {
+    if (!cartId) {
       console.error("Invalid cartId:", cartId);
       return;
     }
 
     fetchCheckoutDetails(cartId)
-      .then((data) => {
-        setDetails(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+      .then(setDetails)
+      .catch((error) =>
+        console.error("Error fetching checkout details:", error)
+      );
   }, [cartId]);
+  // fetch checkout id
+  const checkoutId = details?.id;
 
   if (!details) {
     return <div>Loading...</div>;
   }
+
   const amount =
-    (details.package?.price ?? 0) -
-    ((details.package?.price ?? 0) * (details.promoCode?.discount ?? 0)) / 100;
-  //payment handling
+    details.package.price -
+    (details.package.price * (details.promoCode?.discount || 0)) / 100;
+
   const handlePayment = async () => {
-    if (!amount || !userId || !cartId) {
-      alert("Missing required payment details.");
+    if (!amount || !userId || !checkoutId || !addressId) {
+      toast.error(
+        "Invalid payment details. Please try again. select address if not selected"
+      );
       return;
     }
-
     setIsLoading(true);
-
     try {
       const transactionId = `PU${Math.floor(Math.random() * 1e6)
         .toString()
@@ -91,7 +111,12 @@ const CheckoutPage = () => {
         amount,
         transactionId,
         userId,
-        cartId,
+        userEmail,
+        bookId: cartId,
+        checkoutId,
+        addressId,
+        date: details.selected_date,
+        time: details.selected_time,
       });
 
       const { paymentUrl } = response.data;
@@ -103,7 +128,6 @@ const CheckoutPage = () => {
       }
     } catch (error: any) {
       console.error("Payment error:", error);
-
       if (error.response) {
         alert(error.response.data?.message || "Payment initiation failed.");
       } else if (error.request) {
@@ -119,7 +143,6 @@ const CheckoutPage = () => {
   };
 
   const handleDefaultAddressChange = (addressId: number) => {
-    console.log("Selected default address ID:", addressId);
     setAddressId(addressId);
   };
 
@@ -287,33 +310,13 @@ const CheckoutPage = () => {
                 <div className="space-y-3">
                   <h3 className="font-medium">Payment</h3>
                   <div className="space-y-2">
-                    {/* <div className="space-y-2">
-                      <label className="flex items-center space-x-3">
-                        <input
-                          type="radio"
-                          name="payment"
-                          value="phonepe"
-                          checked={selectedPayment === "phonepe"}
-                          onChange={(e) => setSelectedPayment(e.target.value)}
-                          className="text-orange-500 focus:ring-orange-500"
-                        />
-                        <span>PhonePe</span>
-                        <Image
-                          src="/image/phonepe-logo.png" // Add a PhonePe logo to your public folder
-                          alt="PhonePe"
-                          width={24}
-                          height={24}
-                        />
-                      </label>
-                    </div> */}
-
                     {/* payment powered by phonepe */}
                     <h3 className="font-medium">Payment powered by:</h3>
                     <Image
-                      src="/image/phonepe-logo.png"
+                      src="/image/phonepe.svg"
                       alt="PhonePe"
-                      width={100}
-                      height={100}
+                      width={200}
+                      height={120}
                     />
                     <p className="text-gray-600">
                       Pay securely using Phonepe with okpuja

@@ -53,7 +53,6 @@ const PujaForm: React.FC = () => {
 
   const languages = [
     "Hindi",
-    "English",
     "Bengali",
     "Tamil",
     "Kannada",
@@ -183,7 +182,6 @@ const PujaForm: React.FC = () => {
     try {
       const response = await addPujaService(dataToSubmit);
       toast.success("Puja service added successfully!"); // Success toast
-      console.log("Form submitted:", response);
       // Reset form after successful submission
       setFormData({
         title: "",
