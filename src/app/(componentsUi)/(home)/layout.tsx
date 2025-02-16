@@ -4,12 +4,11 @@ import Navbar from "./navbar/page";
 import Footer from "./footer/page";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Link from "next/link";
-import ToastProvider from "@/lib/ToastProvider";
 import "@/app/globals.css";
 import LoaderWrapper from "./LoaderWrapper";
 import { FaWhatsapp } from "react-icons/fa";
-import "react-toastify/ReactToastify.min.css";
 import { CartProvider } from "@/app/context/CartContext";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,13 +30,37 @@ export default function RootLayout({
           {/* Navbar, children, and Footer are hidden until the LoaderWrapper finishes loading */}
           <CartProvider>
             <Navbar />
-            <ToastProvider>{children}</ToastProvider>
+            {children}
           </CartProvider>
           <Footer />
         </LoaderWrapper>
 
         {/* Additional content that is not tied to loading */}
         <SpeedInsights />
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+          gutter={8}
+          toastOptions={{
+            duration: 5000,
+            style: {
+              background: "#363636",
+              color: "#fff",
+            },
+            success: {
+              duration: 3000,
+              style: {
+                background: "#22c55e",
+              },
+            },
+            error: {
+              duration: 4000,
+              style: {
+                background: "#ef4444",
+              },
+            },
+          }}
+        />
         <Link
           href="https://wa.me/918051555505"
           target="_blank"

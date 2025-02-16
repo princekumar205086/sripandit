@@ -106,18 +106,18 @@ const VideoCarousel: React.FC = () => {
             Your browser does not support the video tag.
           </video>
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-transparent">
-            <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 transform text-center">
-              <h1 className="mb-4 text-4xl font-bold text-white md:text-6xl">
+            <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 transform text-center w-full px-4">
+              <h1 className="mb-4 text-2xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
                 {slide.headline}
               </h1>
-              <p className="mb-8 text-lg text-gray-200 md:text-xl">
+              <p className="mb-8 text-sm text-gray-200 sm:text-base md:text-lg lg:text-xl">
                 {slide.subtext}
               </p>
               <div className="flex flex-col items-center space-y-4 sm:flex-row sm:justify-center sm:space-x-4 sm:space-y-0">
-                <button className="rounded-full bg-orange-500 px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-orange-600">
+                <button className="rounded-full bg-orange-500 px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-orange-600 sm:px-8 sm:py-3 sm:text-base">
                   {slide.primaryCta}
                 </button>
-                <button className="rounded-full border-2 border-white px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-white/10">
+                <button className="rounded-full border-2 border-white px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10 sm:px-8 sm:py-3 sm:text-base">
                   {slide.secondaryCta}
                 </button>
               </div>
@@ -144,34 +144,34 @@ const VideoCarousel: React.FC = () => {
       <div className="absolute bottom-8 right-8 flex space-x-4">
         <button
           onClick={() => setIsPlaying(!isPlaying)}
-          className="rounded-full bg-white/10 p-3 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+          className="rounded-full bg-white/10 p-2 text-white backdrop-blur-sm transition-colors hover:bg-white/20 sm:p-3"
           aria-label={isPlaying ? "Pause" : "Play"}
         >
-          {isPlaying ? <FaPause size={20} /> : <FaPlay size={20} />}
+          {isPlaying ? <FaPause size={16} /> : <FaPlay size={16} />}
         </button>
         <button
           onClick={() => setIsMuted(!isMuted)}
-          className="rounded-full bg-white/10 p-3 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+          className="rounded-full bg-white/10 p-2 text-white backdrop-blur-sm transition-colors hover:bg-white/20 sm:p-3"
           aria-label={isMuted ? "Unmute" : "Mute"}
         >
-          {isMuted ? <FaVolumeMute size={20} /> : <FaVolumeUp size={20} />}
+          {isMuted ? <FaVolumeMute size={16} /> : <FaVolumeUp size={16} />}
         </button>
       </div>
 
       <button
         onClick={handlePrevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 transform rounded-full bg-white/10 p-3 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+        className="absolute left-4 top-1/2 -translate-y-1/2 transform rounded-full bg-white/10 p-2 text-white backdrop-blur-sm transition-colors hover:bg-white/20 sm:p-3"
         aria-label="Previous slide"
       >
-        <BsChevronLeft size={24} />
+        <BsChevronLeft size={20} />
       </button>
 
       <button
         onClick={handleNextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 transform rounded-full bg-white/10 p-3 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+        className="absolute right-4 top-1/2 -translate-y-1/2 transform rounded-full bg-white/10 p-2 text-white backdrop-blur-sm transition-colors hover:bg-white/20 sm:p-3"
         aria-label="Next slide"
       >
-        <BsChevronRight size={24} />
+        <BsChevronRight size={20} />
       </button>
     </div>
   );

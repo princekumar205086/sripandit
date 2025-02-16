@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { FaTrash, FaPencilAlt, FaMapMarkerAlt } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import {
   addAddress,
   fetchAddresses,

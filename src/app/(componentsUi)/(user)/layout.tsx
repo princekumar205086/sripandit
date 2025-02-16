@@ -29,8 +29,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { toast } from "react-toastify";
-import "react-toastify/ReactToastify.min.css";
+import { toast, Toaster } from "react-hot-toast";
 import "@/app/globals.css";
 import Image from "next/image";
 
@@ -319,6 +318,30 @@ export default function Layout(props: Props) {
             {/* Only render content after mounted */}
           </Box>
         </Box>
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+          gutter={8}
+          toastOptions={{
+            duration: 5000,
+            style: {
+              background: "#363636",
+              color: "#fff",
+            },
+            success: {
+              duration: 3000,
+              style: {
+                background: "#22c55e",
+              },
+            },
+            error: {
+              duration: 4000,
+              style: {
+                background: "#ef4444",
+              },
+            },
+          }}
+        />
       </body>
     </html>
   );

@@ -6,7 +6,7 @@ import Section from "../section";
 import { fetchPujaServiceDetails } from "../action";
 import "../pujaservice.css";
 import cartAuth from "@/app/helper/cartAuth";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { useCart } from "@/app/context/CartContext";
 import moment from "moment-timezone";
 

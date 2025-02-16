@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 const cartAuth = () => {
   const [isUser, setIsUser] = useState<boolean | null>(null); // Use null initially to indicate that the check is ongoing
