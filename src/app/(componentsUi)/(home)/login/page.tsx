@@ -8,10 +8,7 @@ import { useLogin, FormState, Errors } from "./action";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import findUser from "@/app/helper/findUser";
 
-
-
 export default function LoginForm() {
-  // checking if user is already logged in if yes then redirect to dashboard according to role
   const router = useRouter();
   const { isRole } = findUser();
   if (isRole === "USER") {
@@ -140,12 +137,18 @@ export default function LoginForm() {
           <div className="mt-6 text-center">
             <p className="text-sm text-blue-600">
               Don&apos;t have an account?{" "}
-              <Link href="/register" className="text-orange-500 hover:underline">
+              <Link
+                href="/register"
+                className="text-orange-500 hover:underline"
+              >
                 Sign Up
               </Link>
             </p>
             <p className="text-sm text-blue-600 mb-5">
-              <Link href="/forgot-password" className="text-orange-500 hover:underline">
+              <Link
+                href="/forgot-password"
+                className="text-orange-500 hover:underline"
+              >
                 Forgot Password?
               </Link>
             </p>
@@ -153,6 +156,5 @@ export default function LoginForm() {
         </div>
       </div>
     </div>
-
   );
 }

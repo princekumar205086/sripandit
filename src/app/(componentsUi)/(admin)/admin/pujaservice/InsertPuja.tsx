@@ -4,9 +4,7 @@ import { FaPlus, FaTrash } from "react-icons/fa";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css"; // Quill styles
 import { addPujaService, getPujaCategory } from "./action";
-import { ToastContainer, toast } from "react-toastify"; // Import ToastContainer and toast
-import "react-toastify/dist/ReactToastify.css"; // Import CSS for Toastify
-
+import { toast } from "react-hot-toast";
 // Dynamically import ReactQuill to avoid server-side issues
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -203,7 +201,6 @@ const PujaForm: React.FC = () => {
 
   return (
     <>
-      <ToastContainer /> {/* Include ToastContainer in your component */}
       <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold mb-6 text-center text-indigo-600">
           Add New Puja

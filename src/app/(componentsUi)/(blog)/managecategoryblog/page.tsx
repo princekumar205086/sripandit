@@ -14,8 +14,10 @@ type Category = {
 
 export default function Page() {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [filteredCategories, setFilteredCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -26,6 +28,7 @@ export default function Page() {
         }
         const data: Category[] = await response.json();
         setCategories(data);
+        setFilteredCategories(data); // Initialize with all categories
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -35,6 +38,37 @@ export default function Page() {
 
     fetchCategories();
   }, []);
+
+  const deleteCategory = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this category?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/blogcategory/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete category.");
+      }
+
+      setCategories(categories.filter((category) => category.id !== id));
+      setFilteredCategories(filteredCategories.filter((category) => category.id !== id)); // Update filtered list
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
+  // Handle search input change
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+    const filtered = categories.filter((category) =>
+      category.category_name.toLowerCase().includes(query)
+    );
+    setFilteredCategories(filtered);
+  };
 
   return (
     <>
@@ -46,11 +80,23 @@ export default function Page() {
       <div className="container mx-auto p-6">
         <div className="bg-white p-6 rounded-lg border shadow-md">
           <h2 className="text-2xl font-semibold mb-4">Category List</h2>
+
+          {/* Search Input */}
+          <div className="mb-4">
+            <input
+              type="text"
+              placeholder="Search by Category Name"
+              value={searchQuery}
+              onChange={handleSearch}
+              className="p-2 border border-gray-300 rounded-md w-full"
+            />
+          </div>
+
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
             <p className="text-red-500">Error: {error}</p>
-          ) : categories.length === 0 ? (
+          ) : filteredCategories.length === 0 ? (
             <p>No categories found.</p>
           ) : (
             <table className="min-w-full table-auto border-collapse border border-gray-300">
@@ -80,7 +126,7 @@ export default function Page() {
                 </tr>
               </thead>
               <tbody>
-                {categories.map((category) => (
+                {filteredCategories.map((category) => (
                   <tr key={category.id} className="border-b">
                     <td className="px-6 py-4 text-sm text-gray-900">
                       {category.category_name}
@@ -104,7 +150,10 @@ export default function Page() {
                       <button className="text-blue-500 hover:text-blue-600 mr-2">
                         Edit
                       </button>
-                      <button className="text-red-500 hover:text-red-600">
+                      <button
+                        onClick={() => deleteCategory(category.id)}
+                        className="text-red-500 hover:text-red-600"
+                      >
                         Delete
                       </button>
                     </td>

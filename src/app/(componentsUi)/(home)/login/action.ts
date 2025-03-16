@@ -1,6 +1,6 @@
+"use client";
 import axios from "axios";
-import { toast } from "react-toastify";
-import 'react-toastify/ReactToastify.min.css';
+import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 export interface FormState {
@@ -27,15 +27,15 @@ export function useLogin() {
         password: formState.password,
       });
 
-      const { token, role, account_status, message, username } = response.data;
+      const { token, role, account_status, message } = response.data;
 
-    if (account_status === "ACTIVE") {
+      if (account_status === "ACTIVE") {
         // Set token and role in localStorage
-        localStorage.setItem('token', token);
-        localStorage.setItem('role', role);
+        localStorage.setItem("token", token);
+        localStorage.setItem("role", role);
 
         // Redirect based on the user's role
-        toast.success(message || "Logged in successfully!");
+        toast.success(message || "Logged in successful!");
         router.push(role === "ADMIN" ? "/admin/dashboard" : "/dashboard");
       } else if (account_status === "PENDING") {
         toast.error("Verify your email first.");
@@ -45,7 +45,8 @@ export function useLogin() {
         toast.error("Login failed. Please try again.");
       }
     } catch (error: any) {
-      const errorMessage = error.response?.data?.error || "An error occurred. Please try again.";
+      const errorMessage =
+        error.response?.data?.error || "An error occurred. Please try again.";
       setErrors({
         email: "",
         password: errorMessage,

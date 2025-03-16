@@ -15,7 +15,7 @@ import { useParams } from "next/navigation";
 import { fetchCheckoutDetails, fetchBookingId } from "../action";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 const CheckoutPage: React.FC = () => {
   const { cartId: rawCartId } = useParams() as { cartId?: string | string[] };

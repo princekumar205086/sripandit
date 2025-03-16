@@ -10,7 +10,7 @@ import { RiMenu3Line, RiCloseLine } from "react-icons/ri";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/app/context/CartContext";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 const Navbar = () => {
@@ -18,7 +18,6 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const { cartItems } = useCart();
-  //const [cartCount, setCartCount] = useState(1); // Simulating the cart count
   const cartCount = cartItems.length;
   const router = useRouter();
 
@@ -54,7 +53,10 @@ const Navbar = () => {
     { name: "Astrology", link: "/astrology" },
     { name: "Blog", link: "/blog" },
     { name: "Contact", link: "/contactus" },
-    { name: token ? "Dashboard" : "SignUp/SignIn", link: token ? "/dashboard" : "/register" },
+    {
+      name: token ? "Dashboard" : "SignUp/SignIn",
+      link: token ? "/dashboard" : "/register",
+    },
   ];
 
   return (
@@ -162,13 +164,13 @@ const Navbar = () => {
             {/* adding the logout button only when the user is logged in */}
             {token && (
               <>
-              <hr className="border-orange-600 border-dotted" />
-              <button onClick={handleLogout}>
-                <span className="block text-orangeRed cursor-pointer hover:text-orange-400 relative group">
-                  Logout
-                  <span className="block h-1 bg-orange-400 w-0 transition-all duration-300 group-hover:w-full absolute bottom-0 left-0" />
-                </span>
-              </button>
+                <hr className="border-orange-600 border-dotted" />
+                <button onClick={handleLogout}>
+                  <span className="block text-orangeRed cursor-pointer hover:text-orange-400 relative group">
+                    Logout
+                    <span className="block h-1 bg-orange-400 w-0 transition-all duration-300 group-hover:w-full absolute bottom-0 left-0" />
+                  </span>
+                </button>
               </>
             )}
           </div>

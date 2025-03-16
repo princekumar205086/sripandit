@@ -31,7 +31,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { toast } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 import Image from "next/image";
 import "@/app/globals.css";
 
@@ -102,41 +102,45 @@ export default function Layout(props: Props) {
       </Toolbar>
       <Divider />
       <List>
-        {["Dashboard", "Profile", "AstrologyService", "PujaService", "Users"].map(
-          (text) => (
-            <Link
-              href={`/admin/${text.toLowerCase()}`}
-              key={text}
-              style={{ textDecoration: "none", color: "black" }}
+        {[
+          "Dashboard",
+          "Profile",
+          "AstrologyService",
+          "PujaService",
+          "Users",
+        ].map((text) => (
+          <Link
+            href={`/admin/${text.toLowerCase()}`}
+            key={text}
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            <ListItem
+              disablePadding
+              className={
+                pathname.includes(text.toLowerCase())
+                  ? "text-orangeRed bg-cream"
+                  : "text-cream"
+              }
             >
-              <ListItem
-                disablePadding
-                className={
-                  pathname.includes(text.toLowerCase())
-                    ? "text-orangeRed bg-cream"
-                    : "text-cream"
-                }
-              >
-                <ListItemButton>
-                  <ListItemIcon
-                    className={
-                      pathname.includes(text.toLowerCase())
-                        ? "text-orangeRed bg-cream"
-                        : "text-cream"
-                    }
-                  >
-                    {text === "Dashboard" && <DashboardIcon />}
-                    {text === "Profile" && <AccountCircleIcon />}
-                    {text === "AstrologyService" && <HdrAutoIcon />}
-                    {text === "Users" && <PeopleIcon />}
-                    {text === "PujaService" && <LocalFireDepartmentIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            </Link>
-          )
-        )}
+              <ListItemButton>
+                <ListItemIcon
+                  className={
+                    pathname.includes(text.toLowerCase())
+                      ? "text-orangeRed bg-cream"
+                      : "text-cream"
+                  }
+                >
+                  {text === "Dashboard" && <DashboardIcon />}
+                  {text === "Profile" && <AccountCircleIcon />}
+                  {text === "AstrologyService" && <HdrAutoIcon />}
+                  {text === "Users" && <PeopleIcon />}
+                  {text === "PujaService" && <LocalFireDepartmentIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        ))}
         <Divider />
         <ListItem disablePadding onClick={handleCollapse}>
           <ListItemButton>
@@ -242,7 +246,10 @@ export default function Layout(props: Props) {
               ModalProps={{ keepMounted: true }}
               sx={{
                 display: { xs: "block", sm: "none" },
-                "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
+                "& .MuiDrawer-paper": {
+                  boxSizing: "border-box",
+                  width: drawerWidth,
+                },
               }}
             >
               {drawer}
@@ -251,7 +258,10 @@ export default function Layout(props: Props) {
               variant="permanent"
               sx={{
                 display: { xs: "none", sm: "block" },
-                "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
+                "& .MuiDrawer-paper": {
+                  boxSizing: "border-box",
+                  width: drawerWidth,
+                },
               }}
               open
             >
@@ -263,6 +273,30 @@ export default function Layout(props: Props) {
             {children}
           </Box>
         </Box>
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+          gutter={8}
+          toastOptions={{
+            duration: 5000,
+            style: {
+              background: "#363636",
+              color: "#fff",
+            },
+            success: {
+              duration: 3000,
+              style: {
+                background: "#22c55e",
+              },
+            },
+            error: {
+              duration: 4000,
+              style: {
+                background: "#ef4444",
+              },
+            },
+          }}
+        />
       </body>
     </html>
   );

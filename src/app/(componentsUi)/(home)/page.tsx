@@ -8,11 +8,13 @@ import CustomerReviews from "./customerreview/page";
 import UpcomingEvents from "./upcoming/page";
 import QualifiedPandit from "./qualifiedpandit/page";
 import { motion } from "framer-motion";
+import VideoCarousel from "./herocarousel/page";
 
 export default function Home() {
   return (
     <div className="w-full overflow-hidden">
-      <Hero />
+      {/* <Hero /> */}
+      <VideoCarousel />
       {/* <section className="relative min-h-screen flex items-center">
         <div className="absolute inset-0">
           <img

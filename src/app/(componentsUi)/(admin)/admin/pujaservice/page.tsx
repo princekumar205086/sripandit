@@ -6,8 +6,7 @@ import useAuth from "@/app/helper/useAuth";
 import Layout from "../../layout";
 import { FiSearch, FiEdit, FiEye, FiTrash2 } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast} from "react-hot-toast";
 import Modal from "./Modal";
 import PujaForm from "./InsertPuja";
 import { BiCaretLeft } from "react-icons/bi";
@@ -194,8 +193,6 @@ export default function ManagePujaService() {
   return (
     <Layout>
       <div className="min-h-screen bg-gray-100 p-4 md:p-8">
-        <ToastContainer />
-
         {/* Header Section */}
         <div className="bg-white rounded-lg shadow p-6 mb-6">
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">

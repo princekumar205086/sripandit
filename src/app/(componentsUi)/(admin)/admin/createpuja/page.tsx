@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { createPujaService, fetchCategories } from "./action";
 import Section from "../../../(home)/pujaservice/section";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-hot-toast";
 import Layout from "../../layout";
 
 interface Category {
