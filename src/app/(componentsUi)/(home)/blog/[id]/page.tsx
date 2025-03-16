@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { fetchBlogPost } from "../action";
+import { fetchBlogPost, postBlogComment, singlegetBlogComment } from "../action";
 import Section from "../../pujaservice/section";
 import Image from "next/image";
 import { FaClock, FaUser, FaEye, FaComments } from "react-icons/fa";
@@ -44,10 +44,12 @@ const BlogPostPage = () => {
   const blogId = decryptId(encryptedId);
 
   const [post, setPost] = useState<BlogPost | null>(null);
+  const [comments, setComments] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [comment, setComment] = useState<string>("");
 
+  // Fetch the blog post and comments based on the postId
   useEffect(() => {
     const getBlogPost = async () => {
       if (!blogId) {
@@ -57,9 +59,15 @@ const BlogPostPage = () => {
       }
 
       try {
+        // Fetch the blog post
         const data = await fetchBlogPost(blogId);
         setPost(data);
         setLoading(false);
+
+        // Fetch comments for this specific post
+        const postComments = await singlegetBlogComment(Number(blogId));
+        console.log(postComments);
+        setComments(postComments);
       } catch (error) {
         setError("Failed to load blog post");
         setLoading(false);
@@ -75,25 +83,44 @@ const BlogPostPage = () => {
   };
 
   const handlePostComment = async () => {
-    if (!comment.trim()) return;
-
     try {
-      const userId = 2; 
-      const response = await axios.post('/api/blogcomment', {
-        postId: blogId,
-        userId: userId,
-        commentText: comment,
-      });
-      if (response.status === 201) {
-        setPost((prevPost) => ({
-          ...prevPost!,
-          blogComments: response.data.allComments, 
-        }));
-        setComment("");
+      if (!blogId) {
+        alert("Invalid blog ID. Cannot post comment.");
+        return;
+      }
+
+      const numericBlogId = Number(blogId);
+
+      if (isNaN(numericBlogId)) {
+        alert("Invalid blog ID. Cannot post comment.");
+        return;
+      }
+
+      const userId = 2; // Replace with dynamic user ID
+
+      if (!userId) {
+        alert("You must be logged in to post a comment.");
+        return;
+      }
+
+      if (comment.trim()) {
+        const { success, blogComment, error } = await postBlogComment(numericBlogId, comment, userId);
+
+        if (success && blogComment) {
+          setComment("");
+          alert("Comment posted/updated successfully");
+
+          // Update the comments immediately without re-fetching the post
+          setComments((prevComments) => [...prevComments, blogComment]);
+        } else {
+          alert(error || "Failed to post/update comment. Please try again later.");
+        }
+      } else {
+        alert("Please write a comment before posting.");
       }
     } catch (error) {
       console.error("Error posting comment:", error);
-      setError("Failed to post comment.");
+      alert("An error occurred while posting your comment. Please try again later.");
     }
   };
 
@@ -107,6 +134,7 @@ const BlogPostPage = () => {
             setLoading(true);
             setPost(null);
             setComment("");
+            setComments([]); // Clear comments as well
           }}
           className="mt-4 bg-orange-500 text-white py-2 px-4 rounded"
         >
@@ -149,7 +177,7 @@ const BlogPostPage = () => {
             </li>
             <li className="flex items-center">
               <FaComments className="mr-2 text-gray-600" />
-              {post.blogComments?.length || 0} Comments
+              {comments.length || 0} Comments
             </li>
           </ul>
         </div>
@@ -189,12 +217,12 @@ const BlogPostPage = () => {
 
             <div className="mt-8">
               <h4 className="text-2xl font-semibold text-gray-800">Recent Comments</h4>
-              {post.blogComments?.length ? (
+              {comments.length ? (
                 <div className="mt-6 space-y-4">
-                  {post.blogComments.map((comment, index) => (
+                  {comments.map((comment, index) => (
                     <div key={index} className="p-4 bg-white rounded-lg shadow-md">
-                      <p className="text-gray-700">{comment.commentText}</p>
-                      <span className="text-sm text-gray-500">By {comment.user.name}</span>
+                      <p className="text-gray-700">{comment.comment_text}</p>
+                      <span className="text-sm text-gray-500">By {comment?.user?.name || "Anonymous"}</span>
                     </div>
                   ))}
                 </div>
