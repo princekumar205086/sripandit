@@ -1,11 +1,16 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { BsChevronLeft, BsChevronRight, BsCalendar3 } from "react-icons/bs";
 
 export default function Events() {
+  // Reference to the slider to control it with custom navigation
+  const sliderRef = useRef<Slider | null>(null);
+
   const settings = {
     dots: true,
     infinite: true,
@@ -14,7 +19,15 @@ export default function Events() {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 4000,
+    pauseOnHover: true,
+    arrows: false,
     responsive: [
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
       {
         breakpoint: 1024,
         settings: {
@@ -25,11 +38,18 @@ export default function Events() {
         breakpoint: 640,
         settings: {
           slidesToShow: 1,
+          centerMode: true,
+          centerPadding: "20px",
         },
       },
     ],
+    // Custom dots rendering
+    customPaging: () => (
+      <div className="custom-dot w-2.5 h-2.5 bg-orange-300 rounded-full mt-8"></div>
+    ),
+    dotsClass: "slick-dots custom-dots",
   };
-const Slide = Slider as any;
+
   const data = [
     {
       imagesrc: "/calander/1.png",
@@ -88,40 +108,187 @@ const Slide = Slider as any;
         "February 29 2024, Thursday. Maha Navami, or Navami Puja, is celebrated on the ninth day of Navratri, dedicated to worshipping Goddess Durga.",
     },
   ];
+
   return (
-    <>
-      <Slide
-        {...settings}
-        className="flex flex-wrap justify-center overflow-hidden bg-cream py-10"
-      >
-        {data.map((item, index) => (
-          <div key={index} className="p-4 md:p-2 sm:p-1">
-            <div className="max-w-sm h-full rounded overflow-hidden shadow-lg bg-orange-600 text-white transition-transform transform hover:scale-105">
-              <Image
-                className="w-full h-52 object-cover"
-                src={item.imagesrc}
-                alt={item.title}
-                width={400}
-                height={200}
-              />
-              <div className="px-6 py-4 md:px-4 md:py-2 sm:px-2 sm:py-1">
-                <div className="font-bold text-lg mb-2 md:text-base sm:text-sm">
-                  {item.title}
-                </div>
-                <p className="text-xs md:text-xs sm:text-2xs">{item.content}</p>
-                <div className="mt-4">
-                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs font-semibold text-gray-700 mr-2 md:px-2 md:py-1 sm:px-1 sm:py-0.5">
-                    {item.date.month} {item.date.number}
-                  </span>
-                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-xs font-semibold text-gray-700 md:px-2 md:py-1 sm:px-1 sm:py-0.5">
-                    {item.date.day}
-                  </span>
-                </div>
-              </div>
-            </div>
+    <section className="py-12 sm:py-16 bg-gradient-to-b from-cream to-cream/90">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="text-center mb-10 md:mb-12"
+        >
+          <div className="flex items-center justify-center mb-3">
+            <BsCalendar3 className="text-redOrange text-2xl mr-3" />
+            <span className="text-redOrange text-sm uppercase font-semibold tracking-wider">
+              Religious Calendar
+            </span>
           </div>
-        ))}
-      </Slide>
-    </>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
+            Upcoming Religious Events
+          </h2>
+          <div className="w-20 h-1 bg-redOrange mx-auto mb-6 rounded-full"></div>
+          <p className="max-w-2xl mx-auto text-gray-600 text-base sm:text-lg">
+            Plan ahead for these important religious celebrations and book your
+            puja services in advance
+          </p>
+        </motion.div>
+
+        {/* Custom Navigation */}
+        <div className="flex justify-center sm:justify-end mb-6">
+          <div className="flex space-x-3">
+            <button
+              onClick={() => sliderRef.current?.slickPrev()}
+              className="p-2 rounded-full bg-white shadow-md text-gray-700 hover:text-redOrange hover:shadow-lg transition-all duration-200"
+              aria-label="Previous slide"
+            >
+              <BsChevronLeft size={20} />
+            </button>
+            <button
+              onClick={() => sliderRef.current?.slickNext()}
+              className="p-2 rounded-full bg-white shadow-md text-gray-700 hover:text-redOrange hover:shadow-lg transition-all duration-200"
+              aria-label="Next slide"
+            >
+              <BsChevronRight size={20} />
+            </button>
+          </div>
+        </div>
+
+        {/* Slider */}
+        <div className="event-slider-container">
+          {/* @ts-ignore - Slider ref type issue */}
+          <Slider ref={sliderRef} {...settings} className="pb-14">
+            {data.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+                className="px-3 py-2"
+              >
+                <div className="bg-white rounded-xl overflow-hidden shadow-lg h-full transition-transform transform hover:shadow-xl hover:-translate-y-1 duration-300">
+                  {/* Date badge */}
+                  <div className="absolute top-4 left-4 bg-redOrange text-white text-center p-2 rounded-lg shadow-md z-10">
+                    <div className="text-2xl font-bold leading-none">
+                      {item.date.number}
+                    </div>
+                    <div className="text-xs uppercase">{item.date.month}</div>
+                  </div>
+
+                  {/* Image */}
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={item.imagesrc}
+                      alt={item.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 25vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-5">
+                    <div className="flex items-center mb-3">
+                      <span className="inline-block bg-orange-100 rounded-full px-2 py-1 text-xs font-medium text-redOrange">
+                        {item.date.day}
+                      </span>
+                    </div>
+
+                    <h3 className="font-bold text-gray-800 text-xl mb-2">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+                      {item.content}
+                    </p>
+
+                    <button className="text-redOrange font-medium text-sm flex items-center hover:text-redOrange/80">
+                      View Details
+                      <svg
+                        className="w-4 h-4 ml-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M9 5l7 7-7 7"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </Slider>
+        </div>
+
+        {/* Bottom CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          className="mt-10 text-center"
+        >
+          <a
+            href="/calendar"
+            className="inline-flex items-center px-6 py-3 bg-redOrange text-white font-medium rounded-lg shadow-md hover:bg-redOrange/90 transition-colors duration-300"
+          >
+            View Full Calendar
+            <svg
+              className="w-5 h-5 ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              ></path>
+            </svg>
+          </a>
+        </motion.div>
+      </div>
+
+      {/* Custom styles for slider */}
+      <style jsx global>{`
+        .slick-list {
+          margin: 0 -12px;
+          padding-bottom: 10px !important;
+        }
+
+        .slick-slide > div {
+          height: 100%;
+        }
+
+        .slick-active .custom-dot {
+          background-color: #e25822;
+          width: 20px;
+          border-radius: 10px;
+        }
+
+        /* Mobile-friendly dots positioning */
+        .custom-dots {
+          bottom: -5px;
+        }
+
+        @media (max-width: 640px) {
+          .event-slider-container .slick-dots {
+            bottom: 0px;
+          }
+        }
+      `}</style>
+    </section>
   );
 }
