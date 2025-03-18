@@ -111,7 +111,7 @@ const HowItWorks = () => {
             Simple Process
           </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-2 text-gray-800">
-            How SriPandit Works
+            How OKPUJA Works
           </h2>
           <div className="w-16 h-1 bg-redOrange mx-auto mt-3 mb-4 rounded-full"></div>
           <p className="max-w-2xl mx-auto text-gray-600 text-base sm:text-lg">
@@ -289,7 +289,7 @@ const HowItWorks = () => {
           className="text-center mt-10"
         >
           <p className="text-gray-700 mb-4 text-lg">
-            Ready to experience a seamless spiritual journey with SriPandit?
+            Ready to experience a seamless spiritual journey with OKPUJA?
           </p>
           <Link href="/pujaservice">
             <motion.span

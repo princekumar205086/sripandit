@@ -149,8 +149,8 @@ const QualifiedPandit = () => {
                   </svg>
 
                   <p className="text-white/80 italic mb-5 text-sm sm:text-base">
-                    "Joining SriPandit has transformed my career as a pandit. I
-                    can now reach devotees across India and have increased my
+                    "Joining OKPUJA has transformed my career as a pandit. I can
+                    now reach devotees across India and have increased my
                     monthly income significantly. The platform is easy to use
                     and the team is very supportive."
                   </p>

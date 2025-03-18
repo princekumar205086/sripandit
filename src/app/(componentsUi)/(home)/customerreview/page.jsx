@@ -168,7 +168,7 @@ export default function CustomerReviews() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">What Our Clients Say</h2>
           <div className="w-20 h-1 bg-redOrange mx-auto mb-6 rounded-full"></div>
           <p className="max-w-2xl mx-auto text-gray-600 text-lg">
-            Discover why thousands of clients trust SriPandit for their spiritual needs and religious ceremonies
+            Discover why thousands of clients trust OKPUJA for their spiritual needs and religious ceremonies
           </p>
         </motion.div>
 
@@ -214,7 +214,7 @@ export default function CustomerReviews() {
                   </div>
                 </div>
                 <p className="text-gray-700 text-lg sm:text-xl italic mb-4">
-                  "Thanks to SriPandit, I was able to arrange a beautiful Griha Pravesh ceremony for our new home. The pandit was knowledgeable, punctual, and guided us through every ritual with patience. The experience was truly divine!"
+                  "Thanks to OKPUJA, I was able to arrange a beautiful Griha Pravesh ceremony for our new home. The pandit was knowledgeable, punctual, and guided us through every ritual with patience. The experience was truly divine!"
                 </p>
                 <div>
                   <p className="font-semibold text-gray-800">Sneha Kapoor</p>

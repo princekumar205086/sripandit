@@ -169,7 +169,7 @@ export default function Events() {
                 transition={{ duration: 0.5, delay: index * 0.05 }}
                 className="px-3 py-2"
               >
-                <div className="bg-white rounded-xl overflow-hidden shadow-lg h-full transition-transform transform hover:shadow-xl hover:-translate-y-1 duration-300">
+                <div className="bg-white rounded-xl overflow-hidden shadow-lg h-full flex flex-col transition-transform transform hover:shadow-xl hover:-translate-y-1 duration-300">
                   {/* Date badge */}
                   <div className="absolute top-4 left-4 bg-redOrange text-white text-center p-2 rounded-lg shadow-md z-10">
                     <div className="text-2xl font-bold leading-none">
@@ -191,7 +191,7 @@ export default function Events() {
                   </div>
 
                   {/* Content */}
-                  <div className="p-5">
+                  <div className="p-5 flex flex-col flex-grow">
                     <div className="flex items-center mb-3">
                       <span className="inline-block bg-orange-100 rounded-full px-2 py-1 text-xs font-medium text-redOrange">
                         {item.date.day}
@@ -202,11 +202,11 @@ export default function Events() {
                       {item.title}
                     </h3>
 
-                    <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+                    <p className="text-gray-600 text-sm line-clamp-3 mb-4 flex-grow">
                       {item.content}
                     </p>
 
-                    <button className="text-redOrange font-medium text-sm flex items-center hover:text-redOrange/80">
+                    <button className="text-redOrange font-medium text-sm flex items-center hover:text-redOrange/80 mt-auto">
                       View Details
                       <svg
                         className="w-4 h-4 ml-1"
@@ -266,6 +266,19 @@ export default function Events() {
         .slick-list {
           margin: 0 -12px;
           padding-bottom: 10px !important;
+        }
+
+        .slick-slide > div {
+          height: 100%;
+        }
+
+        .slick-track {
+          display: flex !important;
+          height: auto !important;
+        }
+
+        .slick-slide {
+          height: auto !important;
         }
 
         .slick-slide > div {

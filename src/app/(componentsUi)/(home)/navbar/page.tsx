@@ -209,11 +209,11 @@ const Navbar = () => {
               </Link>
 
               <Link href="/cart" className="relative" aria-label="Go to cart">
-                <div className="p-1.5 lg:p-2 bg-orange-700 text-cream rounded-full hover:bg-orange-800 transition-all duration-300 transform hover:scale-110">
+                <div className="p-1.5 lg:p-2 bg-redOrange text-cream rounded-full hover:bg-orange-800 transition-all duration-300 transform hover:scale-110">
                   <FaCartPlus className="text-lg lg:text-xl" />
                   {/* Cart Count Badge */}
                   {cartCount > 0 && (
-                    <span className="absolute -top-1 -right-1 text-xs bg-red-500 text-cream rounded-full w-5 h-5 flex items-center justify-center border-2 border-cream">
+                    <span className="absolute -top-1 -right-1 text-xs bg-redOrange text-cream rounded-full w-5 h-5 flex items-center justify-center border-2 border-cream">
                       {cartCount > 9 ? "9+" : cartCount}
                     </span>
                   )}
@@ -241,7 +241,7 @@ const Navbar = () => {
             <div className="md:hidden flex items-center space-x-3 h-full">
               {/* Mobile Cart Icon */}
               <Link href="/cart" className="relative" aria-label="Go to cart">
-                <div className="p-1.5 bg-orange-700 text-cream rounded-full">
+                <div className="p-1.5 bg-redOrange text-cream rounded-full">
                   <FaCartPlus className="text-lg" />
                   {/* Cart Count Badge for Mobile */}
                   {cartCount > 0 && (
