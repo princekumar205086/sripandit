@@ -20,14 +20,20 @@ interface FormData {
   postalCode: string;
 }
 
-interface Props {
-  onSelectDefaultAddress: (addressId: number) => void; 
+interface AddressProps {
+  onSelectDefaultAddress: (addressId: number, addressesList?: any[]) => void;
+  autoSelectSingle?: boolean;
 }
-const Addresses = ({ onSelectDefaultAddress }: Props) => {
+
+const Addresses = ({
+  onSelectDefaultAddress,
+  autoSelectSingle = false,
+}: AddressProps) => {
   const [addresses, setAddresses] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState<any>(null);
+  const [selectedAddressId, setSelectedAddressId] = useState<number>(0);
   const [userId, setUserId] = useState<number>(0);
   const [formData, setFormData] = useState<FormData>({
     addressline: "",
@@ -47,11 +53,34 @@ const Addresses = ({ onSelectDefaultAddress }: Props) => {
         setUserId(decodedToken.userId);
 
         fetchAddresses(decodedToken.userId)
-          .then((data) => setAddresses(data))
+          .then((data) => {
+            setAddresses(data);
+
+            // Auto-select the default address or the only address if autoSelectSingle is true
+            if (data.length > 0) {
+              const defaultAddress = data.find((addr:any) => addr.isDefault);
+
+              if (defaultAddress) {
+                setSelectedAddressId(defaultAddress.id);
+                onSelectDefaultAddress(defaultAddress.id, data);
+              } else if (data.length === 1 && autoSelectSingle) {
+                setSelectedAddressId(data[0].id);
+                onSelectDefaultAddress(data[0].id, data);
+              }
+
+              // Call global function if it exists for parent component integration
+              if (
+                typeof window !== "undefined" &&
+                window.checkAndSelectSingleAddress
+              ) {
+                window.checkAndSelectSingleAddress(data);
+              }
+            }
+          })
           .catch(() => toast.error("Failed to load addresses."));
       }
     }
-  }, []);
+  }, [onSelectDefaultAddress, autoSelectSingle]);
 
   // Validate form fields
   const validateForm = () => {
@@ -88,7 +117,6 @@ const Addresses = ({ onSelectDefaultAddress }: Props) => {
             )
           );
           toast.success("Address updated successfully.");
-          if (typeof window !== "undefined") window.location.reload();
         } else {
           const newAddress = await addAddress({
             addressline: formData.addressline,
@@ -99,10 +127,15 @@ const Addresses = ({ onSelectDefaultAddress }: Props) => {
             country: "India",
             userId,
           });
-          setAddresses((prev) => [...prev, newAddress]);
+          const updatedAddresses = [...addresses, newAddress];
+          setAddresses(updatedAddresses);
           toast.success("Address added successfully.");
-          // Refresh page
-          if (typeof window !== "undefined") window.location.reload();
+
+          // Auto-select if it's the first address
+          if (updatedAddresses.length === 1) {
+            setSelectedAddressId(newAddress.id);
+            onSelectDefaultAddress(newAddress.id, updatedAddresses);
+          }
         }
         setIsModalOpen(false);
         resetForm();
@@ -130,9 +163,17 @@ const Addresses = ({ onSelectDefaultAddress }: Props) => {
     try {
       if (selectedAddress) {
         await deleteAddress(selectedAddress.id);
-        setAddresses((prev) =>
-          prev.filter((addr) => addr.id !== selectedAddress.id)
+        const updatedAddresses = addresses.filter(
+          (addr) => addr.id !== selectedAddress.id
         );
+        setAddresses(updatedAddresses);
+
+        // If we deleted the selected address, clear the selection
+        if (selectedAddressId === selectedAddress.id) {
+          setSelectedAddressId(0);
+          onSelectDefaultAddress(0, updatedAddresses);
+        }
+
         toast.success("Address deleted successfully.");
         setIsDeleteModalOpen(false);
       }
@@ -145,13 +186,19 @@ const Addresses = ({ onSelectDefaultAddress }: Props) => {
   const handleSetDefault = async (addressId: number) => {
     try {
       await setDefaultAddress(addressId, userId);
-      setAddresses((prev) =>
-        prev.map((addr) => ({ ...addr, isDefault: addr.id === addressId }))
-      );
-      toast.success("Default address set successfully.");
+      const updatedAddresses = addresses.map((addr) => ({
+        ...addr,
+        isDefault: addr.id === addressId,
+      }));
+      setAddresses(updatedAddresses);
 
-      // Pass the selected address ID to the parent component
-      onSelectDefaultAddress(addressId);
+      // Set the selected address ID
+      setSelectedAddressId(addressId);
+
+      // Pass the selected address ID and updated list to the parent component
+      onSelectDefaultAddress(addressId, updatedAddresses);
+
+      toast.success("Address selected successfully.");
     } catch (error) {
       toast.error("Failed to set default address.");
     }
@@ -216,27 +263,27 @@ const Addresses = ({ onSelectDefaultAddress }: Props) => {
   };
 
   return (
-    <div className="bg-[#FFFAF0] mt-5">
+    <div className="bg-[#FFFAF0]">
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold text-[#2F1C0A] flex items-center">
+      <div className="max-w-full mx-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold text-[#2F1C0A] flex items-center">
             <FaMapMarkerAlt className="mr-2" />
-            <span>My Address</span>
+            <span>Select Delivery Address</span>
           </h1>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-[#FFA500] hover:bg-[#DAA520] text-white px-6 py-2 rounded-lg shadow-md transition-colors duration-200 flex items-center space-x-2"
+            className="bg-[#FFA500] hover:bg-[#DAA520] text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg shadow-md transition-colors duration-200 flex items-center space-x-1 text-sm sm:text-base"
           >
-            <span>Add New Address</span>
+            <span>Add New</span>
           </button>
         </div>
 
         {addresses.length === 0 ? (
-          <div className="text-center py-16">
-            <FaMapMarkerAlt className="mx-auto text-6xl text-[#DAA520] mb-4" />
-            <p className="text-xl text-[#2F1C0A] mb-4">
-              You have no saved addresses yet
+          <div className="text-center py-12 bg-white rounded-lg shadow-sm">
+            <FaMapMarkerAlt className="mx-auto text-5xl text-[#DAA520] mb-4" />
+            <p className="text-lg text-[#2F1C0A] mb-4">
+              You don't have any saved addresses yet
             </p>
             <button
               onClick={() => setIsModalOpen(true)}
@@ -246,33 +293,54 @@ const Addresses = ({ onSelectDefaultAddress }: Props) => {
             </button>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-4">
             {addresses.map((address) => (
               <div
                 key={address.id}
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
+                className={`bg-white p-4 rounded-lg shadow-sm border-2 ${
+                  address.id === selectedAddressId || address.isDefault
+                    ? "border-[#FFA500]"
+                    : "border-transparent"
+                } hover:shadow-md transition-all duration-200 cursor-pointer`}
+                onClick={() => handleSetDefault(address.id)}
               >
-                <div className="flex justify-between items-start mb-4">
+                <div className="flex justify-between items-start mb-3">
                   <div className="flex items-center">
-                    <h3 className="text-xl font-semibold text-[#2F1C0A]">
-                      {address.name}
-                    </h3>
-                    {address.isDefault && (
-                      <span className="ml-2 bg-[#FFA500] text-white text-xs px-2 py-1 rounded">
-                        Selected
-                      </span>
-                    )}
+                    <div className="flex items-center">
+                      <input
+                        type="radio"
+                        id={`address-${address.id}`}
+                        name="selectedAddress"
+                        checked={
+                          address.id === selectedAddressId || address.isDefault
+                        }
+                        onChange={() => handleSetDefault(address.id)}
+                        className="w-4 h-4 text-[#FFA500] focus:ring-[#FFA500] border-gray-300"
+                      />
+                      <label
+                        htmlFor={`address-${address.id}`}
+                        className="ml-2 text-base font-medium text-[#2F1C0A]"
+                      >
+                        {address.addressline}
+                      </label>
+                    </div>
                   </div>
                   <div className="flex space-x-2">
                     <button
-                      onClick={() => handleEdit(address)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(address);
+                      }}
                       className="text-[#DAA520] hover:text-[#FFA500] transition-colors duration-200"
                       aria-label="Edit address"
                     >
                       <FaPencilAlt />
                     </button>
                     <button
-                      onClick={() => handleDelete(address)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(address);
+                      }}
                       className="text-red-500 hover:text-red-600 transition-colors duration-200"
                       aria-label="Delete address"
                     >
@@ -280,28 +348,16 @@ const Addresses = ({ onSelectDefaultAddress }: Props) => {
                     </button>
                   </div>
                 </div>
-                <div className="space-y-2 text-[#2F1C0A]">
-                  <p>{address.addressline}</p>
+                <div className="space-y-1 text-[#2F1C0A] pl-6">
                   {address.addressline2 && <p>{address.addressline2}</p>}
                   <p>{`${address.city}, ${address.state}`}</p>
-                  <p>
-                    India - {""}
-                    {address.postalCode}{" "}
-                  </p>
+                  <p>India - {address.postalCode}</p>
                 </div>
-                {!address.isDefault && (
-                  <button
-                    onClick={() => handleSetDefault(address.id)}
-                    className="mt-4 text-[#DAA520] hover:text-[#FFA500] text-sm"
-                  >
-                    Select this address
-                  </button>
-                )}
               </div>
             ))}
           </div>
         )}
-      </main>
+      </div>
 
       {/* Add/Edit Address Modal */}
       {isModalOpen && (
@@ -432,7 +488,7 @@ const Addresses = ({ onSelectDefaultAddress }: Props) => {
                     type="text"
                     value="India"
                     readOnly
-                    className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-[#FFA500] focus:border-transparent"
+                    className="w-full px-3 py-2 border rounded-md bg-gray-50 focus:ring-2 focus:ring-[#FFA500] focus:border-transparent"
                   />
                 </div>
               </div>

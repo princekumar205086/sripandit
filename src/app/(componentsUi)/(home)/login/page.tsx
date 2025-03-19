@@ -3,16 +3,11 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  FaEye,
-  FaEyeSlash,
-  FaEnvelope,
-  FaLock,
-  FaUserCircle,
-} from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaEnvelope, FaLock } from "react-icons/fa";
 import { useLogin, FormState, Errors } from "./action";
 import findUser from "@/app/helper/findUser";
 import Image from "next/image";
+import { toast } from "react-hot-toast";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -30,12 +25,23 @@ export default function LoginForm() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Redirect based on role
+  // Check if already logged in
   useEffect(() => {
-    if (isRole === "USER") {
-      router.push("/dashboard");
-    } else if (isRole === "ADMIN") {
-      router.push("/admin/dashboard");
+    // Check token directly here as well as using findUser for redundancy
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      console.log("Token found in localStorage, checking role...");
+
+      if (isRole === "USER") {
+        console.log("User role detected, redirecting to dashboard");
+        router.push("/dashboard");
+      } else if (isRole === "ADMIN") {
+        console.log("Admin role detected, redirecting to admin dashboard");
+        router.push("/admin/dashboard");
+      }
+    } else {
+      console.log("No token found, showing login form");
     }
   }, [isRole, router]);
 
@@ -54,12 +60,17 @@ export default function LoginForm() {
   // Form submission handler
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (loading) return; // Prevent multiple submissions
+
     setLoading(true);
+    console.log("Form submitted with:", { email: formState.email });
 
     try {
       await handleSubmit(formState, setErrors);
-    } catch (error) {
-      console.error("Login error:", error);
+    } catch (error: any) {
+      console.error("Login submission error:", error);
+      toast.error("Failed to process login. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -73,7 +84,7 @@ export default function LoginForm() {
       [name]: type === "checkbox" ? checked : value,
     });
 
-    // Clear errors when typing
+    // Clear related error when typing
     if (errors[name as keyof typeof errors]) {
       setErrors({
         ...errors,
@@ -108,8 +119,9 @@ export default function LoginForm() {
                   src="/image/okpuja logo.png"
                   width={180}
                   height={100}
-                  alt="Sri Pandit Logo"
+                  alt="OKPUJA Logo"
                   className="object-contain drop-shadow-md"
+                  priority
                 />
               </div>
 
@@ -142,8 +154,9 @@ export default function LoginForm() {
                 src="/image/okpuja logo.png"
                 width={140}
                 height={70}
-                alt="Sri Pandit Logo"
+                alt="OKPUJA Logo"
                 className="object-contain"
+                priority
               />
             </div>
           </div>
@@ -186,6 +199,8 @@ export default function LoginForm() {
                     errors.email ? "border-red-300" : "border-gray-300"
                   } text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200`}
                   required
+                  disabled={loading}
+                  autoComplete="email"
                 />
               </div>
               {errors.email && (
@@ -212,12 +227,15 @@ export default function LoginForm() {
                     errors.password ? "border-red-300" : "border-gray-300"
                   } text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200`}
                   required
+                  disabled={loading}
+                  autoComplete="current-password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-600 transition-colors"
                   aria-label={showPassword ? "Hide password" : "Show password"}
+                  disabled={loading}
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
@@ -240,6 +258,7 @@ export default function LoginForm() {
                   checked={formState.staySignedIn}
                   onChange={handleChange}
                   className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+                  disabled={loading}
                 />
                 <label
                   htmlFor="staySignedIn"

@@ -258,7 +258,7 @@ export default function SignupForm() {
             <div className="mb-6 lg:mb-12 bg-white p-4 rounded-xl backdrop-blur-sm shadow-lg border border-white/20">
               <div className="flex items-center justify-center">
                 <Image
-                  alt="Sri Pandit Logo"
+                  alt="OKPUJA Logo"
                   src="/image/okpuja logo.png"
                   width={200}
                   height={110}
@@ -321,7 +321,7 @@ export default function SignupForm() {
             <div className="md:hidden flex items-center justify-center mb-6">
               <div className="bg-gradient-to-b from-orange-100 to-orange-50 p-3 rounded-xl shadow-md border border-orange-200">
                 <Image
-                  alt="Sri Pandit Logo"
+                  alt="OKPUJA Logo"
                   src="/image/okpuja logo.png"
                   width={150}
                   height={80}

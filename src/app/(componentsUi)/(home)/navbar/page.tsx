@@ -122,7 +122,7 @@ const Navbar = () => {
               <Link href="/">
                 <div className="relative logo-wrapper h-full flex items-center">
                   <Image
-                    alt="Sri Pandit Logo"
+                    alt="OKPUJA Logo"
                     src="/image/okpuja logo.png"
                     width={220}
                     height={120}
@@ -284,7 +284,7 @@ const Navbar = () => {
           <div className="flex justify-between items-center p-4 border-b border-orange-200">
             <div className="relative w-32 h-12">
               <Image
-                alt="Sri Pandit Logo"
+                alt="OKPUJA Logo"
                 src="/image/okpuja logo.png"
                 fill
                 className="object-contain"

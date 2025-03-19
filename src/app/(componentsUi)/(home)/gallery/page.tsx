@@ -1,8 +1,22 @@
 "use client";
 import Section from "../pujaservice/section";
-import React, { useState, useEffect, ChangeEvent } from "react";
-import { FaSearch, FaSort, FaExpand, FaTimes, FaHeart } from "react-icons/fa";
+import React, { useState, useEffect, ChangeEvent, useCallback } from "react";
+import {
+  FaSearch,
+  FaSort,
+  FaExpand,
+  FaTimes,
+  FaHeart,
+  FaChevronLeft,
+  FaChevronRight,
+  FaFilter,
+  FaShareAlt,
+  FaDownload,
+  FaCalendarAlt,
+  FaEye,
+} from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 
 type GalleryItem = {
   id: number;
@@ -121,22 +135,55 @@ const galleryItems: GalleryItem[] = [
 ];
 
 export default function Gallery() {
-  const [items, setItems] = useState(galleryItems);
+  const [items, setItems] = useState<GalleryItem[]>(galleryItems);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortCriteria, setSortCriteria] = useState("date");
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [activeFilters, setActiveFilters] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
+  // Check for mobile view
   useEffect(() => {
-    filterAndSortItems();
-  }, [searchQuery, selectedCategory, sortCriteria]);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
-  const filterAndSortItems = () => {
+  // Handle escape key for fullscreen
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isFullScreen) {
+        setIsFullScreen(false);
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [isFullScreen]);
+
+  // Apply body style when fullscreen
+  useEffect(() => {
+    if (isFullScreen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isFullScreen]);
+
+  // Filter and sort items
+  const filterAndSortItems = useCallback(() => {
     let filteredItems = galleryItems.filter((item) => {
-      const matchesSearch = item.category
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
+      const matchesSearch =
+        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.category.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory =
         selectedCategory === "All" || item.category === selectedCategory;
       return matchesSearch && matchesCategory;
@@ -147,13 +194,19 @@ export default function Gallery() {
         return new Date(b.date).getTime() - new Date(a.date).getTime();
       } else if (sortCriteria === "popularity") {
         return b.popularity - a.popularity;
+      } else if (sortCriteria === "title") {
+        return a.title.localeCompare(b.title);
       }
       return 0;
     });
 
     setItems(filteredItems);
-    setCurrentSlide(0);
-  };
+  }, [searchQuery, selectedCategory, sortCriteria]);
+
+  // Apply filters when dependencies change
+  useEffect(() => {
+    filterAndSortItems();
+  }, [searchQuery, selectedCategory, sortCriteria, filterAndSortItems]);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -163,7 +216,7 @@ export default function Gallery() {
     setSelectedCategory(category);
   };
 
-  const handleSortChange = (criteria: any) => {
+  const handleSortChange = (criteria: string) => {
     setSortCriteria(criteria);
   };
 
@@ -179,7 +232,8 @@ export default function Gallery() {
     setIsFullScreen(!isFullScreen);
   };
 
-  const increasePopularity = (id: number) => {
+  const increasePopularity = (id: number, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent triggering other click events
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.id === id ? { ...item, popularity: item.popularity + 1 } : item
@@ -187,183 +241,376 @@ export default function Gallery() {
     );
   };
 
+  const viewImage = (index: number) => {
+    setCurrentSlide(index);
+    setIsFullScreen(true);
+  };
+
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const toggleFilters = () => {
+    setActiveFilters(!activeFilters);
+  };
+
+  const handleImageLoad = (id: number) => {
+    setLoadedImages((prev) => new Set(prev).add(id));
+  };
+
   return (
     <>
       <Section
         bgImageUrl="image/gallery.jpeg"
-        title="Check out our gallery"
-        description="We have a collection of images from our past events and ceremonies. Check out our gallery to see the beautiful moments we have captured."
+        title="Our Sacred Journey"
+        description="Explore our visual archive of sacred ceremonies and divine moments that capture the essence of traditional Hindu pujas and rituals."
       />
-      <div className="container-fluid mx-auto px-4 w-full py-8 bg-redOrange">
-        <h1 className="text-4xl font-bold text-center text-cream mb-8">Puja Gallery</h1>
 
-        {/* Search, Filter, and Sort Section */}
-        <div className="mb-6 flex flex-wrap items-center justify-between text-cream">
-          <div className="w-full md:w-1/3 mb-4 md:mb-0">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search puja ceremonies"
-                className="w-full px-4 py-2 border text-orange-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-                value={searchQuery}
-                onChange={handleSearch}
-                aria-label="Search puja ceremonies"
-              />
-              <FaSearch className="absolute right-3 top-3 text-orange-500" />
-            </div>
-          </div>
-
-          <div className="w-full md:w-1/3 mb-4 md:mb-0">
-            <select
-              className="w-full px-4 py-2 border text-orange-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-              value={selectedCategory}
-              onChange={(e) => handleCategoryChange(e.target.value)}
-              aria-label="Filter by category"
-            >
-              <option value="All">All Categories</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="w-full md:w-1/3">
-            <div className="flex items-center justify-end">
-              <span className="mr-2">Sort by:</span>
-              <button
-                className={`px-4 py-2 rounded-lg mr-2 ${
-                  sortCriteria === "date"
-                    ? "bg-cream text-orange-500"
-                    : "bg-cream text-orange-500"
-                }`}
-                onClick={() => handleSortChange("date")}
-                aria-label="Sort by date"
-              >
-                Date
-              </button>
-              <button
-                className={`px-4 py-2 rounded-lg ${
-                  sortCriteria === "popularity"
-                    ? "bg-cream text-orange-500"
-                    : "bg-cream text-orange-500"
-                }`}
-                onClick={() => handleSortChange("popularity")}
-                aria-label="Sort by popularity"
-              >
-                Popularity
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {items.length === 0 ? (
-          <div className="text-center text-cream mt-8">
-            <p>
-              No results found. Please try a different search query or category.
+      <div className="bg-gradient-to-b from-orange-50 to-white py-8 sm:py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Spiritual Memories Gallery
+            </h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Browse through our collection of sacred ceremonies performed by
+              our experienced pandits across various traditions.
             </p>
           </div>
-        ) : (
-          <div
-            className={`relative ${
-              isFullScreen ? "fixed inset-0 z-50 bg-black" : ""
-            }`}
-          >
-            <AnimatePresence>
-              <motion.div
-                key={currentSlide}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="w-full h-96 md:h-[32rem] relative overflow-hidden rounded-lg shadow-lg"
-              >
-                <img
-                  src={items[currentSlide].image}
-                  alt={items[currentSlide].category}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
-                  <h2 className="text-xl font-semibold">
-                    {items[currentSlide].category}
-                  </h2>
-                  <p>Date: {items[currentSlide].date}</p>
 
-                  {/* Heart Button with Popularity Counter */}
-                  <button
-                    className="absolute top-2 right-2 bg-white text-black p-2 rounded-full shadow-lg flex items-center"
-                    onClick={() => increasePopularity(items[currentSlide].id)}
-                    aria-label="Increase popularity"
-                  >
-                    <FaHeart className="text-red-500 mr-1" />
-                    <span>{items[currentSlide].popularity}</span>
-                  </button>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-
+          {/* Mobile Filter Toggle Button */}
+          <div className="md:hidden mb-6">
             <button
-              className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-50 p-2 rounded-full shadow-lg"
-              onClick={handlePrevSlide}
-              aria-label="Previous image"
+              className="w-full bg-orange-500 text-white py-3 px-4 rounded-lg shadow-md flex items-center justify-between"
+              onClick={toggleFilters}
             >
-              &#10094;
-            </button>
-            <button
-              className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-50 p-2 rounded-full shadow-lg"
-              onClick={handleNextSlide}
-              aria-label="Next image"
-            >
-              &#10095;
-            </button>
-
-            <button
-              className="absolute top-4 right-4 bg-white bg-opacity-50 p-2 rounded-full shadow-lg"
-              onClick={toggleFullScreen}
-              aria-label="Toggle fullscreen"
-            >
-              {isFullScreen ? <FaTimes /> : <FaExpand />}
+              <span className="flex items-center">
+                <FaFilter className="mr-2" />
+                Filter & Sort Options
+              </span>
+              {activeFilters ? <FaTimes /> : <FaChevronRight />}
             </button>
           </div>
-        )}
 
-        {/* Gallery Grid */}
-        <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {items.map((item, index) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="relative cursor-pointer"
-            >
-              <img
-                src={item.image}
-                alt={item.category}
-                className="w-full h-64 object-cover rounded-lg shadow-md"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2">
-                <h3 className="text-lg font-semibold">{item.category}</h3>
-                <p>Date: {item.date}</p>
-                <div className="flex items-center">
-                  <FaHeart className="text-red-500 mr-1" />
-                  <span>{item.popularity}</span>
+          {/* Search, Filter, and Sort Section */}
+          <div
+            className={`mb-8 transition-all duration-300 ${
+              isMobile && !activeFilters ? "hidden" : "block"
+            }`}
+          >
+            <div className="bg-white p-4 rounded-xl shadow-md">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Search Box */}
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Search by title or category"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-800 pl-10"
+                    value={searchQuery}
+                    onChange={handleSearch}
+                    aria-label="Search ceremonies"
+                  />
+                  <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                </div>
+
+                {/* Category Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1 ml-1">
+                    Filter by Category
+                  </label>
+                  <select
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-800"
+                    value={selectedCategory}
+                    onChange={(e) => handleCategoryChange(e.target.value)}
+                    aria-label="Filter by category"
+                  >
+                    <option value="All">All Categories</option>
+                    {categories.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Sort Options */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1 ml-1">
+                    Sort by
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    <button
+                      className={`px-4 py-2.5 rounded-lg text-sm font-medium transition ${
+                        sortCriteria === "date"
+                          ? "bg-orange-500 text-white shadow-md"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                      onClick={() => handleSortChange("date")}
+                      aria-label="Sort by date"
+                    >
+                      <span className="flex items-center justify-center">
+                        <FaCalendarAlt className="mr-1" /> Date
+                      </span>
+                    </button>
+                    <button
+                      className={`px-4 py-2.5 rounded-lg text-sm font-medium transition ${
+                        sortCriteria === "popularity"
+                          ? "bg-orange-500 text-white shadow-md"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                      onClick={() => handleSortChange("popularity")}
+                      aria-label="Sort by popularity"
+                    >
+                      <span className="flex items-center justify-center">
+                        <FaHeart className="mr-1" /> Likes
+                      </span>
+                    </button>
+                    <button
+                      className={`px-4 py-2.5 rounded-lg text-sm font-medium transition ${
+                        sortCriteria === "title"
+                          ? "bg-orange-500 text-white shadow-md"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                      onClick={() => handleSortChange("title")}
+                      aria-label="Sort by title"
+                    >
+                      <span className="flex items-center justify-center">
+                        <FaSort className="mr-1" /> A-Z
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              {/* Heart Button on top-right */}
+              {/* Results Counter */}
+              <div className="mt-4 text-gray-600 text-sm">
+                Showing {items.length}{" "}
+                {items.length === 1 ? "result" : "results"}
+                {selectedCategory !== "All" ? ` in ${selectedCategory}` : ""}
+                {searchQuery ? ` for "${searchQuery}"` : ""}
+              </div>
+            </div>
+          </div>
+
+          {/* No Results Message */}
+          {items.length === 0 ? (
+            <div className="bg-white rounded-xl shadow-lg p-8 text-center">
+              <div className="text-orange-500 text-5xl mb-4">
+                <FaSearch className="mx-auto" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                No Results Found
+              </h3>
+              <p className="text-gray-600 mb-6">
+                We couldn't find any ceremonies matching your criteria. Please
+                try a different search or filter.
+              </p>
               <button
-                className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-lg flex items-center"
-                onClick={() => increasePopularity(item.id)}
-                aria-label="Increase popularity"
+                className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition shadow-md"
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedCategory("All");
+                  setSortCriteria("date");
+                }}
               >
-                <FaHeart className="text-red-500 mr-1" />
-                <span>{item.popularity}</span>
+                Reset Filters
               </button>
-            </motion.div>
-          ))}
+            </div>
+          ) : (
+            <>
+              {/* Featured Image Viewer */}
+              {isFullScreen ? (
+                <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
+                  <div className="relative w-full max-w-6xl mx-auto">
+                    {/* Close button */}
+                    <button
+                      className="absolute top-0 right-0 bg-white bg-opacity-80 p-3 rounded-full z-10 hover:bg-opacity-100 transition"
+                      onClick={toggleFullScreen}
+                      aria-label="Close fullscreen view"
+                    >
+                      <FaTimes className="text-gray-800" />
+                    </button>
+
+                    {/* Navigation buttons */}
+                    <button
+                      className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-3 m-4 rounded-full hover:bg-opacity-80 transition z-10"
+                      onClick={handlePrevSlide}
+                      aria-label="Previous image"
+                    >
+                      <FaChevronLeft className="text-gray-800" />
+                    </button>
+                    <button
+                      className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-3 m-4 rounded-full hover:bg-opacity-80 transition z-10"
+                      onClick={handleNextSlide}
+                      aria-label="Next image"
+                    >
+                      <FaChevronRight className="text-gray-800" />
+                    </button>
+
+                    {/* Current Image with animation */}
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={currentSlide}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="aspect-video relative bg-black rounded-lg overflow-hidden"
+                      >
+                        <img
+                          src={items[currentSlide].image}
+                          alt={items[currentSlide].title}
+                          className="w-full h-full object-contain"
+                        />
+                      </motion.div>
+                    </AnimatePresence>
+
+                    {/* Image Details */}
+                    <div className="bg-white bg-opacity-90 p-4 mt-4 rounded-lg">
+                      <h2 className="text-xl font-bold text-gray-800">
+                        {items[currentSlide].title}
+                      </h2>
+                      <div className="flex flex-wrap items-center justify-between mt-2">
+                        <div className="flex items-center text-gray-600">
+                          <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">
+                            {items[currentSlide].category}
+                          </span>
+                          <span className="ml-4 flex items-center">
+                            <FaCalendarAlt className="mr-2" />
+                            {formatDate(items[currentSlide].date)}
+                          </span>
+                        </div>
+                        <div className="flex items-center mt-2 sm:mt-0">
+                          <button
+                            className="flex items-center bg-red-50 text-red-600 hover:bg-red-100 px-3 py-1 rounded-full mr-2"
+                            onClick={(e) =>
+                              increasePopularity(items[currentSlide].id, e)
+                            }
+                          >
+                            <FaHeart className="mr-1" />
+                            <span>{items[currentSlide].popularity}</span>
+                          </button>
+                          <button
+                            className="bg-gray-100 text-gray-700 hover:bg-gray-200 p-2 rounded-full"
+                            aria-label="Share image"
+                          >
+                            <FaShareAlt />
+                          </button>
+                          <button
+                            className="bg-gray-100 text-gray-700 hover:bg-gray-200 p-2 rounded-full ml-2"
+                            aria-label="Download image"
+                          >
+                            <FaDownload />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Image Count Stats */}
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-bold text-gray-800">
+                  Recent Ceremonies
+                </h2>
+                <div className="flex items-center text-gray-600">
+                  <FaEye className="mr-2" />
+                  <span>{items.length} photos</span>
+                </div>
+              </div>
+
+              {/* Gallery Grid with Masonry Layout */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                {items.map((item, index) => {
+                  const isLoaded = loadedImages.has(item.id);
+
+                  return (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{
+                        opacity: isLoaded ? 1 : 0,
+                        y: isLoaded ? 0 : 20,
+                      }}
+                      transition={{
+                        duration: 0.4,
+                        delay: isLoaded ? index * 0.05 : 0,
+                      }}
+                      className="group"
+                      onClick={() => viewImage(index)}
+                    >
+                      <div className="relative bg-gray-100 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer h-64 sm:h-72">
+                        {/* Placeholder while image loads */}
+                        {!isLoaded && (
+                          <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+                            <div className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+                          </div>
+                        )}
+
+                        {/* Actual image */}
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${
+                            isLoaded ? "opacity-100" : "opacity-0"
+                          }`}
+                          onLoad={() => handleImageLoad(item.id)}
+                        />
+
+                        {/* Gradient overlay */}
+                        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 to-transparent opacity-90"></div>
+
+                        {/* Image content */}
+                        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <h3 className="text-lg font-medium line-clamp-2 mb-1 group-hover:text-orange-300 transition-colors">
+                                {item.title}
+                              </h3>
+                              <p className="text-sm opacity-90">
+                                {formatDate(item.date)}
+                              </p>
+                            </div>
+                            <span className="bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
+                              {item.category}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Like button overlay */}
+                        <button
+                          className="absolute top-3 right-3 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transform transition-transform duration-300 opacity-0 group-hover:opacity-100 z-10"
+                          onClick={(e) => increasePopularity(item.id, e)}
+                          aria-label={`Like ${item.title}`}
+                        >
+                          <FaHeart
+                            className={`${
+                              item.popularity > 0
+                                ? "text-red-500"
+                                : "text-gray-400"
+                            }`}
+                          />
+                        </button>
+
+                        {/* View button */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="bg-black/40 p-3 rounded-full">
+                            <FaExpand className="text-xl text-white" />
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>
