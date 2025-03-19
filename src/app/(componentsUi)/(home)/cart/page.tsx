@@ -289,7 +289,7 @@ const CartPage: React.FC = () => {
                   <div className="mt-6 py-5 border-t border-b border-gray-200">
                     <label
                       htmlFor="promo"
-                      className="block text-sm font-medium text-gray-700 mb-2 flex items-center"
+                      className="text-sm font-medium text-gray-700 mb-2 flex items-center"
                     >
                       <FaTag className="mr-2" size={14} /> Promo Code
                     </label>

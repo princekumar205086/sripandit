@@ -10,6 +10,7 @@ import { toast } from "react-hot-toast";
 import { useCart } from "@/app/context/CartContext";
 import moment from "moment-timezone";
 import Image from "next/image";
+import Loader from "@/app/utils/loader";
 
 const SinglePujaService = () => {
   const searchParams = useSearchParams();
@@ -172,11 +173,7 @@ const SinglePujaService = () => {
   };
 
   if (loading) {
-    return (
-      <div className="spinner-container">
-        <div className="spinner"></div>
-      </div>
-    );
+    return <Loader />;
   }
   if (error) return <div>Error: {error}</div>;
 
