@@ -10,8 +10,11 @@ import {
 import { IoArrowBack, IoInformationCircleOutline } from "react-icons/io5";
 import { RiLockPasswordLine } from "react-icons/ri";
 import Layout from "../layout";
+import useAuthentication from "@/app/helper/authenticationHelper";
 
 export default function ChangePassword() {
+  // check if the user is logged in and has the role of USER
+  useAuthentication({ allowedRoles: ["USER"], redirectTo: "/login" });
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

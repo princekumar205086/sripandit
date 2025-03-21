@@ -19,6 +19,7 @@ import {
 import { GiIndianPalace } from "react-icons/gi";
 import Link from "next/link";
 import Layout from "../layout";
+import useAuthentication from "@/app/helper/authenticationHelper";
 
 interface BookingType {
   id: number;
@@ -38,6 +39,8 @@ interface BookingCardProps {
 }
 
 const BookingPage = () => {
+  // check if the user is logged in and has the role of USER
+  useAuthentication({ allowedRoles: ["USER"], redirectTo: "/login" });
   const [activeTab, setActiveTab] = useState<"upcoming" | "past">("upcoming");
   const [filterType, setFilterType] = useState("all");
   const [sortOrder, setSortOrder] = useState("newest");

@@ -34,6 +34,8 @@ interface User {
 }
 
 const ProfilePage = () => {
+  // check if user is authenticated or not
+  useAuthentication({ allowedRoles: ["USER"], redirectTo: "/login" });
   const [activeTab, setActiveTab] = useState("details");
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -44,8 +46,6 @@ const ProfilePage = () => {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
-  // check if user is authenticated or not
-  useAuthentication({ allowedRoles: ["USER"], redirectTo: "/login" });
   // Fetching userId
   const { userId } = findUser();
 

@@ -36,8 +36,7 @@ const useAuthentication = ({
         allowedRoles.length > 0 &&
         !allowedRoles.includes(decoded.role || "")
       ) {
-        alert("You are not authorized to view this page.");
-        router.push(redirectTo);
+        router.push("/unauthorized");
         return;
       }
     } catch (error) {
