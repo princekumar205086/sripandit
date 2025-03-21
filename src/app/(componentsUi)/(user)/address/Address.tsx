@@ -58,7 +58,7 @@ const Addresses = ({
 
             // Auto-select the default address or the only address if autoSelectSingle is true
             if (data.length > 0) {
-              const defaultAddress = data.find((addr:any) => addr.isDefault);
+              const defaultAddress = data.find((addr: any) => addr.isDefault);
 
               if (defaultAddress) {
                 setSelectedAddressId(defaultAddress.id);
@@ -263,9 +263,9 @@ const Addresses = ({
   };
 
   return (
-    <div className="bg-[#FFFAF0]">
+    <div className="bg-[#FFFAF0] p-4 mt-6">
       {/* Main Content */}
-      <div className="max-w-full mx-auto">
+      <div className="max-w-full mx-auto p-2">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-xl sm:text-2xl font-bold text-[#2F1C0A] flex items-center">
             <FaMapMarkerAlt className="mr-2" />

@@ -24,13 +24,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import {
-  Collapse,
-  useMediaQuery,
-  Theme,
-  useTheme,
-  Avatar,
-} from "@mui/material";
+import { Collapse } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useRouter, usePathname } from "next/navigation";
@@ -50,24 +44,14 @@ export default function Layout(props: Props) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [isCollapse, setIsCollapse] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const [username, setUsername] = useState<string>("");
+  const [isMounted, setIsMounted] = useState(false); // For Hydration Issue
 
   const router = useRouter();
   const pathname = usePathname();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   // Hydration Fix: Ensure state-based changes only happen client-side
   useEffect(() => {
     setIsMounted(true);
-
-    // Get username from localStorage for display
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
-
     if (
       pathname.startsWith("/support") ||
       pathname.startsWith("/change-password") ||
@@ -105,181 +89,137 @@ export default function Layout(props: Props) {
     router.push("/login");
   };
 
-  // Get current page title in a more readable format
-  const getPageTitle = () => {
-    if (!pathname) return "Dashboard";
-
-    const path = pathname.replace(/^\//, "");
-    if (!path) return "Dashboard";
-
-    return path
-      .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
-
-  const activeItemClass = "bg-cream text-orangeRed font-medium rounded-md";
-  const inactiveItemClass = "text-cream hover:bg-cream/10 transition-all";
-
   const drawer = (
-    <div className="bg-redOrange text-cream h-full flex flex-col">
-      <Toolbar className="shadow-lg bg-cream py-2">
-        <Link href="/" className="flex justify-center w-full">
+    <div className="bg-redOrange text-cream h-full">
+      {/* Apply background and text color */}
+      <Toolbar className="shadow-lg bg-cream">
+        <Link href="/">
           <Image
             alt="logo"
             src="/image/okpuja logo.png"
             height={50}
             width={180}
-            className="object-contain"
           />
         </Link>
       </Toolbar>
-
-      {username && (
-        <Box className="px-4 py-3 flex items-center gap-3">
-          <Avatar
-            sx={{
-              bgcolor: "#F8EFBA",
-              color: "#ff4500",
-              fontWeight: "bold",
-            }}
-          >
-            {username.charAt(0).toUpperCase()}
-          </Avatar>
-          <Box>
-            <Typography variant="subtitle2" className="text-cream font-medium">
-              Welcome,
-            </Typography>
-            <Typography variant="body2" className="text-cream/90">
-              {username}
-            </Typography>
-          </Box>
-        </Box>
-      )}
-
-      <Divider sx={{ bgcolor: "rgba(248, 239, 186, 0.2)" }} />
-
-      <List className="flex-grow">
-        {[
-          { name: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
-          { name: "Profile", icon: <AccountCircleIcon />, path: "/profile" },
-          { name: "My Booking", icon: <MdAssignment />, path: "/mybooking" },
-          { name: "Address", icon: <FaMapMarkedAlt />, path: "/address" },
-        ].map((item) => (
+      <Divider />
+      <List>
+        {["Dashboard", "Profile", "My Booking", "Address"].map((text) => (
           <Link
-            href={item.path}
-            key={item.name}
-            style={{ textDecoration: "none" }}
-            onClick={isMobile ? handleDrawerClose : undefined}
+            href={`/${text.toLowerCase().replace(/\s+/g, "")}`}
+            key={text}
+            style={{ textDecoration: "none", color: "black" }}
           >
-            <ListItem disablePadding className="px-2 py-0.5">
-              <ListItemButton
-                className={
-                  pathname === item.path || pathname.startsWith(item.path + "/")
-                    ? activeItemClass
-                    : inactiveItemClass
-                }
-              >
+            <ListItem
+              disablePadding
+              className={
+                pathname.startsWith("/" + text.toLowerCase())
+                  ? "text-orangeRed bg-cream"
+                  : "text-cream" // Change text color to cream
+              }
+            >
+              <ListItemButton>
                 <ListItemIcon
                   className={
-                    pathname === item.path ||
-                    pathname.startsWith(item.path + "/")
-                      ? "text-orangeRed min-w-[40px]"
-                      : "text-cream min-w-[40px]"
+                    pathname.startsWith("/" + text.toLowerCase())
+                      ? "text-orangeRed bg-cream"
+                      : "text-cream" // Change text color to cream
                   }
                 >
-                  {item.icon}
+                  {text === "Dashboard" && <DashboardIcon />}
+                  {text === "Profile" && <AccountCircleIcon />}
+                  {text === "My Booking" && <MdAssignment />}
+                  {text === "Address" && <FaMapMarkedAlt />}
                 </ListItemIcon>
-                <ListItemText primary={item.name} />
+                <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
           </Link>
         ))}
-
-        <Divider sx={{ my: 1.5, bgcolor: "rgba(248, 239, 186, 0.2)" }} />
-
-        <ListItem disablePadding className="px-2 py-0.5">
-          <ListItemButton
-            onClick={handleCollapse}
-            className={
-              isCollapse ? "bg-cream/10 text-cream" : inactiveItemClass
-            }
-          >
-            <ListItemIcon className="text-cream min-w-[40px]">
+        <Divider />
+        <ListItem
+          disablePadding
+          onClick={handleCollapse}
+          className={
+            pathname.startsWith("/setting")
+              ? "text-sky-600 bg-slate-100"
+              : "text-cream" // Change text color to cream
+          }
+        >
+          <ListItemButton>
+            <ListItemIcon
+              className={
+                pathname.startsWith("/setting")
+                  ? "text-sky-600 bg-slate-100"
+                  : "text-cream" // Change text color to cream
+              }
+            >
               <SettingsIcon />
             </ListItemIcon>
-            <ListItemText primary="Settings" />
+            <ListItemText primary="Setting" />
             {isCollapse ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItemButton>
         </ListItem>
       </List>
-
       <Collapse in={isCollapse} timeout="auto" unmountOnExit>
-        <List className="pl-4">
-          {[
-            { name: "Support", icon: <SupportAgentIcon />, path: "/support" },
-            {
-              name: "Change Password",
-              icon: <LockIcon />,
-              path: "/change-password",
-            },
-            { name: "Contact", icon: <ContactMailIcon />, path: "/contact" },
-          ].map((item) => (
+        <List>
+          {["Support", "Change-Password", "Contact"].map((text) => (
             <Link
-              href={item.path}
-              key={item.name}
-              style={{ textDecoration: "none" }}
-              onClick={isMobile ? handleDrawerClose : undefined}
+              href={`/${text.toLowerCase()}`}
+              key={text}
+              style={{ textDecoration: "none", color: "black" }}
             >
-              <ListItem disablePadding className="px-2 py-0.5">
-                <ListItemButton
-                  className={
-                    pathname === item.path ? activeItemClass : inactiveItemClass
-                  }
-                >
+              <ListItem
+                disablePadding
+                className={
+                  pathname.startsWith("/" + text.toLowerCase())
+                    ? "text-sky-600 bg-slate-100"
+                    : "text-cream" // Change text color to cream
+                }
+              >
+                <ListItemButton>
                   <ListItemIcon
                     className={
-                      pathname === item.path
-                        ? "text-orangeRed min-w-[40px]"
-                        : "text-cream min-w-[40px]"
+                      pathname.startsWith("/" + text.toLowerCase())
+                        ? "text-sky-600 bg-slate-100"
+                        : "text-cream" // Change text color to cream
                     }
                   >
-                    {item.icon}
+                    {text === "Support" && <SupportAgentIcon />}
+                    {text === "Change-Password" && <LockIcon />}
+                    {text === "Contact" && <ContactMailIcon />}
                   </ListItemIcon>
-                  <ListItemText
-                    primary={item.name}
-                    primaryTypographyProps={{ fontSize: "0.9rem" }}
-                  />
+                  <ListItemText primary={text} />
                 </ListItemButton>
               </ListItem>
             </Link>
           ))}
         </List>
       </Collapse>
-
-      <Divider sx={{ bgcolor: "rgba(248, 239, 186, 0.2)" }} />
-
-      <Box className="mt-auto">
-        <ListItem
-          disablePadding
-          onClick={handleLogout}
-          className="px-2 py-0.5 mb-2"
-        >
-          <ListItemButton className="bg-cream/10 hover:bg-cream text-cream hover:text-orangeRed transition-all duration-200 rounded-md my-2">
-            <ListItemIcon className="text-cream hover:text-orangeRed min-w-[40px]">
-              <LogoutIcon />
+      <Divider />
+      <List className="bg-cream text-orangeRed mt-auto">
+        {" "}
+        {/* Added mt-auto to push to bottom */}
+        <ListItem disablePadding onClick={handleLogout}>
+          <ListItemButton className="py-3">
+            {" "}
+            {/* Added more padding */}
+            <ListItemIcon>
+              <LogoutIcon color="error" />
             </ListItemIcon>
-            <ListItemText primary="Logout" />
+            <ListItemText primary="Logout" sx={{ color: "error.main" }} />
           </ListItemButton>
         </ListItem>
-      </Box>
+      </List>
     </div>
   );
+
+  const container = undefined;
 
   return (
     <html lang="en">
       <body className="bg-cream">
-        <Box sx={{ display: "flex", minHeight: "100vh" }}>
+        <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <AppBar
             position="fixed"
@@ -288,91 +228,91 @@ export default function Layout(props: Props) {
               ml: { sm: `${drawerWidth}px` },
               bgcolor: "#ff4500",
               color: "#F8EFBA",
-              boxShadow: 2,
-              borderBottom: "none",
+              boxShadow: "none",
+              borderBottom: "solid #6a11cb 1px",
             }}
           >
-            <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
-                  edge="start"
-                  onClick={handleDrawerToggle}
-                  sx={{ mr: 2, display: { sm: "none" } }}
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Typography
-                  variant="h6"
-                  noWrap
-                  component="div"
-                  sx={{
-                    fontWeight: 600,
-                    fontSize: { xs: "1.1rem", sm: "1.25rem" },
-                    letterSpacing: "0.5px",
-                  }}
-                >
-                  {getPageTitle()}
-                </Typography>
-              </Box>
-
-              {!isMobile && (
-                <Button
-                  color="error"
-                  variant="contained"
-                  onClick={handleLogout}
-                  sx={{
-                    textTransform: "none",
-                    borderRadius: "20px",
-                    color: "#ff4500",
-                    px: 3,
-                    backgroundColor: "#F8EFBA",
-                    "&:hover": {
-                      backgroundColor: "#F8EF99",
-                    },
-                    transition: "all 0.2s ease",
-                    boxShadow: 1,
-                  }}
-                  startIcon={<LogoutIcon className="text-orangeRed" />}
-                >
-                  Logout
-                </Button>
-              )}
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                sx={{ mr: 2, display: { sm: "none" } }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ fontWeight: "bold" }}
+              >
+                {pathname.replace(/^\//, "").toUpperCase()}
+              </Typography>
+              <Box sx={{ flexGrow: 1 }} />
+              <Button
+                color="error"
+                variant="contained"
+                onClick={handleLogout}
+                sx={{
+                  textTransform: "none",
+                  borderRadius: "20px",
+                  color: "#ff4500",
+                  px: { xs: 2, sm: 3 }, // Responsive padding
+                  py: { xs: 0.5, sm: 0.75 }, // Responsive padding
+                  fontSize: { xs: "0.75rem", sm: "0.875rem" }, // Responsive font size
+                  backgroundColor: "#F8EFBA",
+                  "&:hover": {
+                    backgroundColor: "#F8EF99",
+                  },
+                  display: { xs: "none", md: "flex" }, // Hide on small screens
+                }}
+                startIcon={<LogoutIcon className="text-orange-500" />}
+              >
+                Logout
+              </Button>
+              <IconButton
+                onClick={handleLogout}
+                sx={{
+                  display: { xs: "flex", md: "none" },
+                  backgroundColor: "#F8EFBA",
+                  color: "#ff4500",
+                  "&:hover": {
+                    backgroundColor: "#F8EF99",
+                  },
+                  ml: 1,
+                }}
+                aria-label="logout"
+              >
+                <LogoutIcon />
+              </IconButton>
             </Toolbar>
           </AppBar>
-
           <Box
             component="nav"
-            sx={{
-              width: { sm: drawerWidth },
-              flexShrink: { sm: 0 },
-            }}
-            aria-label="dashboard navigation"
+            sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+            aria-label="dashboard"
           >
-            {/* Mobile drawer */}
             <Drawer
-              container={undefined}
+              container={container}
               variant="temporary"
               open={mobileOpen}
               onTransitionEnd={handleDrawerTransitionEnd}
               onClose={handleDrawerClose}
               ModalProps={{
-                keepMounted: true, // Better mobile performance
+                keepMounted: true,
               }}
               sx={{
                 display: { xs: "block", sm: "none" },
                 "& .MuiDrawer-paper": {
                   boxSizing: "border-box",
                   width: drawerWidth,
-                  boxShadow: 3,
                 },
               }}
             >
               {drawer}
             </Drawer>
-
-            {/* Desktop drawer */}
             <Drawer
               variant="permanent"
               sx={{
@@ -380,8 +320,6 @@ export default function Layout(props: Props) {
                 "& .MuiDrawer-paper": {
                   boxSizing: "border-box",
                   width: drawerWidth,
-                  border: "none",
-                  boxShadow: 2,
                 },
               }}
               open
@@ -389,24 +327,19 @@ export default function Layout(props: Props) {
               {drawer}
             </Drawer>
           </Box>
-
           <Box
             component="main"
             sx={{
               flexGrow: 1,
-              width: { xs: "100%", sm: `calc(100% - ${drawerWidth}px)` },
-              pt: { xs: 8, sm: 10 },
-              px: { xs: 2, sm: 3, md: 4 },
-              pb: { xs: 6, sm: 4 },
-              transition: "padding 0.2s ease",
+              p: 3,
+              width: { sm: `calc(100% - ${drawerWidth}px)` },
+              mt: 4,
             }}
           >
-            {isMounted ? (
-              <Box className="max-w-7xl mx-auto">{children}</Box>
-            ) : null}
+            {isMounted ? children : null}{" "}
+            {/* Only render content after mounted */}
           </Box>
         </Box>
-
         <Toaster
           position="top-center"
           reverseOrder={false}
@@ -416,29 +349,17 @@ export default function Layout(props: Props) {
             style: {
               background: "#363636",
               color: "#fff",
-              borderRadius: "8px",
-              padding: "12px 16px",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-              fontSize: "14px",
             },
             success: {
               duration: 3000,
               style: {
                 background: "#22c55e",
               },
-              iconTheme: {
-                primary: "#fff",
-                secondary: "#22c55e",
-              },
             },
             error: {
               duration: 4000,
               style: {
                 background: "#ef4444",
-              },
-              iconTheme: {
-                primary: "#fff",
-                secondary: "#ef4444",
               },
             },
           }}
