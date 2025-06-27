@@ -40,9 +40,9 @@ const SingleAstroService = ({ params }: any) => {
     id: number;
     service_title: string;
     service_image: string;
-    service_type: String;
-    service_price: String;
-    service_desc: String;
+    service_type: string;
+    service_price: string;
+    service_desc: string;
   }
 
   const [astroService, setAstroService] = useState<AstrologyService | null>(
